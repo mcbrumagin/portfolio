@@ -1,0 +1,42 @@
+
+<template name="designLibrary">
+    <h2>HTML/CSS Design Components</h2>
+    {{>newComponent}}
+    {{>componentList}}
+</template>
+
+<template name="newComponent">
+    <form class="create-component">
+        <label class="title-label" for="title">Title</label>
+        <input class="title" type="text" name="title"/>
+        <label class="l1" for="html">HTML</label>
+        <textarea class="t1" type="textarea" name="html"></textarea>
+        <label class="l2" for="css">CSS</label>
+        <textarea class="t2" type="textarea" name="css"></textarea>
+        <button type="submit">Create</button>
+    </form>
+</template>
+
+<template name="componentList">
+    <ul id="components">
+        {{#each component}}
+            <li>
+                {{>componentPreview}}
+            </li>
+        {{/each}}
+    </ul>
+</template>
+
+<template name="componentPreview">
+    <h3>{{title}}</h3>
+    <style>
+        {{previewStyle}}
+    </style>
+    <span class="preview-wrapper {{title}}">
+        {{{html}}}
+    </span>
+    <div class="code-wrapper">
+        <pre>{{html}}</pre>
+        <pre>{{style}}</pre>
+    </div>
+</template>

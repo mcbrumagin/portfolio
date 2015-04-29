@@ -1,0 +1,189 @@
+@import url(http://fonts.googleapis.com/css?family=Inconsolata);
+
+$light: #a0a0b0;
+$lighter: #d0d0e0;
+$lightest: #f0f0ff;
+
+$dark: #101020;
+$darker: #080810;
+$darkest: #000000;
+
+* {
+    color: $lighter;
+    
+    margin: 0;
+    padding: 0;
+    border: none;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+}
+
+h1, h2, h3, h4, h5, h6,
+a, li, label, input,
+textarea, select, button {
+    margin: 0.5rem;
+    padding: 0.5rem;
+}
+
+div, ul, li, pre, section, form {
+    margin: 0 auto 2.0rem;
+    padding: 1.0rem;
+}
+
+main > div,
+main > section {
+    padding: 0;
+}
+
+html, body, div {
+    background-color: $dark;
+}
+
+form {
+    box-shadow: 1px 1px 10px 1px rgba(200,200,255,0.5);
+    background: none;
+    margin: 2.0rem 1.5rem 3.0rem;
+    padding: 1.0rem;
+}
+
+html {
+    font-size: 62.5%;
+    font-family: 'Inconsolata';
+}
+
+body {
+    font-size: 1.4rem;
+}
+
+main {
+    margin: 0;
+    padding: 0;
+}
+
+h1, h2 {
+    margin-left: 2rem;
+}
+
+h3, h4 {
+    margin-left: 1rem;
+}
+
+h5, h6 {
+    margin-left: 0.5rem;
+}
+
+ul {
+    list-style-type: none;
+    box-shadow: 1px 1px 10px 1px rgba(200,200,255,0.25);
+    background-color: $darker;
+    
+    li {
+        border-radius: 0.2rem;
+        border: 0.1rem solid $light;
+        box-shadow: 1px 1px 10px 1px rgba(200,200,255,0.5);
+        margin: 2.5rem 2.0rem;
+        background-color: $dark;
+        &:first-child {
+             margin-top: 2.0rem;
+        }
+        &:last-child {
+            margin-bottom: 3.0rem;
+        }
+    }
+}
+
+footer {
+    margin: 1rem auto;
+    text-align: center;
+}
+
+nav ul {
+    text-align: center;
+    
+    a { text-decoration: none; }
+    
+    li {
+        display: inline-block;
+        margin: 0.5rem;
+        cursor: pointer;
+        
+        transition: box-shadow 0.3s;
+        i, .tx { transition: color 0.3s; }
+        
+        &:hover, &:active, &:focus {
+            box-shadow: 1px 1px 15px 3px rgba(255,255,255,0.5);
+            i, .tx { color: $lightest; }
+        }
+    }
+}
+
+label {
+    margin: 1.5rem;
+    padding: 0.5rem 1.0rem;
+}
+
+pre {
+    overflow-x: auto;
+    max-width: 100%;
+}
+
+input,
+textarea,
+select,
+button {
+    background-color: $darkest;
+    color: $lightest;
+    
+    margin: 1.5rem;
+    padding: 0.5rem 1.0rem;
+    
+    border: 0.1rem solid rgba(200,200,255,0.75);
+    box-shadow: 1px 1px 10px 1px rgba(200,200,255,0.25);
+    transition: box-shadow 0.2s, border-color 0.2s;
+    border-radius: 0.3rem;
+    
+    outline: none;
+    display: block;
+    
+    &:hover {
+        box-shadow: 1px 1px 10px 2px rgba(200,200,255,0.5);
+    }
+    
+    &:active,
+    &:focus {
+        border: 1px solid rgba(200,200,255,0.95);
+        box-shadow: 1px 1px 5px 2px rgba(200,200,255,0.5);
+    }
+}
+
+.right {
+    float: right;
+}
+
+.left {
+    float: left;
+}
+
+button {
+    display: inline-block;
+    cursor: pointer;
+    
+    i + .tx {
+        margin-left: 0.5rem;
+    }
+}
+
+.sm {
+    font-size: 85%;
+}
+
+.lg {
+    font-size: 115%;
+}
+
+.xl {
+    font-size: 130%;
+}

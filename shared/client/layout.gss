@@ -1,0 +1,44 @@
+/*
+form {
+    height: >= 800;
+    
+    textarea {
+        display: inline-block;
+    }
+    
+    @h |-(.title-label)-(.title)-|;
+    
+    @if (^[width] < 400) {
+        textarea[width] <= ^[width] - 50;
+        textarea[center-x] == ^[center-x];
+    }
+    @else {
+        textarea[width] <= ^[width] / 2;
+        @h |-50-(.t1)-25-(.t2)-50-|;
+    }
+    
+    button[width] >= 80;
+    button[center-x] == ^[center-x];
+}
+
+main {
+    position: relative;
+}
+
+.create-component[top] >= 150;
+#components[top] == .create-component[bottom];
+*/
+
+/*
+@media screen and (max-width: 200rem) {
+    main ul li {
+        width: 40%;
+        display: inline-block;
+    }
+}
+
+main ul {
+    
+}
+*/
+

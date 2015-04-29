@@ -1,0 +1,52 @@
+<template name="sandbox">
+    <section>
+        <h2>Meteor Template Examples</h2>
+        {{> libraryExamples }}
+    </section>
+</template>
+
+<template name="rawSpaceBars">
+    <pre class="right">
+        &#123;&#123;&gt; {{this}} &#125;&#125;
+    </pre>
+</template>
+
+<template name="libraryExamples">
+    <ul>
+        <li>
+            {{> rawSpaceBars 'button' }}
+            {{> button }}
+        </li>
+        <li>
+            {{> rawSpaceBars 'button class="sm"' }}
+            {{> button class="sm" }}
+        </li>
+        <li>
+            {{> rawSpaceBars 'button text="Smart"' }}
+            {{> button text="Smart" }}
+        </li>
+        <li>
+            {{> rawSpaceBars 'buttonSave class="lg"' }}
+            {{> buttonSave class="lg" }}
+        </li>
+        <li>
+            {{> rawSpaceBars 'button icon="edit"' }}
+            {{> button icon="edit" }}
+        </li>
+        <li>
+            {{> rawSpaceBars 'field name="test-input" label="Input" hint="Enter some text..."' }}
+            {{> field
+                name="test-input"
+                label="Input"
+                hint="Enter some text..." }}
+        </li>
+        <li>
+            {{> rawSpaceBars 'field name="test-textarea" tag="textarea" label="Textarea" hint="Enter some text..."' }}
+            {{> field
+                name="test-textarea"
+                tag="textarea"
+                label="Textarea"
+                hint="Enter some text..." }}
+        </li>
+    </ul>
+</template>

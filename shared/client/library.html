@@ -1,0 +1,19 @@
+<template name="button">
+    <button id="{{id}}" class="{{class}}" type="{{type}}">
+        {{{icon}}}
+        {{{text}}}
+    </button>
+</template>
+
+<template name="buttonSave">
+    {{> button icon="save" text="Save" type="submit" class=class}}
+</template>
+
+<template name="field">
+    <div class="field">
+        <label for="{{name}}">{{{label}}}</label>
+        {{{tag}}}
+        {{{help}}}
+    </div>
+</template>
+

@@ -1,0 +1,78 @@
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, minimal-ui" />
+    <meta name="HandheldFriendly" content="True">
+
+    <title>Matthew C. Brumagin</title>
+</head>
+
+
+<template name="layout">
+    {{> navigation }}
+    {{> banner }}
+    <main role="main">
+        {{> yield }}
+    </main>
+    {{> footer }}
+</template>
+
+
+<template name="navigation">
+    <nav role="navigation">
+        <ul>
+            <li>
+                <a href="{{pathFor 'blog'}}">
+                    <i class="fa fa-comment"></i>
+                    <span class="tx">Blog</span>
+                </a>
+            </li>
+            <li>
+                <a href="#Tutorials">
+                    <i class="fa fa-graduation-cap"></i>
+                    <span class="tx">Tutorials</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{pathFor 'resume'}}">
+                    <i class="fa fa-book"></i>
+                    <span class="tx">Resume</span>
+                </a>
+            </li>
+            <li>
+                <a href="#Samples">
+                    <i class="fa fa-code"></i>
+                    <span class="tx">Samples</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{pathFor 'designLibrary'}}">
+                    <i class="fa fa-photo"></i>
+                    <span class="tx">Design</span>
+                </a>
+            </li>
+            <li>
+                <a href="{{pathFor 'sandbox'}}">
+                    <i class="fa fa-inbox"></i>
+                    <span class="tx">Sandbox</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</template>
+
+
+<template name="banner">
+    <header role="banner">
+        {{> button id="navicon" icon="navicon" class="lg right"}}
+        <h1>Matthew C. Brumagin</h1>
+    </header>
+</template>
+
+
+<template name="footer">
+    <footer role="contentinfo">
+        &copy; {{year}} Matthew C. Brumagin
+    </footer>
+</template>
