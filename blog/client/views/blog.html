@@ -6,21 +6,24 @@
 </template>
 
 <template name="newPost">
-    <form class="create-post pure-form">
-        <div class="labeled-input">
-            <label for="title">Title</label>
-            <input type="text" name="title"/>
-        </div>
-        <div class="labeled-textarea">
-            <label for="content">Content</label>
-            <textarea type="textarea" name="content"></textarea>
-        </div>
+    <form class="create-post">
+        {{> field name="title" label="Title" }}
+        {{> field tag="textarea" name="content" label="Content" }}
         {{> buttonSave }}
     </form>
+    {{> newPostPreview }}
+</template>
+
+<template name="newPostPreview">
+    <div class="new-post-preview next-mark">
+        <span class="title">{{title}}</span>
+        <span class="date">{{date}}</span>
+        <div class="preview content">{{content}}</div>
+    </div>
 </template>
 
 <template name="postList">
-    <ul>
+    <ul class="post-list">
         {{#each post}}
             <li>
                 {{>postPreview}}
@@ -33,5 +36,5 @@
     <button class="delete-post right">Delete</button>
     <span class="title">{{title}}</span>
     <span class="date">{{date}}</span>
-    <pre class="preview content">{{content}}</pre>
+    <div class="preview content next-mark">{{{content}}}</div>
 </template>

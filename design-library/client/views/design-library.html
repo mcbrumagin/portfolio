@@ -7,13 +7,10 @@
 
 <template name="newComponent">
     <form class="create-component">
-        <label class="title-label" for="title">Title</label>
-        <input class="title" type="text" name="title"/>
-        <label class="l1" for="html">HTML</label>
-        <textarea class="t1" type="textarea" name="html"></textarea>
-        <label class="l2" for="css">CSS</label>
-        <textarea class="t2" type="textarea" name="css"></textarea>
-        <button type="submit">Create</button>
+        {{> field name="title" label="Title" }}
+        {{> field tag="textarea" name="html" label="HTML" }}
+        {{> field tag="textarea" name="css" label="CSS" }}
+        {{> buttonSave }}
     </form>
 </template>
 

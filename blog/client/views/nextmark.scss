@@ -1,0 +1,69 @@
+/* Attribute selector is easier to override
+[class="next-mark"] {*/
+
+.next-mark {
+    
+    /* Simple reset */
+    
+    * {
+        margin: .2rem;
+        padding: 0 .2rem .2rem;
+    }
+    
+    h1, h2, h3, h4, h5, h6 {
+        margin: 1rem auto .4rem;
+    }
+    
+    p + h1, p + h2, p + h3,
+    p + h4, p + h5, p + h6 {
+        margin-top: 2.4rem;
+    }
+    
+    p {
+        margin: .4rem;
+        max-width: 40rem;
+    }
+    
+    ol {
+        margin-left: 2rem;
+    }
+    
+    ul {
+        padding: .2rem .2rem .2rem 2rem;
+        list-style-type: circle;
+    }
+    
+    li {
+        max-width: 40rem;
+        border: none;
+        box-shadow: none;
+        background: none;
+    }
+    
+    button {
+        margin: .4rem;
+        padding: .2rem .4rem;
+    }
+    
+    pre {
+        padding: .4rem .8rem;
+        border-radius: .2rem;
+    }
+    
+    input[type=checkbox] {
+        display: inline;
+    }
+    
+    .check-list {
+        list-style-type: none;
+        padding-left: 3rem;
+        
+        li {
+            margin: .4rem;
+        }
+        
+        input[type=checkbox] {
+            margin-left: -2rem;
+        }
+    }
+}

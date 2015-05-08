@@ -1,16 +1,16 @@
 Template.button.helpers({
     icon: function () {
-        if (this.icon) return `<i class="fa fa-${this.icon}" />`
+        if (this.icon) return Resource('button icon', this.icon)
         else return ''
     },
     text: function () {
-        if (this.text) return `<span class="tx">${this.text}</span>`
-        else if (!this.icon) return '<span class="tx">Submit</span>'
+        if (this.text) return Resource('button text', this.text)
+        else if (!this.icon) return Resource('button default text')
         else return ''
     },
     class: function () {
         if (this.class) return this.class
-        else return 'md'
+        else return Resource('button default class')
     }
 })
 
@@ -33,16 +33,16 @@ Template.field.helpers({
         if (!_.type) _.type = ''
         if (!_.hint) _.hint = ''
         
-        var attributes = `name="${_.name}" type="${_.type}" placeholder="${_.hint}"`
+        var attributes = Resource('field attributes', _.name, _.type, _.hint)
         
         if (_.tag === 'input' || !_.tag) {
-            return `<input ${attributes} value="${_.val}" />`
+            return Resource('field input', attributes, _.val)
         } else {
-            return `<${_.tag} ${attributes}>${_.val}</${_.tag}>`
+            return Resource('field default', _.tag, attributes, _.val)
         }
     },
     help: function () {
         if (!this.help) return ''
-        else return `<div class="help">${this.help}}</div>`
+        else return Resource('field help', this.help)
     }
 })

@@ -3,14 +3,14 @@ Meteor.publish('posts', function () {
 })
 
 Meteor.methods({
-    'newPost': function (data) {
+    newPost: function (data) {
         Posts.insert({
             title: data.title,
             date: new Date(),
             content: data.content
         })
     },
-    'deletePost': function (data) {
+    deletePost: function (data) {
         Posts.remove(data._id)
     }
 })

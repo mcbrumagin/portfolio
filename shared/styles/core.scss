@@ -79,20 +79,15 @@ ul {
     list-style-type: none;
     box-shadow: 1px 1px 10px 1px rgba(200,200,255,0.25);
     background-color: $darker;
-    
-    li {
-        border-radius: 0.2rem;
-        border: 0.1rem solid $light;
-        box-shadow: 1px 1px 10px 1px rgba(200,200,255,0.5);
-        margin: 2.5rem 2.0rem;
-        background-color: $dark;
-        &:first-child {
-             margin-top: 2.0rem;
-        }
-        &:last-child {
-            margin-bottom: 3.0rem;
-        }
-    }
+    padding: 2.0rem auto 3.0rem;
+}
+
+li {
+    border-radius: 0.2rem;
+    border: 0.1rem solid $light;
+    box-shadow: 1px 1px 10px 1px rgba(200,200,255,0.5);
+    margin: 2.5rem 2.0rem;
+    background-color: $dark;
 }
 
 footer {
@@ -126,6 +121,8 @@ label {
 }
 
 pre {
+    box-shadow: 1px 1px 15px 3px rgba(255,255,255,0.25);
+    background-color: $darkest;
     overflow-x: auto;
     max-width: 100%;
 }
@@ -134,7 +131,7 @@ input,
 textarea,
 select,
 button {
-    background-color: $darkest;
+    background-color: $darker;
     color: $lightest;
     
     margin: 1.5rem;
@@ -186,4 +183,13 @@ button {
 
 .xl {
     font-size: 130%;
+}
+
+.field {
+    margin: 0.25rem;
+    padding: 0.25rem;
+}
+
+.hide {
+    display: none !important;
 }

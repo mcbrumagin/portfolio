@@ -3,7 +3,7 @@ Meteor.publish('components', function () {
 })
 
 Meteor.methods({
-    'newComponent': function (data) {
+    newComponent: function (data) {
         Components.insert({
             title: data.title,
             date: new Date(),
@@ -11,7 +11,7 @@ Meteor.methods({
             html: data.html
         })
     },
-    'deleteComponent': function (data) {
+    deleteComponent: function (data) {
         Components.remove(data._id)
     }
 })
