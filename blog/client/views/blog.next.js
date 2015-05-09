@@ -1,130 +1,22 @@
-String.prototype.slim = function (start, end) {
-    return String.prototype
-        .slice.call(this, start, end)
-        .trim()
-}
-
-window.convertMarkdown = function (markdown) {
-    
-    var countCharsAtStart = function (line, char, max) {
-        var regex = new RegExp(`^(${char}{1,${max}})`, 'g')
-        var matches = line.match(regex)
-        if (!matches) return 0
-        else return matches[0].trim().length
-    }
-    
-    var findAttributes = function (line) {
-        var regex = new RegExp('([a-zA-Z]+)\="?([a-zA-Z]+)"?', 'g')
-        var matches = {}
-        do {
-            var match = regex.exec(line)
-            if (match) matches[match[1]] = match[2]
-        } while (match)
-        return matches
-    }
-    
-    var markup = ''
-    var lines = markdown.split('\n')
-    for (var i = 0; i < lines.length; i++) {
-        
-        var doWhile = function (fn, cond) {
-            do {
-                fn()
-            } while (lines[i] !== undefined && cond())
-        }
-        
-        var parseList = function (listType, match) {
-            markup += `<${listType}>`
-            do {
-                markup += `<li>${lines[i].slice(1)}</li>`
-                i++
-            } while (lines[i] !== undefined && lines[i][0] === match)
-            markup += `</${listType}>`
-        }
-        
-        if (lines[i][0] === '*') {
-            parseList('ul', '*')
-        }
-        else if (lines[i][0] === '-') {
-            parseList('ul', '-')
-        }
-        else if (lines[i][0] === '#') {
-            parseList('ol', '#')
-        }
-        else if (lines[i][0] === '@') {
-            var h = countCharsAtStart(lines[i], '@', 6)
-            markup += `<h${h}>${lines[i].slice(h)}</h${h}>`
-        }
-        else if (lines[i].slice(0,2) === '()'
-            || lines[i].slice(0,3) === '(x)') {
-            
-            markup += `<ul class="check-list">`
-            var type = 'type="checkbox"'
-            do {
-                if (lines[i][1] === ')') {
-                    var text = lines[i].slice(2)
-                    markup += `<li><input ${type} />${text}</li>`
-                } else {
-                    text = lines[i].slice(3)
-                    markup += `<li><input ${type} checked />${text}</li>`
-                }
-                i++
-            } while (lines[i] !== undefined
-                && (lines[i].slice(0,2) === '()'
-                || lines[i].slice(0,3) === '(x)'))
-            
-            markup += `</ul>`
-        }
-        else if (lines[i].slice(0,5) === '[code') {
-            var attributes = findAttributes(lines[i])
-            
-            i++
-            var script = ''
-            doWhile(() => {
-                script += lines[i++] + '\n'
-            }, () => lines[i].slice(0,3) !== '[/]')
-            
-            if (attributes.type) {
-                if (attributes.type === 'js' && attributes.runnable) {
-                    // TODO: May need to test for other chars
-                    var escapedScript = script.replace(/"/g, '&quot;')
-                    markup += `<button onclick="${escapedScript}">Run</button>`
-                }
-                
-                markup += `<code class="${attributes.type}"><pre>`
-            } else markup += '<code><pre>'
-            
-            // TODO: May need to test for other chars
-            script = script
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-            
-            markup += script
-            markup += '</pre></code>'
-        }
-        else if (lines[i][0] === '') {
-            markup += '</p>'
-        } else if (i === 0 || lines[i-1] === '' || lines[i-1][0] === '@') {
-            markup += '<p>' + lines[i]
-        } else {
-            markup += ' ' + lines[i]
-        }
-    }
-    return markup
-}
-
 Template.postList.onCreated(function () {
     this.subscribe('posts')
 })
 
 Template.postList.helpers({
-    post: () => Posts.find()
+    post: () => Posts.find({},{
+        sort: { date: -1 }
+    })
 })
 
-Template.postList.events({
+Template.postPreview.events({
     "click .delete-post": function (e) {
         e.preventDefault()
         Meteor.call('deletePost', this)
+    },
+    "click .open-edit-post": function (e) {
+        e.preventDefault()
+        UI.renderWithData(Template.editPost, this,
+            $(`[data-id=${this._id}]`)[0])
     }
 })
 
@@ -133,12 +25,27 @@ Template.postPreview.helpers({
         return this.date.toLocaleString()
     },
     content: function () {
-        window.temp1 = convertMarkdown(this.content)
+        window.temp1 = NextMark.convertMarkdown(this.content)
         return window.temp1
     }
 })
 
-Template.newPost.events({
+Template.editPost.events({
+    "submit .edit-post": function (e) {
+        e.preventDefault()
+        var form = $(`[data-id=${this._id}] .edit-post`)
+        this.title = form.find(`[name=title]`).val()
+        this.content = form.find(`[name=content]`).val()
+        Meteor.call('updatePost', this, function () {
+            $(e.currentTarget).remove()
+        })
+    },
+    "click .close-edit-post": function (e) {
+        $(e.currentTarget).parent().remove()
+    }
+})
+
+Template.createPost.events({
     "submit .create-post": e => {
         e.preventDefault()
         Meteor.call('newPost', {
@@ -154,7 +61,7 @@ Template.newPost.events({
         $('.new-post-preview .date').html(date)
         
         var markdown = $('.create-post [name=content]').val()
-        var markup = convertMarkdown(markdown)
+        var markup = NextMark.convertMarkdown(markdown)
         window.temp2 = markup
         $('.new-post-preview .content').html(markup)
     }

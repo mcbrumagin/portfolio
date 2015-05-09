@@ -1,4 +1,8 @@
 Template.button.helpers({
+    type: function () {
+        if (!this.type) return 'button'
+        else return this.type
+    },
     icon: function () {
         if (this.icon) return Resource('button icon', this.icon)
         else return ''

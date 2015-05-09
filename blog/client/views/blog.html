@@ -1,11 +1,11 @@
 <template name="blog">
     <div class="details-inner">
-        {{>newPost}}
-        {{>postList}}
+        {{> createPost }}
+        {{> postList }}
     </div>
 </template>
 
-<template name="newPost">
+<template name="createPost">
     <form class="create-post">
         {{> field name="title" label="Title" }}
         {{> field tag="textarea" name="content" label="Content" }}
@@ -25,16 +25,38 @@
 <template name="postList">
     <ul class="post-list">
         {{#each post}}
-            <li>
-                {{>postPreview}}
-            </li>
+            {{> postPreview }}
         {{/each}}
     </ul>
 </template>
 
 <template name="postPreview">
-    <button class="delete-post right">Delete</button>
-    <span class="title">{{title}}</span>
-    <span class="date">{{date}}</span>
-    <div class="preview content next-mark">{{{content}}}</div>
+    <li data-id="{{_id}}">
+        <button class="delete-post right">Delete</button>
+        <button class="open-edit-post right">Edit</button>
+        <span class="title">{{title}}</span>
+        <span class="date">{{date}}</span>
+        <div class="preview content next-mark">{{{content}}}</div>
+    </li>
+</template>
+
+<template name="editPost">
+    <form class="edit-post">
+        {{> buttonClose class="close-edit-post right" }}
+        
+        {{> field
+            name="title"
+            label="Title"
+            val=title
+        }}
+        
+        {{> field
+            tag="textarea"
+            name="content"
+            label="Content"
+            val=content
+        }}
+        
+        {{> buttonSave }}
+    </form>
 </template>
