@@ -122,6 +122,12 @@ window.NextMark = new function () {
             else if (isOrderedListItem()) createList('ol')
             else if (isChecklistItem()) createChecklist()
             else if (isCodeStart()) createCodeBlock()
+            else if (lines[i] === '') {
+                markup += '<br />'
+            } else {
+                markup += `<p>${lines[i]}</p>`
+            }
+            /*
             else if (lines[i][0] === '') {
                 markup += '</p>'
             } else if (i === 0 || lines[i-1] === '' || lines[i-1][0] === '@') {
@@ -129,6 +135,7 @@ window.NextMark = new function () {
             } else {
                 markup += ' ' + lines[i]
             }
+            */
         }
         return markup
     }

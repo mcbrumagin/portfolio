@@ -15,8 +15,9 @@ Template.postPreview.events({
     },
     "click .open-edit-post": function (e) {
         e.preventDefault()
-        UI.renderWithData(Template.editPost, this,
-            $(`[data-id=${this._id}]`)[0])
+        if ($(`[data-id=${this._id}] .edit-post`).length === 0)
+            UI.renderWithData(Template.editPost, this,
+                $(`[data-id=${this._id}]`)[0])
     }
 })
 
