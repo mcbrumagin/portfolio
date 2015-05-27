@@ -21,7 +21,7 @@ Template.button.helpers({
 // TODO: Find a way to infer template based on this/helper?
 var error = {
     required: function (template, property) {
-        console.error(`${property} is required for ${template} template`)
+        Meteor.log.error(`${property} is required for ${template} template`)
     }
 }
 

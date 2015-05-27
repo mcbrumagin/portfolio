@@ -1,3 +1,32 @@
+/*
+// Need some way to specify different template helper methods
+// Need some templates? Or use meteor template helper
+CrudCollection('components', ['title', 'content'], function (collection) {
+    
+    var date = function () {
+        return (this.dateModified
+             || this.dateCreated)
+                .toLocaleString()
+    }
+    
+    return {
+        testList: function () {
+            return collection.find({},{
+                sort: { dateModified: -1 }
+            }).fetch()
+        },
+        date: date,
+        testMostRecent: {
+            mostRecent: function () {
+                return collection.find({},{
+                    sort: { dateModified: -1 }
+                }).fetch()[0]
+            }
+        }
+    }
+})
+*/
+
 Template.componentList.onCreated(function () {
     this.subscribe('components')
 })

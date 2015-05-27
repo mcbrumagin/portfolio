@@ -3,6 +3,46 @@
         <h2>Meteor Template Examples</h2>
         {{> libraryExamples }}
     </section>
+    <section>
+        <h2>Meteor Crud Function</h2>
+        {{> test }}
+    </section>
+</template>
+
+<template name="crudCreate">
+    <form class="{{name}}-create">
+        {{> UI.contentBlock }}
+        {{> buttonSave }}
+    </form>
+</template>
+
+<template name="crudUpdate">
+    <form class="{{name}}-update" data-id="{{_id}}">
+        {{> UI.contentBlock }}
+        {{> buttonSave }}
+    </form>
+</template>
+
+<template name="testMostRecent">
+    {{#with mostRecent}}
+        {{#crudUpdate name="test" _id=_id}}
+            <input type="text" name="title" value="{{title}}" />
+            <input type="text" name="content" value="{{content}}" />
+        {{/crudUpdate}}
+    {{/with}}
+</template>
+
+<template name="test">
+    {{#crudCreate name="test"}}
+        <input type="text" name="title" />
+        <input type="text" name="content" />
+    {{/crudCreate}}
+    {{> testMostRecent}}
+    {{#each testList}}
+        <h3>{{title}}</h3>
+        <span>{{date}}</span>
+        <div>{{content}}</div>
+    {{/each}}
 </template>
 
 <template name="rawSpaceBars">

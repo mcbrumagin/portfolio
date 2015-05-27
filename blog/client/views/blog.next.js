@@ -26,8 +26,7 @@ Template.postPreview.helpers({
         return this.date.toLocaleString()
     },
     content: function () {
-        window.temp1 = NextMark.convertMarkdown(this.content)
-        return window.temp1
+        return NextMark.convertMarkdown(this.content)
     }
 })
 
@@ -46,6 +45,8 @@ Template.editPost.events({
     }
 })
 
+window.liveViewId = false
+
 Template.createPost.events({
     "submit .create-post": e => {
         e.preventDefault()
@@ -55,15 +56,49 @@ Template.createPost.events({
         })
     },
     "input [name=content]": e => {
-        var title = $('.create-post [name=title]').val()
-        $('.new-post-preview .title').html(title)
-        
-        var date = new Date().toLocaleString()
-        $('.new-post-preview .date').html(date)
-        
-        var markdown = $('.create-post [name=content]').val()
-        var markup = NextMark.convertMarkdown(markdown)
-        window.temp2 = markup
-        $('.new-post-preview .content').html(markup)
+        if (!window.liveViewId) {
+            var title = $('.create-post [name=title]').val()
+            $('.new-post-preview .title').html(title)
+            
+            var date = new Date().toLocaleString()
+            $('.new-post-preview .date').html(date)
+            
+            var markdown = $('.create-post [name=content]').val()
+            var markup = NextMark.convertMarkdown(markdown)
+            $('.new-post-preview .content').html(markup)
+            
+        } else {
+            var title = $('.create-post [name=title]').val()
+            var markdown = $('.create-post [name=content]').val()
+            
+            Meteor.call('updateLiveView', {
+                id: window.liveViewId,
+                title: title,
+                content: markdown
+            }, function (err, res) {
+                if (err) {
+                    Meteor.log.error({
+                        message: 'An error occurred when updating the LiveView',
+                        error: err
+                    })
+                } else Meteor.log.trace(res)
+            })
+        }
+    },
+    "click [name=expand]": e => {
+        Meteor.call('newLiveView', function (err, res) {
+            if (err) {
+                Meteor.log.error({
+                    message: 'An error occurred when creating a new LiveView',
+                    error: err
+                })
+            } else {
+                // TODO: store in session (so that the server can reset it on disconnect)
+                window.liveViewId = res
+                var endpoint = '/liveview/' + res
+                // TODO: New window, not tab
+                window.open(window.location.origin + endpoint)
+            }
+        })
     }
 })
