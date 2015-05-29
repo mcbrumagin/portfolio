@@ -1,0 +1,32 @@
+
+<template name="designLibrary">
+    <h2>HTML/CSS Design Components</h2>
+    
+    {{#crudCreate name="components"}}
+        {{> field name="title" }}
+        {{> textarea name="html" label="HTML" }}
+        {{> textarea name="style" label="CSS" }}
+    {{/crudCreate}}
+    
+    <ul id="components">
+        {{#each component}}
+            <li>
+                {{{button "Delete" 
+                    class="components-delete right"
+                    icon="close"
+                }}}
+                <h3>{{title}}</h3>
+                <style>
+                    {{previewStyle}}
+                </style>
+                <span class="preview-wrapper {{title}}">
+                    {{{html}}}
+                </span>
+                <div class="code-wrapper">
+                    <pre>{{html}}</pre>
+                    <pre>{{style}}</pre>
+                </div>
+            </li>
+        {{/each}}
+    </ul>
+</template>

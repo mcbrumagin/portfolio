@@ -193,3 +193,7 @@ button {
 .hide {
     display: none !important;
 }
+
+.field label {
+    text-transform: capitalize;
+}

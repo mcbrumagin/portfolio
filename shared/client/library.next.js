@@ -27,8 +27,9 @@ var error = {
 
 Template.field.helpers({
     label: function () {
-        if (!this.label) error.required('field', 'label')
-        else return this.label
+        //if (!this.label) error.required('field', 'label')
+        //else return this.label
+        return this.label || this.name
     },
     tag: function () {
         var _ = this
@@ -49,4 +50,14 @@ Template.field.helpers({
         if (!this.help) return ''
         else return Resource('field help', this.help)
     }
+})
+
+UI.registerHelper('button', function (text, options) {
+    if (options && options.hash) options = options.hash
+    var attributes = ''
+    for (var prop in options) {
+        if (prop === 'icon') var icon = `<i class="fa fa-${options[prop]}" />`
+        else attributes += `${prop}="${options[prop]}"`
+    }
+    return `<button ${attributes}>${icon}<span class="tx">${text}</span></button>`
 })

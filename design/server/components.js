@@ -1,3 +1,4 @@
+/*
 Meteor.publish('components', function () {
     return Components.find()
 })
@@ -15,3 +16,4 @@ Meteor.methods({
         Components.remove(data._id)
     }
 })
+*/

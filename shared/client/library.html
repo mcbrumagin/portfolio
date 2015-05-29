@@ -20,3 +20,26 @@
         {{{help}}}
     </div>
 </template>
+
+<template name="textarea">
+    {{> field tag="textarea"
+        name=name
+        label=label
+        help=help
+        val=val
+    }}
+</template>
+
+<template name="crudCreate">
+    <form class="{{name}}-create">
+        {{> UI.contentBlock }}
+        {{> buttonSave }}
+    </form>
+</template>
+
+<template name="crudUpdate">
+    <form class="{{name}}-update" data-id="{{_id}}">
+        {{> UI.contentBlock }}
+        {{> buttonSave }}
+    </form>
+</template>

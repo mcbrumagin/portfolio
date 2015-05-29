@@ -25,7 +25,7 @@ CrudCollection('components', ['title', 'content'], function (collection) {
         }
     }
 })
-*/
+
 
 Template.componentList.onCreated(function () {
     this.subscribe('components')
@@ -45,7 +45,7 @@ Template.componentList.events({
         Meteor.call('deletePost', this)
     }
 })
-*/
+*
 
 Template.componentPreview.helpers({
     previewStyle: function () {
@@ -64,12 +64,6 @@ Template.componentPreview.helpers({
 
 
 Template.newComponent.events({
-    "submit .create-component": e => {
-        e.preventDefault()
-        Meteor.call('newComponent', {
-            title: $('[name=title]').val(),
-            html: $('[name=html]').val(),
-            style: $('[name=css]').val()
-        })
-    }
+    
 })
+*/
