@@ -1,7 +1,11 @@
 <template name="resume">
+    {{#crudCreate name="resume"}}
+        {{{input "title"}}}
+        {{{textarea "content"}}}
+    {{/crudCreate}}
     {{#with resume}}
         <div class="details-inner">
-            {{content}}
+            {{{content}}}
         </div>
     {{/with}}
 </template>

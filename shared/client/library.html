@@ -33,13 +33,13 @@
 <template name="crudCreate">
     <form class="{{name}}-create">
         {{> UI.contentBlock }}
-        {{> buttonSave }}
+        {{{buttonSave}}}
     </form>
 </template>
 
 <template name="crudUpdate">
     <form class="{{name}}-update" data-id="{{_id}}">
         {{> UI.contentBlock }}
-        {{> buttonSave }}
+        {{{buttonSave}}}
     </form>
 </template>

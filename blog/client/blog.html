@@ -1,11 +1,11 @@
 <template name="blog">
     
     {{#crudCreate name="post"}}
-        {{> field name="title" }}
-        {{> textarea name="content" }}
+        {{{input "title"}}}
+        {{{textarea "content"}}}
     {{/crudCreate}}
     
-    {{> button name="expand" icon="expand" }}
+    {{{button name="expand" icon="expand"}}}
     <div class="new-post-preview next-mark">
         <span class="title"></span>
         <span class="date"></span>
@@ -15,8 +15,11 @@
     <ul class="post-list">
         {{#each post}}
             <li data-id="{{_id}}">
-                <button class="post-delete right">Delete</button>
-                <button class="open-post-update right">Edit</button>
+                {{{buttonDelete class="post-delete right"}}}
+                {{{button "Edit"
+                    icon="edit"
+                    class="open-post-update right"
+                }}}
                 <span class="title">{{title}}</span>
                 <span class="date">{{date}}</span>
                 <div class="preview content next-mark">{{{content}}}</div>
@@ -27,21 +30,9 @@
 </template>
 
 <template name="editPost">
-    <form class="post-update">
-        {{> buttonClose class="close right" }}
-        
-        {{> field
-            name="title"
-            label="Title"
-            val=title
-        }}
-        
-        {{> textarea
-            name="content"
-            label="Content"
-            val=content
-        }}
-        
-        {{> buttonSave }}
-    </form>
+    {{#crudUpdate name="post"}}
+        {{{button icon="close" class="close right"}}}
+        {{{input "title" label="Title" value=title}}}
+        {{{textarea "content" label="Content" value=content }}}
+    {{/crudUpdate}}
 </template>

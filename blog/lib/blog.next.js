@@ -1,20 +1,19 @@
 Meteor.CrudCollection('post', ['title', 'content'], {
         template: 'blog'
     }, function (collection) {
-    
-    return {
-        post: function () {
-            return collection.find({},{
-                sort: { dateModified: -1 }
-            }).fetch()
-        },
-        date: function () {
-            return this.dateModified.toLocaleString()
-        },
-        content: function () {
-            return NextMark.convertMarkdown(this.content)
+        return {
+            post: function () {
+                return collection.find({},{
+                    sort: { dateModified: -1 }
+                }).fetch()
+            },
+            date: function () {
+                return this.dateModified.toLocaleString()
+            },
+            content: function () {
+                return NextMark.convertMarkdown(this.content)
+            }
         }
-    }
 }, {
     "input [name=content]": function (e) {
         var form = $(e.currentTarget).closest('form')

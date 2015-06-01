@@ -11,10 +11,7 @@
     <ul id="components">
         {{#each component}}
             <li>
-                {{{button "Delete" 
-                    class="components-delete right"
-                    icon="close"
-                }}}
+                {{{buttonDelete class="components-delete right"}}}
                 <h3>{{title}}</h3>
                 <style>
                     {{previewStyle}}
