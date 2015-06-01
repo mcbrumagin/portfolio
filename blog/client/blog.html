@@ -36,3 +36,11 @@
         {{{textarea "content" label="Content" value=content }}}
     {{/crudUpdate}}
 </template>
+
+<template name="liveView">
+    <div class="live-view next-mark">
+        <span class="title">{{title}}</span>
+        <span class="date">{{date}}</span>
+        <div class="preview content">{{{content}}}</div>
+    </div>
+</template>

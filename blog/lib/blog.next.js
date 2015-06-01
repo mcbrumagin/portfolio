@@ -82,3 +82,95 @@ Meteor.CrudCollection('post', ['title', 'content'], {
         }
     }
 })
+
+/*
+Meteor.CrudCollection('liveview', ['title', 'content'], {
+        template: 'liveView'
+    }, function (collection) {
+        return {
+            liveview: function () {
+                return collection.find({},{
+                    sort: { dateModified: -1 }
+                }).fetch()
+            },
+            date: function () {
+                return this.dateModified.toLocaleString()
+            },
+            content: function () {
+                return NextMark.convertMarkdown(this.content)
+            }
+        }
+})
+*/
+
+var LiveViews = new Meteor.Collection('liveViews')
+
+if (Meteor.isClient) {
+    Template.liveView.helpers({
+        date: function () {
+            return this.date.toLocaleString()
+        },
+        content: function () {
+            return NextMark.convertMarkdown(this.content)
+        }
+    })
+}
+
+Router.route('/liveView/:id/:version?', {
+    name: 'liveView',
+    subscriptions: function () {
+        Meteor.log.trace({message: 'Id from url', id: this.params.id})
+        return Meteor.subscribe('liveView', this.params.id)
+    },
+    data: function () {
+        if (this.ready()) {
+            Meteor.log.trace({message: 'Id from url', id: this.params.id})
+            var liveView = LiveViews.findOne({ _id: this.params.id })
+            var length = liveView.versions.length
+            
+            Meteor.log.trace({length: length})
+            
+            if (this.params.version && this.params.version < length)
+                var version = liveView.versions[this.params.version]
+            else version = liveView.versions[length-1]
+            
+            version._id = liveView._id
+            Meteor.log.trace({version: version})
+            return version
+        }
+    }
+})
+
+if (Meteor.isServer) {
+    Meteor.publish('liveView', function (id) {
+        this._session.socket.on('close', Meteor.bindEnvironment(function () {
+            LiveViews.remove(id)
+        }))
+        return LiveViews.find({_id: id})
+    })
+    
+    Meteor.methods({
+        'newLiveView': function () {
+            // Versions are necessary for history?
+            return LiveViews.insert({
+                versions: [{
+                    title: '',
+                    content: '',
+                    date: new Date()
+                }],
+                started: new Date()
+            })
+        },
+        'updateLiveView': function (obj) {
+            return LiveViews.update({_id: obj.id}, {
+                $push: {
+                    versions: {
+                        title: obj.title,
+                        content: obj.content,
+                        date: new Date()
+                    }
+                }
+            })
+        }
+    })
+}
