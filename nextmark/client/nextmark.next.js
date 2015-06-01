@@ -71,10 +71,10 @@ window.NextMark = new function () {
                 doWhile(isChecklistItem, function () {
                     if (lines[i][1] === ')') {
                         var text = lines[i].slice(2)
-                        markup += `<li><input ${type} />${text}</li>`
+                        markup += `<li><label><input ${type} />${text}</label></li>`
                     } else {
                         text = lines[i].slice(3)
-                        markup += `<li><input ${type} checked />${text}</li>`
+                        markup += `<li><label><input ${type} checked />${text}</label></li>`
                     }
                 })
                 

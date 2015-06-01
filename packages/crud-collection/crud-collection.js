@@ -61,7 +61,18 @@ Meteor.CrudCollection = function (name, props, options, helpers, events) {
             else id = this._id
             
             Meteor.log.trace({deleting: id})
-            Meteor.call(destroy, this._id, callback)
+            var overlay = UI.components.overlay(
+                'Are you absolutely certain that you would like to delete this entry?',
+                {title: 'Are You Sure?', id: id})
+            
+            $(document.body).append(overlay)
+                .on('click', '#' + id + ' .close, #' + id + ' .cancel', function (e) {
+                    $('#' + id).parent().remove()
+                })
+                .on('click', '#' + id + ' .okay', function (e) {
+                    $('#' + id).parent().remove()
+                    Meteor.call(destroy, id, callback)
+                })
         }
         
         var bindFunctions = function (type, obj, main) {

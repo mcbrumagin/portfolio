@@ -197,3 +197,15 @@ button {
 .field label {
     text-transform: capitalize;
 }
+
+.overlay {
+    position: fixed;
+    top: 0;
+    bottom: auto;
+    left: 0;
+    right: 0;
+    margin: 4.0rem;
+    padding: 1.0rem 2.0rem;
+    border: 1px solid #aac;
+    box-shadow: 1rem 1rem 5rem 1rem rgba(255,255,255,0.25);
+}

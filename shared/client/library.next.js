@@ -1,26 +1,4 @@
-/*
-Template.button.helpers({
-    type: function () {
-        if (!this.type) return 'button'
-        else return this.type
-    },
-    icon: function () {
-        if (this.icon) return Resource('button icon', this.icon)
-        else return ''
-    },
-    text: function () {
-        if (this.text) return Resource('button text', this.text)
-        else if (!this.icon) return Resource('button default text')
-        else return ''
-    },
-    class: function () {
-        if (this.class) return this.class
-        else return Resource('button default class')
-    }
-})
-*/
 
-// TODO: Find a way to infer template based on this/helper?
 var error = {
     required: function (property) {
         Meteor.log.error(`${property} is required for helper.`)
@@ -73,6 +51,7 @@ UI.ViewModel.prototype = {
             && this.options[prop])
                 _[prop] = this.options[prop]
             if (propsToTake.indexOf(prop) > -1) {
+                Meteor.log.trace({prop: prop})
                 if (this.options[prop])
                     _[prop] = this.options[prop]
                 delete this.options[prop]
@@ -181,52 +160,104 @@ UI.draw = new function () {
             <textarea${_.attributes}>${_.value || ''}</textarea>
             ${_.help ? `<p class="help">${_.help}</p>` : ''}
         </div>`
+    
+    _.overlay = _ =>
+        `<div class="overlay">
+            <div ${_.attributes}>
+                ${_.close}
+                ${_.title ? `<h3>${_.title}</h3>` : ''}
+                ${_.message || ''}
+                ${_.ok}
+                ${_.cancel}
+            </div>
+        </div>`
 }
 
-UI.registerHelper('button', UI.util.helper(
-    UI.util.button({
-        type: 'button',
-        class: 'md'
-    }),
-    UI.draw.button
-))
+UI.components = new function () {
+    var _ = this
+    
+    _.button = UI.util.helper(
+        UI.util.button({
+            type: 'button',
+            class: 'md'
+        }),
+        UI.draw.button)
 
-UI.registerHelper('buttonSave', UI.util.helper(
-    UI.util.button({
-        type: 'submit',
-        icon: 'save',
-        text: 'Save',
-        class: 'md'
-    }),
-    UI.draw.button
-))
-
-UI.registerHelper('buttonEdit', UI.util.helper(
-    UI.util.button({
-        type: 'button',
-        icon: 'edit',
-        text: 'Edit',
-        class: 'md'
-    }),
-    UI.draw.button
-))
-
-UI.registerHelper('buttonDelete', UI.util.helper(
-    UI.util.button({
-        type: 'button',
-        icon: 'close',
-        text: 'Delete',
-        class: 'md'
-    }),
-    UI.draw.button
-))
-
-UI.registerHelper('input', UI.util.helper(
-    UI.util.input,
-    UI.draw.input
-))
-
-UI.registerHelper('textarea', UI.util.helper(
-    UI.util.textarea,
-    UI.draw.textarea
-))
+    _.buttonOkay = UI.util.helper(
+        UI.util.button({
+            text: 'Okay',
+            icon: 'check',
+            type: 'button',
+            class: 'md okay'
+        }),
+        UI.draw.button)
+        
+    _.buttonClose = UI.util.helper(
+        UI.util.button({
+            icon: 'close',
+            type: 'button',
+            class: 'md close right'
+        }),
+        UI.draw.button)
+    
+    _.buttonCancel = UI.util.helper(
+        UI.util.button({
+            text: 'Cancel',
+            icon: 'close',
+            type: 'button',
+            class: 'md cancel'
+        }),
+        UI.draw.button)
+    
+    _.buttonSave = UI.util.helper(
+        UI.util.button({
+            type: 'submit',
+            icon: 'save',
+            text: 'Save',
+            class: 'md'
+        }),
+        UI.draw.button)
+    
+    _.buttonEdit = UI.util.helper(
+        UI.util.button({
+            type: 'button',
+            icon: 'edit',
+            text: 'Edit',
+            class: 'md'
+        }),
+        UI.draw.button)
+    
+    _.buttonDelete = UI.util.helper(
+        UI.util.button({
+            type: 'button',
+            icon: 'trash',
+            text: 'Delete',
+            class: 'md'
+        }),
+        UI.draw.button)
+    
+    _.input = UI.util.helper(
+        UI.util.input,
+        UI.draw.input)
+    
+    _.textarea = UI.util.helper(
+        UI.util.textarea,
+        UI.draw.textarea)
+    
+    _.overlay = UI.util.helper(
+        function (options, message) {
+            if (!message) error.required('message')
+            var _ = UI.viewModel({message: message}, options)
+                .prepare(['message', 'title'])
+            _.close = UI.components.buttonClose()
+            _.cancel = UI.components.buttonCancel()
+            _.ok = UI.components.buttonOkay()
+            Meteor.log.trace({overlay: _})
+            return _
+        },
+        UI.draw.overlay)
+    
+    for (var helper in _) {
+        UI.registerHelper(helper, _[helper])
+    }
+}
