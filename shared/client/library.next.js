@@ -54,12 +54,14 @@ UI.ViewModel.prototype = {
         return attr
     },
     prepare: function (propsToTake, propsToCopy) {
+        /*
         Meteor.log.trace({
             prepare: {
                 propsToTake: propsToTake,
                 propsToCopy: propsToCopy
             }
         })
+        */
         propsToTake = propsToTake || []
         propsToCopy = propsToCopy || []
         var _ = {}
@@ -104,28 +106,41 @@ UI.util = new function () {
                 if (result.length) args = result
                 else args = [result]
             }
-            Meteor.log.trace(result)
+            //Meteor.log.trace(result)
             return result
         }
     }
     
-    _.formField = function (options, name) {
+    var formField = function (options, name, take, copy) {
+        /*
         Meteor.log.trace({
             formField: {
                 options: options,
-                name: name
+                name: name,
+                take: take,
+                copy: copy
             }
         })
+        */
         if (!name) error.required('name')
         return new UI.ViewModel({
             type: 'text',
             label: name[0].toUpperCase() + name.slice(1),
             name: name
-        }, options).prepare(['help', 'label'], ['name'])
+        }, options).prepare(take, copy)
+    }
+    
+    _.input = function (options, name) {
+        return formField(options, name, ['help', 'label'], ['name'])
+    }
+    
+    _.textarea = function (options, name) {
+        return formField(options, name, ['help', 'label', 'value'], ['name'])
     }
 
     _.button = function (defaults) {
         return function (options, text) {
+            /*
             Meteor.log.trace({
                 button: {
                     defaults: defaults,
@@ -133,11 +148,12 @@ UI.util = new function () {
                     text: text
                 }
             })
+            */
             if (options) options.text = text
             var _ = new UI.ViewModel(defaults, options)
                 .prepare(['icon', 'text'])
                 
-            Meteor.log.trace({button: _})
+            //Meteor.log.trace({button: _})
             return _
         }
     }
@@ -185,6 +201,16 @@ UI.registerHelper('buttonSave', UI.util.helper(
     UI.draw.button
 ))
 
+UI.registerHelper('buttonEdit', UI.util.helper(
+    UI.util.button({
+        type: 'button',
+        icon: 'edit',
+        text: 'Edit',
+        class: 'md'
+    }),
+    UI.draw.button
+))
+
 UI.registerHelper('buttonDelete', UI.util.helper(
     UI.util.button({
         type: 'button',
@@ -196,11 +222,11 @@ UI.registerHelper('buttonDelete', UI.util.helper(
 ))
 
 UI.registerHelper('input', UI.util.helper(
-    UI.util.formField,
+    UI.util.input,
     UI.draw.input
 ))
 
 UI.registerHelper('textarea', UI.util.helper(
-    UI.util.formField,
+    UI.util.textarea,
     UI.draw.textarea
 ))

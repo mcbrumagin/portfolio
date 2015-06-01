@@ -3,15 +3,19 @@
     <h2>HTML/CSS Design Components</h2>
     
     {{#crudCreate name="components"}}
-        {{> field name="title" }}
-        {{> textarea name="html" label="HTML" }}
-        {{> textarea name="style" label="CSS" }}
+        {{{input "title"}}}
+        {{{textarea "html" label="HTML"}}}
+        {{{textarea "style" label="CSS"}}}
     {{/crudCreate}}
     
     <ul id="components">
         {{#each component}}
-            <li>
+            <li data-id="{{_id}}">
                 {{{buttonDelete class="components-delete right"}}}
+                {{{button "Edit"
+                    icon="edit"
+                    class="open-components-update right"
+                }}}
                 <h3>{{title}}</h3>
                 <style>
                     {{previewStyle}}
@@ -26,4 +30,13 @@
             </li>
         {{/each}}
     </ul>
+</template>
+
+<template name="editComponent">
+    {{#crudUpdate}}
+        {{{button icon="close" class="close right"}}}
+        {{{input "title" value=title}}}
+        {{{textarea "html" label="HTML" value=html}}}
+        {{{textarea "style" label="CSS" value=style}}}
+    {{/crudUpdate}}
 </template>

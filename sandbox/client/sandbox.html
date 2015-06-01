@@ -3,74 +3,76 @@
         <h2>Meteor Template Examples</h2>
         {{> libraryExamples }}
     </section>
-    <section>
-        <h2>Meteor Crud Function</h2>
-        {{> test }}
-    </section>
 </template>
 
-<template name="testMostRecent">
-    {{#with mostRecent}}
-        {{#crudUpdate name="test" _id=_id}}
-            {{> field name="title" val=title }}
-            {{> field name="content" val=content }}
-        {{/crudUpdate}}
-    {{/with}}
-</template>
-
-<template name="test">
-    {{#crudCreate name="test"}}
-        {{> field name="title" }}
-        {{> field name="content" }}
-    {{/crudCreate}}
-    {{> testMostRecent}}
-    {{#each testList}}
-        <h3>{{title}}</h3>
-        <span>{{date}}</span>
-        <div>{{content}}</div>
-    {{/each}}
-</template>
-
-<template name="rawSpaceBars">
-    <pre class="right">&#123;&#123;&gt; {{this}} &#125;&#125;</pre>
+<template name="spacebarsHelper">
+    <pre>&#123;&#123;&#123;{{this}}&#125;&#125;&#125;</pre>
 </template>
 
 <template name="libraryExamples">
     <ul>
         <li>
-            {{> rawSpaceBars 'button' }}
-            {{> button }}
+            {{> spacebarsHelper 'button "Go"' }}
+            {{{button "Go"}}}
+            <div>{{button "Go"}}</div>
         </li>
         <li>
-            {{> rawSpaceBars 'button class="sm"' }}
-            {{> button class="sm" }}
+            {{> spacebarsHelper 'button icon="desktop"' }}
+            {{{button icon="desktop"}}}
+            <div>{{button icon="desktop"}}</div>
         </li>
         <li>
-            {{> rawSpaceBars 'button text="Smart"' }}
-            {{> button text="Smart" }}
+            {{> spacebarsHelper 'button "Cancel" class="sm"' }}
+            {{{button "Cancel" class="sm"}}}
+            <div>{{button "Cancel" class="sm"}}</div>
         </li>
         <li>
-            {{> rawSpaceBars 'buttonSave class="lg"' }}
-            {{> buttonSave class="lg" }}
+            {{> spacebarsHelper 'button "Smart" icon="bars"' }}
+            {{{button "Smart" icon="bars"}}}
+            <div>{{button "Smart" icon="bars"}}</div>
         </li>
         <li>
-            {{> rawSpaceBars 'button icon="edit"' }}
-            {{> button icon="edit" }}
+            {{> spacebarsHelper 'buttonDelete class="sm"' }}
+            {{{buttonDelete class="sm"}}}
+            <div>{{buttonDelete class="sm"}}</div>
         </li>
         <li>
-            {{> rawSpaceBars 'field name="test-input" label="Input" hint="Enter some text..."' }}
-            {{> field
-                name="test-input"
+            {{> spacebarsHelper 'buttonSave class="lg"' }}
+            {{{buttonSave class="lg"}}}
+            <div>{{buttonSave class="lg"}}</div>
+        </li>
+        <li>
+            {{> spacebarsHelper 'buttonEdit class="xl"' }}
+            {{{buttonEdit class="xl"}}}
+            <div>{{buttonEdit class="xl"}}</div>
+        </li>
+        <li>
+<pre>&#123;&#123;&#123;input "test-input"
+    label="Input"
+    placeholder="Enter some text..."
+&#125;&#125;&#125;</pre>
+            {{{input "test-input"
                 label="Input"
-                hint="Enter some text..." }}
+                placeholder="Enter some text..."
+            }}}
+            <div>{{input "test-input"
+                label="Input"
+                placeholder="Enter some text..."
+            }}</div>
         </li>
         <li>
-            {{> rawSpaceBars 'field name="test-textarea" tag="textarea" label="Textarea" hint="Enter some text..."' }}
-            {{> field
-                name="test-textarea"
-                tag="textarea"
+<pre>&#123;&#123;&#123;textarea "test-textarea"
+    label="Textarea"
+    placeholder="Enter some text..."
+&#125;&#125;&#125;</pre>
+            {{{textarea "test-textarea"
                 label="Textarea"
-                hint="Enter some text..." }}
+                placeholder="Enter some text..."
+            }}}
+            <div>{{textarea "test-textarea"
+                label="Textarea"
+                placeholder="Enter some text..."
+            }}</div>
         </li>
     </ul>
 </template>

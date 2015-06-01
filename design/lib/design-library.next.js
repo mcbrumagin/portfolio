@@ -18,4 +18,28 @@ Meteor.CrudCollection('components', ['title', 'html', 'style'], {
             return this.dateModified.toLocaleString()
         }
     }
+}, {
+    "click .open-components-update": function (e) {
+        e.preventDefault()
+        this.collection = 'components'
+        if ($(`[data-id=${this._id}] .components-update`).length === 0)
+            UI.renderWithData(Template.editComponent, this,
+                $(`[data-id=${this._id}]`)[0])
+    },
+    editComponent: {
+        "submit .components-update": function (e) {
+            e.preventDefault()
+            var _ = $(`[data-id=${this._id}] .components-update`)
+                .childHtml('[name=title]', '[name=html]', '[name=style]')
+                
+            _._id = this._id
+            Meteor.log.trace({componentsUpdate: _, this: this})
+            Meteor.call('componentsUpdate', _, function () {
+                $(e.currentTarget).remove()
+            })
+        },
+        "click .close": function (e) {
+            $(e.currentTarget).parent().remove()
+        }
+    }
 })

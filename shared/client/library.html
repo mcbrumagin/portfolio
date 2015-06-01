@@ -1,34 +1,3 @@
-<template name="button">
-    <button id="{{id}}" name="{{name}}" class="{{class}}" type="{{type}}">
-        {{{icon}}}
-        {{{text}}}
-    </button>
-</template>
-
-<template name="buttonSave">
-    {{> button icon="save" text="Save" type="submit" class=class }}
-</template>
-
-<template name="buttonClose">
-    {{> button icon="close" class=class }}
-</template>
-
-<template name="field">
-    <div class="field">
-        <label for="{{name}}">{{{label}}}</label>
-        {{{tag}}}
-        {{{help}}}
-    </div>
-</template>
-
-<template name="textarea">
-    {{> field tag="textarea"
-        name=name
-        label=label
-        help=help
-        val=val
-    }}
-</template>
 
 <template name="crudCreate">
     <form class="{{name}}-create">
@@ -38,7 +7,7 @@
 </template>
 
 <template name="crudUpdate">
-    <form class="{{name}}-update" data-id="{{_id}}">
+    <form class="{{this.collection}}-update" data-id="{{this._id}}">
         {{> UI.contentBlock }}
         {{{buttonSave}}}
     </form>

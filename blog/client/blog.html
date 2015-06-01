@@ -30,7 +30,7 @@
 </template>
 
 <template name="editPost">
-    {{#crudUpdate name="post"}}
+    {{#crudUpdate}}
         {{{button icon="close" class="close right"}}}
         {{{input "title" label="Title" value=title}}}
         {{{textarea "content" label="Content" value=content }}}

@@ -63,6 +63,7 @@ Meteor.CrudCollection('post', ['title', 'content'], {
     },
     "click .open-post-update": function (e) {
         e.preventDefault()
+        this.collection = 'post'
         if ($(`[data-id=${this._id}] .post-update`).length === 0)
             UI.renderWithData(Template.editPost, this,
                 $(`[data-id=${this._id}]`)[0])
