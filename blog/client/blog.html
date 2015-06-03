@@ -4,7 +4,10 @@
         {{{textarea "content"}}}
     {{/crudCreate}}
     
-    {{{button name="expand" icon="expand"}}}
+    {{{button name="expand"
+        icon="expand"
+        title="Expand in new window"
+    }}}
     <div class="new-post-preview next-mark">
         <span class="title"></span>
         <span class="date"></span>
@@ -14,11 +17,10 @@
     <ul class="post-list">
         {{#each post}}
             <li data-id="{{_id}}">
-                {{{buttonDelete class="post-delete right"}}}
-                {{{button "Edit"
-                    icon="edit"
-                    class="open-post-update right"
-                }}}
+                <div class="button-group stack corner">
+                    {{{buttonEdit class="open-post-update"}}}
+                    {{{buttonDelete class="post-delete"}}}
+                </div>
                 <span class="title">{{title}}</span>
                 <span class="date">{{date}}</span>
                 <div class="preview content next-mark">{{{content}}}</div>

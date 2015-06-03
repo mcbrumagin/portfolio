@@ -77,9 +77,13 @@ h5, h6 {
 
 ul {
     list-style-type: none;
+    padding: 2.0rem auto 3.0rem;
+}
+
+nav > ul,
+main > ul {
     box-shadow: 1px 1px 10px 1px rgba(200,200,255,0.25);
     background-color: $darker;
-    padding: 2.0rem auto 3.0rem;
 }
 
 li {
@@ -198,14 +202,43 @@ button {
     text-transform: capitalize;
 }
 
+.button-group {
+    padding: 0;
+    
+    &.corner {
+        margin-left: 2rem;
+        float: right;
+    }
+    
+    &:not(.corner) {
+        margin: 2rem;
+    }
+    
+    &.stack button {
+        display: block;
+        width: 85%;
+        margin: 1rem;
+    }
+    
+    &:not(.stack) button {
+        float: right;
+    }
+}
+
 .overlay {
     position: fixed;
     top: 0;
-    bottom: auto;
+    bottom: 0;
     left: 0;
     right: 0;
-    margin: 4.0rem;
-    padding: 1.0rem 2.0rem;
-    border: 1px solid #aac;
-    box-shadow: 1rem 1rem 5rem 1rem rgba(255,255,255,0.25);
+    background: none;
+    pointer-events: all;
+    
+    > div {
+        margin: 4.0rem;
+        padding: 1.0rem 2.0rem;
+        border: 1px solid #aac;
+        border-radius: .6rem;
+        box-shadow: 1.5rem 1.5rem 6rem 1.5rem rgba(255,255,255,.4);
+    }
 }

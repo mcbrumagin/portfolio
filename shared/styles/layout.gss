@@ -1,50 +1,15 @@
-/*
-form {
-    height: >= 800;
+
+main > ul {
     
-    textarea {
-        display: inline-block;
+    @if (window[width] > 400) {
+        li[width] == window[width] * 1/2;
     }
     
-    @h |-(.title-label)-(.title)-|;
-    
-    @if (^[width] < 400) {
-        textarea[width] <= ^[width] - 50;
-        textarea[center-x] == ^[center-x];
-    }
-    @else {
-        textarea[width] <= ^[width] / 2;
-        @h |-50-(.t1)-25-(.t2)-50-|;
+    @if (window[width] > 800) {
+        li[width] == window[width] * 1/4;
     }
     
-    button[width] >= 80;
-    button[center-x] == ^[center-x];
-}
-
-main {
-    position: relative;
-}
-
-.create-component[top] >= 150;
-#components[top] == .create-component[bottom];
-*/
-
-/*
-@media screen and (max-width: 200rem) {
-    main ul li {
-        width: 40%;
-        display: inline-block;
+    li {
+        width: == window[width] * 3/4;
     }
 }
-
-main ul {
-    
-}
-*/
-
-/*
-.create-post[width] == .new-post-preview[width];
-.create-post[width] + 100 >= window[width] / 2;
-.new-post-preview[width] + 100 >= window[width] / 2;
-.post-list[width] == window[width];
-*/

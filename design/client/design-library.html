@@ -11,11 +11,10 @@
     <ul id="components">
         {{#each component}}
             <li data-id="{{_id}}">
-                {{{buttonDelete class="components-delete right"}}}
-                {{{button "Edit"
-                    icon="edit"
-                    class="open-components-update right"
-                }}}
+                <div class="button-group stack corner">
+                    {{{buttonEdit class="open-components-update"}}}
+                    {{{buttonDelete class="components-delete"}}}
+                </div>
                 <h3>{{title}}</h3>
                 <style>
                     {{previewStyle}}

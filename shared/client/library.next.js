@@ -167,8 +167,10 @@ UI.draw = new function () {
                 ${_.close}
                 ${_.title ? `<h3>${_.title}</h3>` : ''}
                 ${_.message || ''}
-                ${_.ok}
-                ${_.cancel}
+                <div class="button-group">
+                    ${_.ok}
+                    ${_.cancel}
+                </div>
             </div>
         </div>`
 }
