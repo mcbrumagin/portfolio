@@ -11,30 +11,39 @@ Meteor.CrudCollection('post', ['title', 'content'], {
                 return this.dateModified.toLocaleString()
             },
             content: function () {
+                /*setTimeout(function () {
+                    $('pre code').each(function(i, block) {
+                        hljs.highlightBlock(block)
+                    })
+                }, 100)
+                */
                 return NextMark.convertMarkdown(this.content)
             }
         }
 }, {
     "input [name=content]": function (e) {
-        var form = $(e.currentTarget).closest('form')
-        var title = form.find('[name=title]').val()
-        var markdown = form.find('[name=content]').val()
-            
+        var _ = $(e.currentTarget)
+            .closest('form')
+            .getChildHtml({
+                name: '[name=title]',
+                content: '[name=content]'
+            })
+        
+        _.content = NextMark.convertMarkdown(_.content)
         if (!window.liveViewId) {
-            var date = new Date().toLocaleString()
-            var markup = NextMark.convertMarkdown(markdown)
+            _.date = new Date().toLocaleString()
             
-            $('.new-post-preview').childHtml({
-                '.date': date,
-                '.title': title,
-                '.content': markup
+            $('.new-post-preview').setChildHtml({
+                '.date': _.date,
+                '.title': _.title,
+                '.content': _.content
             })
             
         } else {
             Meteor.call('updateLiveView', {
                 id: window.liveViewId,
-                title: title,
-                content: markdown
+                title: _.title,
+                content: _.content
             }, function (err, res) {
                 if (err) {
                     Meteor.log.error({
@@ -129,14 +138,11 @@ Router.route('/liveView/:id/:version?', {
             var liveView = LiveViews.findOne({ _id: this.params.id })
             var length = liveView.versions.length
             
-            Meteor.log.trace({length: length})
-            
             if (this.params.version && this.params.version < length)
                 var version = liveView.versions[this.params.version]
             else version = liveView.versions[length-1]
             
             version._id = liveView._id
-            Meteor.log.trace({version: version})
             return version
         }
     }

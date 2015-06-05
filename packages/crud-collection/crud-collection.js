@@ -18,11 +18,13 @@ Meteor.CrudCollection = function (name, props, options, helpers, events) {
     Meteor.Collections[name] = new Meteor.Collection(name)
     
     var create = name + 'Create'
+    var read = name + 'Read'
     var update = name + 'Update'
     var destroy = name + 'Delete'
     
     var classes = {
         create: '.' + name + '-create',
+        read: '.' + name + '-read',
         update: '.' + name + '-update',
         destroy: '.' + name + '-delete'
     }
@@ -34,7 +36,6 @@ Meteor.CrudCollection = function (name, props, options, helpers, events) {
 
         var callback = function (err, res) {
             if (err) Meteor.log.error(err)
-            else Meteor.log.trace(res)
         }
         
         var mainEvents = {}
@@ -60,7 +61,6 @@ Meteor.CrudCollection = function (name, props, options, helpers, events) {
             if (!this._id) var id = Template.parentData()
             else id = this._id
             
-            Meteor.log.trace({deleting: id})
             var overlay = UI.components.overlay(
                 'Are you absolutely certain that you would like to delete this entry?',
                 {title: 'Are You Sure?', id: id})
@@ -104,6 +104,12 @@ Meteor.CrudCollection = function (name, props, options, helpers, events) {
             obj.dateCreated = date
             obj.dateModified = date
             return Meteor.Collections[name].insert(obj)
+        }
+        methods[read] = function (name, obj) {
+            Meteor.publish(name, function () {
+                // Authorize/validate/permissions/etc
+                return Meteor.Collections[name].find(obj)
+            })
         }
         methods[update] = function (obj) {
             obj.dateModified = new Date()

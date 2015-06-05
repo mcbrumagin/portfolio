@@ -73,3 +73,26 @@
         }
     }
 }
+
+[class*=hl] {
+    color: #c8e8ff;
+    margin: 0;
+    padding: 0;
+    
+    &[class*=keyword] {
+        color: #5fc;
+    }
+    
+    &[class*=declaration] {
+        color: #48f;
+    }
+    
+    &[class*=operator] {
+        color: #4f6;
+    }
+    
+    &[class*=comment] {
+        color: #555;
+    }
+    
+}

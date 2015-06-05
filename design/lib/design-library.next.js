@@ -33,7 +33,6 @@ Meteor.CrudCollection('components', ['title', 'html', 'style'], {
                 .childHtml('[name=title]', '[name=html]', '[name=style]')
                 
             _._id = this._id
-            Meteor.log.trace({componentsUpdate: _, this: this})
             Meteor.call('componentsUpdate', _, function () {
                 $(e.currentTarget).remove()
             })

@@ -2,7 +2,7 @@ Resource = function () {
     var hjson = Meteor.npmRequire('hjson')
     var resourceText = fs.readFileSync('../../../../../public/resources.hjson', 'UTF-8')
     var resourceObj = hjson.parse(resourceText)
-    Meteor.log.trace(resourceObj)
+    //Meteor.log.trace(resourceObj)
     return resourceObj
 }
 

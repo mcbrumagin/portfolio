@@ -51,7 +51,7 @@ UI.ViewModel.prototype = {
             && this.options[prop])
                 _[prop] = this.options[prop]
             if (propsToTake.indexOf(prop) > -1) {
-                Meteor.log.trace({prop: prop})
+                //Meteor.log.trace({prop: prop})
                 if (this.options[prop])
                     _[prop] = this.options[prop]
                 delete this.options[prop]
@@ -254,7 +254,7 @@ UI.components = new function () {
             _.close = UI.components.buttonClose()
             _.cancel = UI.components.buttonCancel()
             _.ok = UI.components.buttonOkay()
-            Meteor.log.trace({overlay: _})
+            //Meteor.log.trace({overlay: _})
             return _
         },
         UI.draw.overlay)

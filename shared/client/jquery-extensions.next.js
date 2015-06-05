@@ -1,15 +1,18 @@
-$.fn.childHtml = function (...args) {
+$.fn.setChildHtml = function (map) {
     var _ = $(this)
-    if (args.length === 0) {
-        var obj = args[0]
-        for (var prop in obj) {
-            _.find(prop).html(obj[prop])
-        }
-    } else {
-        var res = {}
-        for (prop of args) {
-            res[prop] = _.find(prop).val() || _.find(prop).html()
-        }
-        return res
+    for (var selector in map) {
+        // TODO: Input, set value
+        _.find(selector).html(map[selector])
     }
+}
+
+$.fn.getChildHtml = function (map) {
+    var _ = $(this)
+
+    var result = {}
+    for (var name in map) {
+        result[name] = _.find(map[name]).val()
+                    || _.find(map[name]).html()
+    }
+    return result
 }
