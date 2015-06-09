@@ -86,6 +86,17 @@ main > ul {
     background-color: $darker;
 }
 
+main > ul {
+    margin: 0;
+    padding: 3rem 1.5rem;
+    
+    > li {
+        margin: 0 0.1rem -1px;
+        padding: 1.5rem;
+        min-height: 12rem;
+    }
+}
+
 li {
     border-radius: 0.2rem;
     border: 0.1rem solid $light;

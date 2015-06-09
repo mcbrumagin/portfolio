@@ -11,12 +11,6 @@ Meteor.CrudCollection('post', ['title', 'content'], {
                 return this.dateModified.toLocaleString()
             },
             content: function () {
-                /*setTimeout(function () {
-                    $('pre code').each(function(i, block) {
-                        hljs.highlightBlock(block)
-                    })
-                }, 100)
-                */
                 return NextMark.convertMarkdown(this.content)
             }
         }
@@ -25,7 +19,7 @@ Meteor.CrudCollection('post', ['title', 'content'], {
         var _ = $(e.currentTarget)
             .closest('form')
             .getChildHtml({
-                name: '[name=title]',
+                title: '[name=title]',
                 content: '[name=content]'
             })
         

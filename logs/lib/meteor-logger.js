@@ -16,11 +16,12 @@ Meteor.startup(function () {
         }
     }
     
-    var log = function (type, obj) {
-        if (obj !== undefined) {
+    var log = function (type) {
+        var args = Array.prototype.slice.call(arguments, 1)
+        if (args !== undefined) {
             Logs.insert({
                 type: type,
-                content: obj,
+                content: (args.length > 1) ? args : args[0],
                 date: new Date()
             })
         }
@@ -43,4 +44,9 @@ Meteor.startup(function () {
         warn: extend(console.warn, log.curry('warning'), console),
         error: extend(console.error, log.curry('error'), console)
     }
+    
+    console.log = extend(console.log, log.curry('trace'), console)
+    console.info = extend(console.info, log.curry('info'), console)
+    console.warn = extend(console.warn, log.curry('warning'), console)
+    console.error = extend(console.error, log.curry('error'), console)
 })
