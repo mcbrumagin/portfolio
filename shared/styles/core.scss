@@ -75,9 +75,21 @@ h5, h6 {
     margin-left: 0.5rem;
 }
 
+header h1 {
+    margin-left: .5rem;
+}
+
 ul {
     list-style-type: none;
     padding: 2.0rem auto 3.0rem;
+}
+
+header {
+    z-index: 1;
+}
+
+nav {
+    z-index: 2;
 }
 
 nav > ul,
@@ -142,6 +154,10 @@ pre {
     max-width: 100%;
 }
 
+code {
+    font-size: 1.2rem;
+}
+
 input,
 textarea,
 select,
@@ -201,39 +217,115 @@ button {
 }
 
 .field {
-    margin: 0.25rem;
-    padding: 0.25rem;
+    margin: 2rem auto;
+    padding: 0;
+    
+    label {
+        text-transform: capitalize;
+    }
 }
+
 
 .hide {
     display: none !important;
 }
 
-.field label {
-    text-transform: capitalize;
-}
-
 .button-group {
-    padding: 0;
+    padding: .4rem;
+    background: none;
+    
+    button {
+        margin: 0;
+    }
     
     &.corner {
         margin-left: 2rem;
         float: right;
     }
     
-    &:not(.corner) {
-        margin: 2rem;
+    &:not([class*=corner]) {
+        margin: 1rem;
+        padding: .5rem;
+    }
+    
+    &.stack,
+    &.inline {
+        background: rgba(0, 0, 0, .9);
+        box-shadow: inset -1px 1px 10px rgba(120, 160, 200, 1);
+        border-radius: .4rem;
+    }
+    
+    &.inline:not([class*=corner]) {
+        display: inline-block;
     }
     
     &.stack button {
         display: block;
-        width: 85%;
-        margin: 1rem;
+        width: 100%;
+        
+        &:first-child ~ button {
+            margin-top: 0.5rem;
+        }
     }
     
-    &:not(.stack) button {
-        float: right;
+    &.inline button {
+        display: inline-block;
     }
+    
+    &.fixed {
+        position: fixed;
+    }
+    
+    &.fixed.corner {
+        top: 0;
+        right: 0;
+        padding: 0;
+        padding: 0.4rem;
+        margin: 0.6rem;
+    }
+    
+    &:not([class*=stack]):not([class*=fixed]):not([class*=inline]) button {
+        float: right;
+        margin-right: 0.5rem;
+    }
+    
+    @media all and (max-width: 500px) {
+        &.corner button i + .tx {
+            display: none;
+        }
+    }
+}
+
+header .button-group {
+    &.fixed {
+        background: none;
+        transition: height 0.5s, width 0.5s;
+        
+        @media all and (min-width: 800px) {
+            .open-nav {
+                display: none;
+            }
+        }
+        
+        z-index: 1;
+        
+        button {
+            z-index: 1;
+            margin: 0;
+        }
+    }
+}
+
+.main > .button-group {
+    margin: 0 .75rem .75rem;
+}
+
+.close.right {
+    margin: -1.1rem -1.1rem 1rem 1rem;
+}
+
+.overlay .close.right {
+    margin: -1.1rem -2.1rem 1rem 1rem;
 }
 
 .overlay {
@@ -241,19 +333,126 @@ button {
     top: 0;
     bottom: 0;
     left: 0;
-    right: 0;
+    right: 6rem;
     background: none;
     pointer-events: all;
+    z-index: 5;
     
-    > div {
-        margin: 4.0rem;
+    
+    > *:first-child {
+        background: $dark;
+        margin: 2.0rem;
         padding: 1.0rem 2.0rem;
         border: 1px solid #aac;
         border-radius: .6rem;
-        box-shadow: 1.5rem 1.5rem 6rem 1.5rem rgba(255,255,255,.4);
+        box-shadow: .4rem .4rem 6rem 2rem rgba(255,255,255,.4);
+    }
+    
+    button, label {
+        margin: 0.5rem auto;
+        max-width: 100%;
+    }
+    
+    input, textarea, select, label {
+        margin: 0.5rem auto;
+        width: 100%;
     }
 }
 
-code {
-    font-size: 1.2rem;
+.open-nav,
+.close-nav {
+    display: none;
+}
+
+@media all and (max-width: 800px) {
+    
+    .open-nav {
+        display: block;
+    }
+    
+    .close-nav {
+        display: block;
+    }
+    
+    .open-nav,
+    .close-nav,
+    .back-to-top {
+        margin: 1rem;
+    }
+    
+    .main-nav {
+        z-index: 10;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        visibility: hidden;
+        opacity: 0;
+        
+        transition: opacity 0.4s, visibility 0s 0.4s;
+        
+        &.open {
+            visibility: visible;
+            opacity: 1;
+            transition: opacity 0.4s;
+        }
+        
+        background-color: rgba(0,0,0,0.75);
+        > ul {
+            background: none;
+            padding-top: 5.5rem;
+            padding-bottom: 3em;
+            box-shadow: none;
+        }
+    }
+}
+
+.fade-out {
+    transition: opacity 0.4s, visibility 0s 0.4s;
+    visibility: visible;
+    opacity: 1;
+    
+    &.fade {
+        visibility: hidden;
+        opacity: 0;
+    }
+}
+
+.fade-in {
+    transition: opacity 0.4s;
+    visibility: hidden;
+    opacity: 0;
+    
+    &.fade {
+        visibility: visible;
+        opacity: 1;
+    }
+}
+
+.item-header {
+    span {
+        display: block;
+        margin: 0 1rem 0 0;
+    }
+}
+
+.clearfix:after { 
+   content: " ";
+   display: block; 
+   height: 0; 
+   clear: both;
+}
+
+.icon-input {
+    &:before {
+        position: relative;
+        left: 2.5rem;
+        margin-left: -1.65rem;
+    }
+    
+    input {
+        margin: 0;
+        display: inline-block;
+        padding-left: 3rem;
+    }
 }

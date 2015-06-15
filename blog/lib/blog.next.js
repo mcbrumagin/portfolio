@@ -1,9 +1,12 @@
+
+var timeout = null
 Meteor.CrudCollection('post', ['title', 'content'], {
         template: 'blog'
     }, function (collection) {
         return {
             post: function () {
-                return collection.find({},{
+                var query = Session.get('post-search') || {}
+                return collection.find(query, {
                     sort: { dateModified: -1 }
                 }).fetch()
             },
@@ -15,6 +18,24 @@ Meteor.CrudCollection('post', ['title', 'content'], {
             }
         }
 }, {
+    "input #post-search": function (e) {
+        clearTimeout(timeout)
+        timeout = setTimeout(() => {
+            var input = $(e.currentTarget).val()
+            var query = {}
+            if (input !== '') {
+                //TODO: Escape regex
+                var search = {$regex: input, $options: 'i'}
+                query = { $or: [
+                    {title: search},
+                    {content: search},
+                    {dateCreated: search},
+                    {dateModified: search}
+                ]}
+            }
+            Session.set('post-search', query)
+        }, 100)
+    },
     "input [name=content]": function (e) {
         var _ = $(e.currentTarget)
             .closest('form')
@@ -67,9 +88,41 @@ Meteor.CrudCollection('post', ['title', 'content'], {
     "click .open-post-update": function (e) {
         e.preventDefault()
         this.collection = 'post'
-        if ($(`[data-id=${this._id}] .post-update`).length === 0)
-            UI.renderWithData(Template.editPost, this,
-                $(`[data-id=${this._id}]`)[0])
+        if ($(`[data-id=${this._id}] .post-update`).length === 0) {
+            var selector = `[data-id=${this._id}]`
+            UI.insert(UI.renderWithData(Template.editPost, this),
+                $(selector)[0],
+                $(`${selector} .content`)[0])
+                //$(`${selector} *:first-child`)[0])
+        }
+            //UI.insert(UI.render(Template.bar), parentNode, beforeNode)
+            //UI.renderWithData(Template.editPost, this,
+            //    $(`[data-id=${this._id}]`)[0])
+    },
+    "click .js-new-create-post": function (e) {
+        //var overlay = UI.components.overlay(
+        //    '<form name="post-create">' + UI.components.+ '</form>',
+        //    {title: 'Are You Sure?', id: id})
+        //$(document).append(overlay)
+        
+        UI.render(Template.createPost, $(document.body)[0])
+    },
+    createPost: {
+        "submit .post-create": function (e) {
+            e.preventDefault()
+            var form = $(e.currentTarget)
+            var post = {}
+            post.title = form.find(`[name=title]`).val()
+            post.content = form.find(`[name=content]`).val()
+            console.log({post: post})
+            Meteor.call('postCreate', post, function () {
+                $(e.currentTarget).parent().remove()
+            })
+        },
+        "click .close": function (e) {
+            $(e.currentTarget)
+                .parent().parent().remove()
+        }
     },
     editPost: {
         "submit .post-update": function (e) {

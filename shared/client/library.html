@@ -1,14 +1,14 @@
 
 <template name="crudCreate">
-    <form class="{{name}}-create">
+    <form class="{{name}}-create clearfix">
         {{> UI.contentBlock }}
-        {{{buttonSave}}}
+        {{{buttonSave class="right"}}}
     </form>
 </template>
 
 <template name="crudUpdate">
-    <form class="{{this.collection}}-update" data-id="{{this._id}}">
+    <form class="{{this.collection}}-update clearfix" data-id="{{this._id}}">
         {{> UI.contentBlock }}
-        {{{buttonSave}}}
+        {{{buttonSave class="right"}}}
     </form>
 </template>

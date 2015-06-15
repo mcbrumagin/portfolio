@@ -4,7 +4,9 @@ Meteor.startup(function () {
 
 Template.logs.helpers({
     log: function () {
-        return Logs.find().fetch()
+        return Logs.find({},{
+            sort: { date: -1 }
+        }).fetch()
     }
 })
 

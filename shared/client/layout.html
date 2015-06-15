@@ -13,7 +13,7 @@
 <template name="layout">
     {{> navigation }}
     {{> banner }}
-    <main role="main">
+    <main role="main" class="main">
         {{> yield }}
     </main>
     {{> footer }}
@@ -21,7 +21,10 @@
 
 
 <template name="navigation">
-    <nav role="navigation">
+    <nav class="main-nav" role="navigation">
+        {{{button icon="close"
+            class="js-close-nav close-nav lg right"
+        }}}
         <ul>
             <li>
                 <a href="{{pathFor 'blog'}}">
@@ -72,7 +75,17 @@
 
 <template name="banner">
     <header role="banner">
-        {{{button icon="navicon" class="lg right"}}}
+        <div class="js-button-group-1 button-group fixed stack corner">
+            {{{button icon="navicon"
+                class="js-open-nav open-nav xl"
+            }}}
+            {{{button icon="ellipsis-v"
+                class="js-open-page-controls open-page-controls xl"
+            }}}
+            {{{button icon="angle-double-up"
+                class="js-back-to-top fade fade-out back-to-top xl"
+            }}}
+        </div>
         <h1>Matthew C. Brumagin</h1>
     </header>
 </template>
