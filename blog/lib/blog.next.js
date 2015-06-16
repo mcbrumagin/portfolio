@@ -17,73 +17,51 @@ Meteor.CrudCollection('post', ['title', 'content'], {
                 return NextMark.convertMarkdown(this.content)
             }
         }
-}, {
+    }, {
     "input #post-search": function (e) {
         clearTimeout(timeout)
         timeout = setTimeout(() => {
             var input = $(e.currentTarget).val()
-            var query = {}
-            if (input !== '') {
-                //TODO: Escape regex
-                var search = {$regex: input, $options: 'i'}
-                query = { $or: [
-                    {title: search},
-                    {content: search},
-                    {dateCreated: search},
-                    {dateModified: search}
-                ]}
+            if (input === '') var query = {}
+            else {
+                query = []
+                var filter = t => t !== ''
+                               && t !== '-'
+                
+                input.split(' ').filter(filter).forEach(word => {
+                    var text = new ActiveText(word).find('\\-.+')
+                    if (!$.isEmptyObject(text)) {
+                        var isNot = true
+                        word = word.replace('-', '')
+                    }
+                    
+                    var conditions = []
+                    var setConditions = word => {
+                        //TODO: Escape regex
+                        var search = {$regex: word, $options: 'i'}
+                        conditions = conditions.concat([
+                            {title: search},
+                            {content: search},
+                            {dateCreated: search},
+                            {dateModified: search}
+                        ])
+                    }
+                    
+                    var wordOptions = word.split('|')
+                    if (wordOptions.length > 1) {
+                        wordOptions.filter(filter)
+                            .forEach(setConditions)
+                    } else setConditions(word)
+                    
+                    var queryFrag
+                    if (isNot) queryFrag = { $nor: conditions }
+                    else queryFrag = { $or: conditions }
+                    query.push(queryFrag)
+                })
+                query = { $and: query }
             }
             Session.set('post-search', query)
-        }, 100)
-    },
-    "input [name=content]": function (e) {
-        var _ = $(e.currentTarget)
-            .closest('form')
-            .getChildHtml({
-                title: '[name=title]',
-                content: '[name=content]'
-            })
-        
-        _.content = NextMark.convertMarkdown(_.content)
-        if (!window.liveViewId) {
-            _.date = new Date().toLocaleString()
-            
-            $('.new-post-preview').setChildHtml({
-                '.date': _.date,
-                '.title': _.title,
-                '.content': _.content
-            })
-            
-        } else {
-            Meteor.call('updateLiveView', {
-                id: window.liveViewId,
-                title: _.title,
-                content: _.content
-            }, function (err, res) {
-                if (err) {
-                    Meteor.log.error({
-                        message: 'An error occurred when updating the LiveView',
-                        error: err
-                    })
-                } else Meteor.log.trace(res)
-            })
-        }
-    },
-    "click [name=expand]": function (e) {
-        Meteor.call('newLiveView', function (err, res) {
-            if (err) {
-                Meteor.log.error({
-                    message: 'An error occurred when creating a new LiveView',
-                    error: err
-                })
-            } else {
-                // TODO: store in session (so that the server can reset it on disconnect)
-                window.liveViewId = res
-                var endpoint = '/liveview/' + res
-                // TODO: New window, not tab
-                window.open(window.location.origin + endpoint)
-            }
-        })
+        }, 500)
     },
     "click .open-post-update": function (e) {
         e.preventDefault()
@@ -106,8 +84,64 @@ Meteor.CrudCollection('post', ['title', 'content'], {
         //$(document).append(overlay)
         
         UI.render(Template.createPost, $(document.body)[0])
+        $('form.post-create').parent().fadeIn()
     },
     createPost: {
+        "input [name=content]": function (e) {
+            if (!window.isNotFirst) {
+                window.isNotFirst = true
+                $('.new-post-preview').fadeIn()
+                $('button[name=expand]').after(250).fadeIn().go()
+            }
+            
+            var _ = $(e.currentTarget)
+                .closest('form')
+                .getChildHtml({
+                    title: '[name=title]',
+                    content: '[name=content]'
+                })
+            
+            _.content = NextMark.convertMarkdown(_.content)
+            if (!window.liveViewId) {
+                _.date = new Date().toLocaleString()
+                
+                $('.new-post-preview').setChildHtml({
+                    '.date': _.date,
+                    '.title': _.title,
+                    '.content': _.content
+                })
+                
+            } else {
+                Meteor.call('updateLiveView', {
+                    id: window.liveViewId,
+                    title: _.title,
+                    content: _.content
+                }, function (err, res) {
+                    if (err) {
+                        Meteor.log.error({
+                            message: 'An error occurred when updating the LiveView',
+                            error: err
+                        })
+                    } else Meteor.log.trace(res)
+                })
+            }
+        },
+        "click [name=expand]": function (e) {
+            Meteor.call('newLiveView', function (err, res) {
+                if (err) {
+                    Meteor.log.error({
+                        message: 'An error occurred when creating a new LiveView',
+                        error: err
+                    })
+                } else {
+                    // TODO: store in session (so that the server can reset it on disconnect)
+                    window.liveViewId = res
+                    var endpoint = '/liveview/' + res
+                    // TODO: New window, not tab
+                    window.open(window.location.origin + endpoint)
+                }
+            })
+        },
         "submit .post-create": function (e) {
             e.preventDefault()
             var form = $(e.currentTarget)
@@ -116,12 +150,17 @@ Meteor.CrudCollection('post', ['title', 'content'], {
             post.content = form.find(`[name=content]`).val()
             console.log({post: post})
             Meteor.call('postCreate', post, function () {
-                $(e.currentTarget).parent().remove()
+                window.isNotFirst = false
+                $(e.currentTarget).parent()
+                    .fadeOut()
+                    .after(500).remove().go()
             })
         },
         "click .close": function (e) {
-            $(e.currentTarget)
-                .parent().parent().remove()
+            window.isNotFirst = false
+            $(e.currentTarget).parent().parent()
+                .fadeOut()
+                .after(500).remove().go()
         }
     },
     editPost: {
