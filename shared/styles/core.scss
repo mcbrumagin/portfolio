@@ -320,12 +320,8 @@ header .button-group {
     margin: 0 .75rem .75rem;
 }
 
-.close.right {
+button.right {
     margin: -1.1rem -1.1rem 1rem 1rem;
-}
-
-.overlay .close.right {
-    margin: -1.1rem -2.1rem 1rem 1rem;
 }
 
 .overlay {
@@ -342,10 +338,28 @@ header .button-group {
     > *:first-child {
         background: $dark;
         margin: 2.0rem;
-        padding: 1.0rem 2.0rem;
+        padding: 0;
         border: 1px solid #aac;
         border-radius: .6rem;
         box-shadow: .4rem .4rem 6rem 2rem rgba(255,255,255,.4);
+        
+        > button.right,
+        > .button-group.inline button {
+            margin: 0;
+            margin-left: .4rem;
+        }
+        
+        > .button-group.inline {
+            width: 100%;
+            background-color: #08041b;
+            cursor: move;
+        }
+        
+        form {
+            box-shadow: none;
+            background: none;
+            margin: 0 1rem;
+        }
     }
     
     button, label {

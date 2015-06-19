@@ -71,20 +71,15 @@ Meteor.CrudCollection('post', ['title', 'content'], {
             UI.insert(UI.renderWithData(Template.editPost, this),
                 $(selector)[0],
                 $(`${selector} .content`)[0])
-                //$(`${selector} *:first-child`)[0])
         }
-            //UI.insert(UI.render(Template.bar), parentNode, beforeNode)
             //UI.renderWithData(Template.editPost, this,
             //    $(`[data-id=${this._id}]`)[0])
     },
     "click .js-new-create-post": function (e) {
-        //var overlay = UI.components.overlay(
-        //    '<form name="post-create">' + UI.components.+ '</form>',
-        //    {title: 'Are You Sure?', id: id})
-        //$(document).append(overlay)
-        
         UI.render(Template.createPost, $(document.body)[0])
-        $('form.post-create').parent().fadeIn()
+        $('form.post-create').closest('.overlay').fadeIn()
+            .find('> *:first-child')
+            .after(10).draggable().go()
     },
     createPost: {
         "input [name=content]": function (e) {
@@ -158,9 +153,57 @@ Meteor.CrudCollection('post', ['title', 'content'], {
         },
         "click .close": function (e) {
             window.isNotFirst = false
-            $(e.currentTarget).parent().parent()
+            $(e.currentTarget)
+                .closest('.overlay')
                 .fadeOut()
                 .after(500).remove().go()
+        },
+        "click .maximize": function (e) {
+            var pane = $(e.currentTarget).closest('.overlay > *:first-child')
+            pane.data('position', {
+                    top: pane.css('top'),
+                    left: pane.css('left'),
+                    right: pane.css('right'),
+                    bottom: pane.css('bottom')
+                })
+                .css({
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    height: 'auto',
+                    width: 'auto',
+                    overflow: 'auto'
+                })
+        },
+        "click .restore-down": function (e) {
+            var pane = $(e.currentTarget).closest('.overlay > *:first-child')
+            var position = pane.data('position')
+            pane.css({
+                position: 'relative',
+                top: position.top,
+                left: position.left,
+                right: position.right,
+                bottom: position.bottom,
+                height: 'auto',
+                width: 'auto',
+                overflow: 'auto'
+            })
+        },
+        "click .minimize": function (e) {
+            $(e.currentTarget)
+                .closest('.overlay > *:first-child')
+                .css({
+                    position: 'absolute',
+                    top: 'auto',
+                    left: 0,
+                    right: 'auto',
+                    bottom: 0,
+                    height: '3.6rem',
+                    width: '25rem',
+                    overflow: 'hidden'
+                })
         }
     },
     editPost: {
