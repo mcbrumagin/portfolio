@@ -7,7 +7,6 @@
 meteor-platform
 insecure
 iron:router
-harmony
 fourseven:scss
 natestrauser:font-awesome
 neonaleon:gss
@@ -17,3 +16,4 @@ meteorhacks:npm
 npm-container
 peerlibrary:fs
 crud-collection
+mquandalle:harmony

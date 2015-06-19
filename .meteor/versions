@@ -10,11 +10,9 @@ crud-collection@1.0.0
 ddp@1.1.0
 deps@1.0.7
 ejson@1.0.6
-exports@0.0.0
 fastclick@1.0.3
 fourseven:scss@2.1.1
 geojson-utils@1.0.3
-harmony@1.2.1
 html-tools@1.0.4
 htmljs@1.0.4
 http@1.1.0
@@ -41,6 +39,8 @@ minifiers@1.1.5
 minimongo@1.0.8
 mobile-status-bar@1.0.3
 mongo@1.1.0
+mquandalle:harmony@1.3.79
+mrt:exports@1.0.0
 natestrauser:font-awesome@4.3.0
 neonaleon:gss@2.0.0
 npm-container@1.0.0
