@@ -64,15 +64,24 @@ Meteor.CrudCollection = function (name, props, options, helpers, events) {
             var overlay = UI.components.overlay(
                 'Are you absolutely certain that you would like to delete this entry?',
                 {title: 'Are You Sure?', id: id})
-            
+
             $(document.body).append(overlay)
                 .on('click', '#' + id + ' .close, #' + id + ' .cancel', function (e) {
-                    $('#' + id).parent().remove()
+                    $('#' + id).closest('.overlay')
+                        .fadeOut()
+                        .after(500).remove().go()
                 })
                 .on('click', '#' + id + ' .okay', function (e) {
-                    $('#' + id).parent().remove()
+                    $('#' + id).closest('.overlay')
+                        .fadeOut()
+                        .after(500).remove().go()
                     Meteor.call(destroy, id, callback)
                 })
+
+            $('.overlay')
+                .last()
+                .show()
+                .fadeIn()
         }
         
         var bindFunctions = function (type, obj, main) {

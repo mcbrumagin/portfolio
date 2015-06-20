@@ -4,6 +4,7 @@ $.fn.setChildHtml = function (map) {
         // TODO: Input, set value
         _.find(selector).html(map[selector])
     }
+    return _
 }
 
 $.fn.getChildHtml = function (map) {
@@ -121,7 +122,7 @@ $.fn.draggable = function() {
         
         elemPosition = {
             top: top === 'auto' ? 0 : Number(top.replace('px', '')),
-            left: left === 'auto' ? 0 : Number(left.replace('px', '')),
+            left: left === 'auto' ? 0 : Number(left.replace('px', ''))
         }
 
         mouseStart = {
@@ -139,28 +140,28 @@ $.fn.draggable = function() {
 
     var frame
     _.off('drag dragend').on('drag dragend', function(e) {
+
         window.cancelAnimationFrame(frame)
-        frame = window.requestAnimationFrame(function() {
+        frame = window.requestAnimationFrame(() => {
+
             var orig = e.originalEvent
-            
-            console.log({
-                clientX: orig.clientX,
-                clientY: orig.clientY
-            })
-            
-            if (orig.clientY !== 0
-            || orig.clientX !== 0) {
+
+            if (orig.clientY !== 0 || orig.clientX !== 0) {
             
                 mouse = {
                     top: orig.clientY,
                     left: orig.clientX
                 }
+
+                var getPosition = prop =>
+                    elemPosition[prop]
+                    + mouse[prop]
+                    - mouseStart[prop]
     
-                var top = elemPosition.top + mouse.top - mouseStart.top
-                var left = elemPosition.left + mouse.left - mouseStart.left
-    
-                _.css('top', top)
-                _.css('left', left)
+                _.css({
+                    top: getPosition('top'),
+                    left: getPosition('left')
+                })
             }
         })
     })

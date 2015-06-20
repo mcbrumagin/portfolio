@@ -9,464 +9,473 @@ $darker: #080810;
 $darkest: #000000;
 
 * {
-    color: $lighter;
-    
-    margin: 0;
-    padding: 0;
-    border: none;
-    box-sizing: border-box;
+  color: $lighter;
+
+  margin: 0;
+  padding: 0;
+  border: none;
+  box-sizing: border-box;
 }
 
 html, body {
-    width: 100%;
+  width: 100%;
 }
 
 h1, h2, h3, h4, h5, h6,
 a, li, label, input,
 textarea, select, button {
-    margin: 0.5rem;
-    padding: 0.5rem;
+  margin: 0.5rem;
+  padding: 0.5rem;
 }
 
 div, ul, li, pre, section, form {
-    margin: 0 auto 2.0rem;
-    padding: 1.0rem;
+  margin: 0 auto 2.0rem;
+  padding: 1.0rem;
 }
 
 main > div,
 main > section {
-    padding: 0;
+  padding: 0;
 }
 
 html, body, div {
-    background-color: $dark;
+  background-color: $dark;
 }
 
 form {
-    box-shadow: 1px 1px 10px 1px rgba(200,200,255,0.5);
-    background: none;
-    margin: 2.0rem 1.5rem 3.0rem;
-    padding: 1.0rem;
+  box-shadow: 1px 1px 10px 1px rgba(200, 200, 255, 0.5);
+  background: none;
+  margin: 2.0rem 1.5rem 3.0rem;
+  padding: 1.0rem;
 }
 
 html {
-    font-size: 62.5%;
-    font-family: 'Inconsolata';
+  font-size: 62.5%;
+  font-family: 'Inconsolata';
 }
 
 body {
-    font-size: 1.4rem;
+  font-size: 1.4rem;
 }
 
 main {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 h1, h2 {
-    margin-left: 2rem;
+  margin-left: 2rem;
 }
 
 h3, h4 {
-    margin-left: 1rem;
+  margin-left: 1rem;
 }
 
 h5, h6 {
-    margin-left: 0.5rem;
+  margin-left: 0.5rem;
 }
 
 header h1 {
-    margin-left: .5rem;
+  margin-left: .5rem;
 }
 
 ul {
-    list-style-type: none;
-    padding: 2.0rem auto 3.0rem;
+  list-style-type: none;
+  padding: 2.0rem auto 3.0rem;
 }
 
 header {
-    z-index: 1;
+  z-index: 1;
 }
 
 nav {
-    z-index: 2;
+  z-index: 2;
 }
 
 nav > ul,
 main > ul {
-    box-shadow: 1px 1px 10px 1px rgba(200,200,255,0.25);
-    background-color: $darker;
+  box-shadow: 1px 1px 10px 1px rgba(200, 200, 255, 0.25);
+  background-color: $darker;
 }
 
 main > ul {
-    margin: 0;
-    padding: 3rem 1.5rem;
-    
-    > li {
-        margin: 0 0.1rem -1px;
-        padding: 1.5rem;
-        min-height: 12rem;
-    }
+  margin: 0;
+  padding: 3rem 1.5rem;
+
+  > li {
+    margin: 0 0.1rem -1px;
+    padding: 1.5rem;
+    min-height: 12rem;
+  }
 }
 
 li {
-    border-radius: 0.2rem;
-    border: 0.1rem solid $light;
-    box-shadow: 1px 1px 10px 1px rgba(200,200,255,0.5);
-    margin: 2.5rem 2.0rem;
-    background-color: $dark;
+  border-radius: 0.2rem;
+  border: 0.1rem solid $light;
+  box-shadow: 1px 1px 10px 1px rgba(200, 200, 255, 0.5);
+  margin: 2.5rem 2.0rem;
+  background-color: $dark;
 }
 
 footer {
-    margin: 1rem auto;
-    text-align: center;
+  margin: 1rem auto;
+  text-align: center;
 }
 
 nav ul {
-    text-align: center;
-    
-    a { text-decoration: none; }
-    
-    li {
-        display: inline-block;
-        margin: 0.5rem;
-        cursor: pointer;
-        
-        transition: box-shadow 0.3s;
-        i, .tx { transition: color 0.3s; }
-        
-        &:hover, &:active, &:focus {
-            box-shadow: 1px 1px 15px 3px rgba(255,255,255,0.5);
-            i, .tx { color: $lightest; }
-        }
+  text-align: center;
+
+  a {
+    text-decoration: none;
+  }
+
+  li {
+    display: inline-block;
+    margin: 0.5rem;
+    cursor: pointer;
+
+    transition: box-shadow 0.3s;
+    i, .tx {
+      transition: color 0.3s;
     }
+
+    &:hover, &:active, &:focus {
+      box-shadow: 1px 1px 15px 3px rgba(255, 255, 255, 0.5);
+      i, .tx {
+        color: $lightest;
+      }
+    }
+  }
 }
 
 label {
-    margin: 1.5rem;
-    padding: 0.5rem 1.0rem;
+  margin: 1.5rem;
+  padding: 0.5rem 1.0rem;
 }
 
 pre {
-    box-shadow: 1px 1px 15px 3px rgba(255,255,255,0.25);
-    background-color: $darkest;
-    overflow-x: auto;
-    max-width: 100%;
+  box-shadow: 1px 1px 15px 3px rgba(255, 255, 255, 0.25);
+  background-color: $darkest;
+  overflow-x: auto;
+  max-width: 100%;
 }
 
 code {
-    font-size: 1.2rem;
+  font-size: 1.2rem;
 }
 
 input,
 textarea,
 select,
 button {
-    background-color: $darker;
-    color: $lightest;
-    
-    margin: 1.5rem;
-    padding: 0.5rem 1.0rem;
-    
-    border: 0.1rem solid rgba(200,200,255,0.5);
-    box-shadow: 1px 1px 10px 1px rgba(200,200,255,0.25);
-    transition: box-shadow 0.2s, border-color 0.2s;
-    border-radius: 0.3rem;
-    
-    outline: none;
-    display: block;
-    
-    &:hover {
-        box-shadow: 1px 1px 10px 2px rgba(200,200,255,0.5);
-    }
-    
-    &:active,
-    &:focus {
-        border: 1px solid rgba(200,200,255,0.75);
-        box-shadow: 1px 1px 5px 2px rgba(200,200,255,0.5);
-    }
+  background-color: $darker;
+  color: $lightest;
+
+  margin: 1.5rem;
+  padding: 0.5rem 1.0rem;
+
+  border: 0.1rem solid rgba(200, 200, 255, 0.5);
+  box-shadow: 1px 1px 10px 1px rgba(200, 200, 255, 0.25);
+  transition: box-shadow 0.2s, border-color 0.2s;
+  border-radius: 0.3rem;
+
+  outline: none;
+  display: block;
+
+  &:hover {
+    box-shadow: 1px 1px 10px 2px rgba(200, 200, 255, 0.5);
+  }
+
+  &:active,
+  &:focus {
+    border: 1px solid rgba(200, 200, 255, 0.75);
+    box-shadow: 1px 1px 5px 2px rgba(200, 200, 255, 0.5);
+  }
 }
 
 .right {
-    float: right;
+  float: right;
 }
 
 .left {
-    float: left;
+  float: left;
 }
 
 button {
-    display: inline-block;
-    cursor: pointer;
-    
-    i + .tx {
-        margin-left: 0.5rem;
-    }
+  display: inline-block;
+  cursor: pointer;
+
+  i + .tx {
+    margin-left: 0.5rem;
+  }
 }
 
 .sm {
-    font-size: 80%;
+  font-size: 80%;
 }
 
 .lg {
-    font-size: 110%;
+  font-size: 110%;
 }
 
 .xl {
-    font-size: 120%;
+  font-size: 120%;
 }
 
 .field {
-    margin: 2rem auto;
-    padding: 0;
-    
-    label {
-        text-transform: capitalize;
-    }
+  margin: 2rem auto;
+  padding: 0;
+
+  label {
+    text-transform: capitalize;
+  }
 }
 
-
 .hide {
-    display: none !important;
+  display: none !important;
 }
 
 .button-group {
-    padding: .4rem;
-    background: none;
-    
-    button {
-        margin: 0;
+  padding: .4rem;
+  background: none;
+
+  button {
+    margin: 0;
+  }
+
+  &.corner {
+    margin-left: 2rem;
+    float: right;
+  }
+
+  &:not([class*=corner]) {
+    margin: 1rem;
+    padding: .5rem;
+  }
+
+  &.stack,
+  &.inline {
+    background: rgba(0, 0, 0, .9);
+    //box-shadow: inset -1px 1px 10px rgba(120, 160, 200, 1);
+    box-shadow: 0 0 2px #78a0c8;
+    border-radius: .4rem;
+  }
+
+  &.inline:not([class*=corner]) {
+    display: inline-block;
+  }
+
+  &.stack button {
+    display: block;
+    width: 100%;
+
+    &:first-child ~ button {
+      margin-top: 0.5rem;
     }
-    
-    &.corner {
-        margin-left: 2rem;
-        float: right;
+  }
+
+  &.inline button {
+    display: inline-block;
+  }
+
+  &.fixed {
+    position: fixed;
+  }
+
+  &.fixed.corner {
+    top: 0;
+    right: 0;
+    padding: 0;
+    padding: 0.4rem;
+    margin: 0.6rem;
+  }
+
+  &:not([class*=stack]):not([class*=fixed]):not([class*=inline]) button {
+    float: right;
+    margin-right: 0.5rem;
+  }
+
+  @media all and (max-width: 500px) {
+    &.corner button i + .tx {
+      display: none;
     }
-    
-    &:not([class*=corner]) {
-        margin: 1rem;
-        padding: .5rem;
-    }
-    
-    &.stack,
-    &.inline {
-        background: rgba(0, 0, 0, .9);
-        box-shadow: inset -1px 1px 10px rgba(120, 160, 200, 1);
-        border-radius: .4rem;
-    }
-    
-    &.inline:not([class*=corner]) {
-        display: inline-block;
-    }
-    
-    &.stack button {
-        display: block;
-        width: 100%;
-        
-        &:first-child ~ button {
-            margin-top: 0.5rem;
-        }
-    }
-    
-    &.inline button {
-        display: inline-block;
-    }
-    
-    &.fixed {
-        position: fixed;
-    }
-    
-    &.fixed.corner {
-        top: 0;
-        right: 0;
-        padding: 0;
-        padding: 0.4rem;
-        margin: 0.6rem;
-    }
-    
-    &:not([class*=stack]):not([class*=fixed]):not([class*=inline]) button {
-        float: right;
-        margin-right: 0.5rem;
-    }
-    
-    @media all and (max-width: 500px) {
-        &.corner button i + .tx {
-            display: none;
-        }
-    }
+  }
 }
 
 header .button-group {
-    &.fixed {
-        background: none;
-        transition: height 0.5s, width 0.5s;
-        
-        @media all and (min-width: 800px) {
-            .open-nav {
-                display: none;
-            }
-        }
-        
-        z-index: 1;
-        
-        button {
-            z-index: 1;
-            margin: 0;
-        }
+  &.fixed {
+    background: none;
+    transition: height 0.5s, width 0.5s;
+
+    @media all and (min-width: 800px) {
+      .open-nav {
+        display: none;
+      }
     }
+
+    z-index: 1;
+
+    button {
+      z-index: 1;
+      margin: 0;
+    }
+  }
 }
 
 .main > .button-group {
-    margin: 0 .75rem .75rem;
-}
-
-button.right {
-    margin: -1.1rem -1.1rem 1rem 1rem;
+  margin: 0 .75rem .75rem;
 }
 
 .overlay {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 6rem;
-    background: none;
-    pointer-events: all;
-    z-index: 5;
-    
-    
-    > *:first-child {
-        background: $dark;
-        margin: 2.0rem;
-        padding: 0;
-        border: 1px solid #aac;
-        border-radius: .6rem;
-        box-shadow: .4rem .4rem 6rem 2rem rgba(255,255,255,.4);
-        
-        > button.right,
-        > .button-group.inline button {
-            margin: 0;
-            margin-left: .4rem;
-        }
-        
-        > .button-group.inline {
-            width: 100%;
-            background-color: #08041b;
-            cursor: move;
-        }
-        
-        form {
-            box-shadow: none;
-            background: none;
-            margin: 0 1rem;
-        }
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: none;
+  z-index: 5;
+  //background-color: rgba(0,0,0,0.25);
+  //box-shadow: 0 0 8rem 6rem rgba(0,0,0,.25);
+  pointer-events: none;
+
+  > {
+    * {
+      pointer-events: all;
     }
-    
-    button, label {
-        margin: 0.5rem auto;
-        max-width: 100%;
-    }
-    
-    input, textarea, select, label {
-        margin: 0.5rem auto;
+
+    *:first-child {
+      background: $dark;
+      margin: 2.0rem;
+      padding: 0;
+      border: 1px solid #aac;
+      border-radius: .6rem;
+      box-shadow: .4rem .4rem 4rem .4rem #000;
+
+      > button.right,
+      > .button-group.inline button {
+        margin: 0;
+        margin-left: .4rem;
+      }
+
+      > .button-group.inline {
         width: 100%;
+        background-color: #08041b;
+        cursor: move;
+      }
+
+      form {
+        box-shadow: none;
+        background: none;
+        margin: 0 1rem;
+      }
     }
+  }
+
+  button, label {
+    margin: 0.5rem auto;
+    max-width: 100%;
+  }
+
+  input, textarea, select, label {
+    margin: 0.5rem auto;
+    width: 100%;
+  }
 }
 
 .open-nav,
 .close-nav {
-    display: none;
+  display: none;
 }
 
 @media all and (max-width: 800px) {
-    
-    .open-nav {
-        display: block;
+
+  .open-nav {
+    display: block;
+  }
+
+  .close-nav {
+    display: block;
+  }
+
+  .open-nav,
+  .close-nav,
+  .back-to-top {
+    margin: 1rem;
+  }
+
+  .main-nav {
+    z-index: 10;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    visibility: hidden;
+    opacity: 0;
+
+    transition: opacity 0.4s, visibility 0s 0.4s;
+
+    &.open {
+      visibility: visible;
+      opacity: 1;
+      transition: opacity 0.4s;
     }
-    
-    .close-nav {
-        display: block;
+
+    background-color: rgba(0, 0, 0, 0.75);
+    > ul {
+      background: none;
+      padding-top: 5.5rem;
+      padding-bottom: 3em;
+      box-shadow: none;
     }
-    
-    .open-nav,
-    .close-nav,
-    .back-to-top {
-        margin: 1rem;
-    }
-    
-    .main-nav {
-        z-index: 10;
-        width: 100%;
-        position: fixed;
-        top: 0;
-        bottom: 0;
-        visibility: hidden;
-        opacity: 0;
-        
-        transition: opacity 0.4s, visibility 0s 0.4s;
-        
-        &.open {
-            visibility: visible;
-            opacity: 1;
-            transition: opacity 0.4s;
-        }
-        
-        background-color: rgba(0,0,0,0.75);
-        > ul {
-            background: none;
-            padding-top: 5.5rem;
-            padding-bottom: 3em;
-            box-shadow: none;
-        }
-    }
+  }
 }
 
 .fade-out {
-    transition: opacity 0.4s, visibility 0s 0.4s;
-    visibility: visible;
-    opacity: 1;
-    
-    &.fade {
-        visibility: hidden;
-        opacity: 0;
-    }
+  transition: opacity 0.4s, visibility 0s 0.4s;
+  visibility: visible;
+  opacity: 1;
+
+  &.fade {
+    visibility: hidden;
+    opacity: 0;
+  }
 }
 
 .fade-in {
-    transition: opacity 0.4s;
-    visibility: hidden;
-    opacity: 0;
-    
-    &.fade {
-        visibility: visible;
-        opacity: 1;
-    }
+  transition: opacity 0.4s;
+  visibility: hidden;
+  opacity: 0;
+
+  &.fade {
+    visibility: visible;
+    opacity: 1;
+  }
 }
 
 .item-header {
-    span {
-        display: block;
-        margin: 0 1rem 0 0;
-    }
+  span {
+    display: block;
+    margin: 0 1rem 0 0;
+  }
 }
 
-.clearfix:after { 
-   content: " ";
-   display: block; 
-   height: 0; 
-   clear: both;
+.clearfix:after {
+  content: " ";
+  display: block;
+  height: 0;
+  clear: both;
 }
 
 .icon-input {
-    &:before {
-        position: relative;
-        left: 2.5rem;
-        margin-left: -1.65rem;
-    }
-    
-    input {
-        margin: 0;
-        display: inline-block;
-        padding-left: 3rem;
-    }
+  &:before {
+    position: relative;
+    left: 2.5rem;
+    margin-left: -1.65rem;
+  }
+
+  input {
+    margin: 0;
+    display: inline-block;
+    padding-left: 3rem;
+  }
 }

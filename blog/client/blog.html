@@ -7,7 +7,7 @@
             <input id="post-search" type="text" placeholder="Search...">
         </i>
     </div>
-    
+
     <ul class="post-list">
         {{#each post}}
             <li data-id="{{_id}}">
@@ -29,6 +29,7 @@
     <div class="overlay fade fade-out">
         <div class="overlay-inner">
             <div class="button-group inline corner">
+                <span class="title"></span>
                 {{{button icon="close" title="Close" class="close right"}}}
                 {{{button icon="plus-square" title="Maximize" class="maximize right"}}}
                 {{{button icon="minus-square" title="Restore Down" class="restore-down right"}}}
@@ -56,6 +57,37 @@
 </template>
 
 <template name="editPost">
+    <div class="overlay fade fade-out">
+        <div class="overlay-inner">
+            <div class="button-group inline corner">
+                <span class="title"></span>
+                {{{button icon="close" title="Close" class="close right"}}}
+                {{{button icon="plus-square" title="Maximize" class="maximize right"}}}
+                {{{button icon="minus-square" title="Restore Down" class="restore-down right"}}}
+                {{{button icon="minus" title="Minimize" class="minimize right"}}}
+            </div>
+            {{#crudUpdate}}
+                {{{input "title" label="Title" value=title}}}
+                {{{textarea "content" label="Content" value=content }}}
+                <div class="new-post-preview next-mark fade fade-out">
+                    {{{button "Expand"
+                    name="expand"
+                    icon="expand"
+                    class="md fade fade-out right"
+                    title="Expand in new window"
+                    }}}
+                    <div class="item-header">
+                        <span class="title"></span>
+                        <span class="date"></span>
+                    </div>
+                    <div class="preview content"></div>
+                </div>
+            {{/crudUpdate}}
+        </div>
+    </div>
+</template>
+
+<template name="editPostOld"> <!-- TODO REMOVE -->
     {{#crudUpdate}}
         {{{button icon="close" class="close right"}}}
         {{{input "title" label="Title" value=title}}}

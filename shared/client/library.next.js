@@ -162,11 +162,11 @@ UI.draw = new function () {
         </div>`
     
     _.overlay = _ =>
-        `<div class="overlay">
+        `<div class="overlay fade fade-out" style="display: none">
             <div ${_.attributes}>
                 ${_.close}
                 ${_.title ? `<h3>${_.title}</h3>` : ''}
-                ${_.message || ''}
+                ${_.message ? `<div>${_.message}</div>` : ''}
                 <div class="button-group clearfix">
                     ${_.ok}
                     ${_.cancel}
