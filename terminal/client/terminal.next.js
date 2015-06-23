@@ -107,8 +107,6 @@ var styles = {
     }
 }
 
-
-
 $.fn.terminal = function (options) {
     var jq = jQuery
     var $ = new Jsml.Writer()
