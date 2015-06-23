@@ -294,11 +294,15 @@ Meteor.CrudCollection('post', ['title', 'content'], {
     editPost: {
         "submit .post-update": function (e) {
             e.preventDefault()
-            var form = $(`[data-id=${this._id}] .edit-post`)
-            this.title = form.find(`[name=title]`).val()
-            this.content = form.find(`[name=content]`).val()
-            Meteor.call('updatePost', this, function () {
-                $(e.currentTarget).remove()
+
+            var $form = $(e.currentTarget)
+            this.title = $form.find(`[name=title]`).val()
+            this.content = $form.find(`[name=content]`).val()
+
+            console.log({post: this})
+
+            Meteor.call('postUpdate', this, () => {
+                $form.closest('.overlay').remove()
             })
         },
         "input [name=content],[name=title]": helpers.preview,
