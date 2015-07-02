@@ -307,11 +307,13 @@ header .button-group {
     background: none;
     transition: height 0.5s, width 0.5s;
 
+    /*
     @media all and (min-width: 800px) {
       .open-nav {
         display: none;
       }
     }
+    */
 
     z-index: 1;
 
@@ -323,7 +325,7 @@ header .button-group {
 }
 
 .main > .button-group {
-  margin: 0 .75rem .75rem;
+  margin: .75rem;
 }
 
 .overlay {
@@ -390,9 +392,37 @@ header .button-group {
   }
 }
 
+/*
 .open-nav,
 .close-nav {
   display: none;
+}
+*/
+
+.main-nav {
+  z-index: 10;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  visibility: hidden;
+  opacity: 0;
+
+  transition: opacity 0.4s, visibility 0s 0.4s;
+
+  &.open {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.4s;
+  }
+
+  background-color: rgba(0, 0, 0, 0.75);
+  > ul {
+    background: none;
+    padding-top: 5.5rem;
+    padding-bottom: 3em;
+    box-shadow: none;
+  }
 }
 
 @media all and (max-width: 800px) {
@@ -409,32 +439,6 @@ header .button-group {
   .close-nav,
   .back-to-top {
     margin: 1rem;
-  }
-
-  .main-nav {
-    z-index: 10;
-    width: 100%;
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    visibility: hidden;
-    opacity: 0;
-
-    transition: opacity 0.4s, visibility 0s 0.4s;
-
-    &.open {
-      visibility: visible;
-      opacity: 1;
-      transition: opacity 0.4s;
-    }
-
-    background-color: rgba(0, 0, 0, 0.75);
-    > ul {
-      background: none;
-      padding-top: 5.5rem;
-      padding-bottom: 3em;
-      box-shadow: none;
-    }
   }
 }
 
@@ -569,4 +573,9 @@ nav ul li a .tx {
   text-align: center;
   display: block;
   width: 100%;
+}
+
+// TODO: Style
+h1 {
+  display: none !important;
 }

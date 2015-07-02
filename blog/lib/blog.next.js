@@ -281,7 +281,7 @@ Meteor.CrudCollection('post', ['title', 'content'], {
             console.log({post: post})
             Meteor.call('postCreate', post, function () {
                 window.isNotFirst = false
-                $(e.currentTarget).parent()
+                $(e.currentTarget).closest('.overlay')
                     .fadeOut()
                     .after(500).remove().go()
             })
