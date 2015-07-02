@@ -35,23 +35,25 @@
                 {{{button icon="minus-square" title="Restore Down" class="restore-down right"}}}
                 {{{button icon="minus" title="Minimize" class="minimize right"}}}
             </div>
-            {{#crudCreate name="post"}}
-                {{{input "title"}}}
-                {{{textarea "content"}}}
-                <div class="new-post-preview next-mark fade fade-out">
-                    {{{button "Expand"
-                        name="expand"
-                        icon="expand"
-                        class="md fade fade-out right"
-                        title="Expand in new window"
-                    }}}
-                    <div class="item-header">
-                        <span class="title"></span>
-                        <span class="date"></span>
+            <div class="overlay-content">
+                {{#crudCreate name="post"}}
+                    {{{input "title"}}}
+                    {{{textarea "content"}}}
+                    <div class="new-post-preview next-mark fade fade-out">
+                        {{{button "Expand"
+                            name="expand"
+                            icon="expand"
+                            class="md fade fade-out right"
+                            title="Expand in new window"
+                        }}}
+                        <div class="item-header">
+                            <span class="title"></span>
+                            <span class="date"></span>
+                        </div>
+                        <div class="preview content"></div>
                     </div>
-                    <div class="preview content"></div>
-                </div>
-            {{/crudCreate}}
+                {{/crudCreate}}
+            </div>
         </div>
     </div>
 </template>
@@ -66,23 +68,25 @@
                 {{{button icon="minus-square" title="Restore Down" class="restore-down right"}}}
                 {{{button icon="minus" title="Minimize" class="minimize right"}}}
             </div>
-            {{#crudUpdate}}
-                {{{input "title" label="Title" value=title}}}
-                {{{textarea "content" label="Content" value=content }}}
-                <div class="new-post-preview next-mark fade fade-out">
-                    {{{button "Expand"
-                    name="expand"
-                    icon="expand"
-                    class="md fade fade-out right"
-                    title="Expand in new window"
-                    }}}
-                    <div class="item-header">
-                        <span class="title"></span>
-                        <span class="date"></span>
+            <div class="overlay-content">
+                {{#crudUpdate}}
+                    {{{input "title" label="Title" value=title}}}
+                    {{{textarea "content" label="Content" value=content }}}
+                    <div class="new-post-preview next-mark fade fade-out">
+                        {{{button "Expand"
+                        name="expand"
+                        icon="expand"
+                        class="md fade fade-out right"
+                        title="Expand in new window"
+                        }}}
+                        <div class="item-header">
+                            <span class="title"></span>
+                            <span class="date"></span>
+                        </div>
+                        <div class="preview content"></div>
                     </div>
-                    <div class="preview content"></div>
-                </div>
-            {{/crudUpdate}}
+                {{/crudUpdate}}
+            </div>
         </div>
     </div>
 </template>

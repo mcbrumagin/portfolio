@@ -25,7 +25,8 @@ var util = {
             clearTimeout(timeout)
             timeout = setTimeout(() => fn(...$), time)
         }
-    }
+    },
+    escapeHtml: () => {}
 }
 
 var helpers = {
@@ -49,11 +50,12 @@ var helpers = {
                 content: '[name=content]'
             })
 
+        _.content = _.content.replace(/\?/g, '&quest;')
         _.content = NextMark.convertMarkdown(_.content)
         _.date = new Date().toLocaleString()
 
         $(e.currentTarget)
-            .closest('.overlay-inner')
+            .closest('.overlay')
             .setChildHtml({
                 '.date': _.date,
                 '.title': _.title,
