@@ -91,5 +91,12 @@ Meteor.EditableSection = function (name) {
         }
 
         Template.editSection.events(events)
+        Temaplte.toggleEditableSections.events({
+            "click": function () {
+                // TODO:
+                // Switch template dynamically using session
+                // verify permission
+            }
+        })
     }
 }
