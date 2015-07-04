@@ -1,3 +1,8 @@
+Meteor.EditableSections = function () {
+    var args = Array.prototype.slice.call(arguments)
+    for (var i = 0; i < args.length; i++)
+        Meteor.EditableSection(args[i])
+}
 var editableSections = new Meteor.Collection('editableSection')
 Meteor.EditableSection = function (name) {
 
@@ -33,9 +38,9 @@ Meteor.EditableSection = function (name) {
 
         Template.editableSection.helpers({
             section: function () {
-                var data = editableSections.find({name: this.toString()}).fetch()[0]
-                if (data) data.name = this
-                console.log({data: data})
+                var name = this.toString()
+                var data = editableSections.find({name: name}).fetch()[0]
+                if (data) data.name = name
                 return data
             },
             editOrNewButton: function () {
@@ -44,6 +49,9 @@ Meteor.EditableSection = function (name) {
                         class: 'edit md'
                     })
                 }
+            },
+            content: function () {
+                return NextMark.convertMarkdown(this.content)
             }
         })
 
@@ -70,7 +78,6 @@ Meteor.EditableSection = function (name) {
                 title: '[name=title]',
                 content: '[name=content]'
             })
-            console.log(update, data)
             Meteor.call(update, data, function () {
                 $(e.currentTarget).closest('.overlay')
                     .fadeOut()
