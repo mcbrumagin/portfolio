@@ -1,0 +1,12 @@
+<template name="editSection">
+    <form id="update-{{name}}" class="edit-section">
+        {{{buttonClose}}}
+        {{{input 'title'
+            value=title
+        }}}
+        {{{textarea 'content'
+            value=content
+        }}}
+        {{{buttonSave}}}
+    </form>
+</template>
