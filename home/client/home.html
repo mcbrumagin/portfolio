@@ -1,0 +1,45 @@
+<template name="home">
+    {{> editableSection 'about'}}
+</template>
+
+<template name="editableSection">
+    {{{editOrNewButton}}}
+    {{#with section}}
+        <section id="{{name}}">
+            <h2 class="title">{{title}}</h2>
+            <div class="content">{{{content}}}</div>
+        </section>
+    {{/with}}
+</template>
+
+<template name="editSection">
+    <form id="update-{{name}}" class="edit-section">
+        {{{input 'title'
+            value=title
+        }}}
+        {{{textarea 'content'
+            value=content
+        }}}
+        {{{buttonSave}}}
+    </form>
+</template>
+
+<template name="about">
+    
+    {{{buttonEdit class="edit"}}}
+    {{#with about}}
+        <section>
+            <h2>{{title}}</h2>
+            {{{content}}}
+        </section>
+    {{/with}}
+</template>
+
+<template name="projects">
+    {{#with projectList}}
+        <section>
+            <h2>{{title}}</h2>
+            {{{content}}}
+        </section>
+    {{/with}}
+</template>

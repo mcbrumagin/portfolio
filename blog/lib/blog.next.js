@@ -50,7 +50,7 @@ var helpers = {
                 content: '[name=content]'
             })
 
-        _.content = _.content.replace(/\?/g, '&quest;')
+        //_.content = _.content.replace(/\?/g, '&quest;')
         _.content = NextMark.convertMarkdown(_.content)
         _.date = new Date().toLocaleString()
 

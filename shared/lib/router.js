@@ -8,8 +8,8 @@ Router.configure({
 })
 
 Router.route('/', {
-  name: 'resume',
-  template: 'resume'
+  name: 'home',
+  template: 'home'
 })
 
 Router.route('/blog')
