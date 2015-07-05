@@ -37,44 +37,46 @@
                     <span class="tx">Blog</span>
                 </a>
             </li>
-            <!--
-            <li>
-                <a href="#Tutorials">
-                    <i class="fa fa-graduation-cap"></i>
-                    <span class="tx">Tutorials</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{pathFor 'resume'}}">
-                    <i class="fa fa-book"></i>
-                    <span class="tx">Resume</span>
-                </a>
-            </li>
-            <li>
-                <a href="#Samples">
-                    <i class="fa fa-code"></i>
-                    <span class="tx">Samples</span>
-                </a>
-            </li>
-            -->
-            <li>
-                <a href="{{pathFor 'designLibrary'}}">
-                    <i class="fa fa-photo"></i>
-                    <span class="tx">Design</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{pathFor 'sandbox'}}">
-                    <i class="fa fa-inbox"></i>
-                    <span class="tx">Sandbox</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{pathFor 'logs'}}">
-                    <i class="fa fa-list-alt"></i>
-                    <span class="tx">Logs</span>
-                </a>
-            </li>
+            {{#if isSuperUser}}
+                <li>
+                    <a href="{{pathFor 'designLibrary'}}">
+                        <i class="fa fa-photo"></i>
+                        <span class="tx">Design</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{pathFor 'sandbox'}}">
+                        <i class="fa fa-inbox"></i>
+                        <span class="tx">Sandbox</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{pathFor 'logs'}}">
+                        <i class="fa fa-list-alt"></i>
+                        <span class="tx">Logs</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#Tutorials">
+                        <i class="fa fa-graduation-cap"></i>
+                        <span class="tx">Tutorials</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#Samples">
+                        <i class="fa fa-code"></i>
+                        <span class="tx">Samples</span>
+                    </a>
+                </li>
+                <!--
+                <li>
+                    <a href="{{pathFor 'resume'}}">
+                        <i class="fa fa-book"></i>
+                        <span class="tx">Resume</span>
+                    </a>
+                </li>
+                -->
+            {{/if}}
             <li class="wide list-break">
                 <!-- TODO: Remove after configuring on mcbrumagin.com-->
                 {{> loginButtons}}

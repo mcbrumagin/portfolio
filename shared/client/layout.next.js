@@ -3,6 +3,9 @@ Template.footer.helpers({
     year: () => new Date().getFullYear()
 })
 
+Template.navigation.helpers({
+    isSuperUser: Meteor.isSuperUser
+})
 Template.navigation.events({
     "click li a": e => {
         var addr = $(e.currentTarget)
@@ -23,6 +26,7 @@ Template.navigation.events({
         })
     },
     "click #my-logout": e => {
+        console.log('Logging out...')
         Meteor.logout()
         $('#my-logout').fadeOut().after(500).hide().go()
         $('#my-login').after(500).show().fadeIn().go()

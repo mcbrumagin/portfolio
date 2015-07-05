@@ -35,7 +35,9 @@ Meteor.checkSuperUser = function () {
                 Session.set('isSuperUser', result)
             })
         } else {
-            return isSuperUser(name)
+            var isSuper = isSuperUser(name)
+            Session.set('isSuperUser', isSuper)
+            return isSuper
         }
     } else {
         Session.set('isSuperUser', false)
