@@ -122,6 +122,10 @@ footer {
   text-align: center;
 }
 
+.main-nav {
+  overflow-y: auto;
+}
+
 nav ul {
   text-align: center;
 
@@ -575,7 +579,23 @@ nav ul li a .tx {
   width: 100%;
 }
 
+nav .wide .normal,
+nav li.wide ul li .tx {
+  font-size: inherit;
+  line-height: inherit;
+}
+
 // TODO: Style
 h1 {
   display: none !important;
+}
+
+.list-break {
+  //visibility: hidden;
+  overflow: hidden;
+}
+
+.wide.list-break {
+  height: 0;
+  margin: 0;
 }

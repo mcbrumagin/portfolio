@@ -4,16 +4,28 @@ Template.footer.helpers({
 })
 
 Template.navigation.events({
-    "click li": e => {
+    "click li a": e => {
         var addr = $(e.currentTarget)
-            .find('a')
             .attr('href')
-            
-        Router.go(addr)
+        if (addr) Router.go(addr)
     },
     "click .js-close-nav": e => {
         $('.main-nav').removeClass('open')
         $('header .button-group').fadeIn()
+    },
+    "click [class*=my-login]": e => {
+        var type = $(e.currentTarget)[0].className.slice(9)
+        type = type[0].toUpperCase() + type.slice(1)
+        Meteor[`loginWith${type}`](function () {
+            Meteor.isSuperUser()
+            $('#my-login').fadeOut().after(500).hide().go()
+            $('#my-logout').after(500).show().fadeIn().go()
+        })
+    },
+    "click #my-logout": e => {
+        Meteor.logout()
+        $('#my-logout').fadeOut().after(500).hide().go()
+        $('#my-login').after(500).show().fadeIn().go()
     }
 })
 
@@ -29,54 +41,9 @@ Template.banner.events({
 
 Template.banner.onRendered(() => {
     
-    var repaintHud = () => {
-        //var anchoringGroup;
-        
-        /*
-        var buttonGroups = [];
-        var isGroupFound = true
-        
-        var i = 0
-        while (isGroupFound) {
-            i++
-            
-            var buttonGroup = $(`[class*=js-button-group-${i}]`)
-            console.log(buttonGroup.html())
-            if (buttonGroup.length) {
-                
-                if (buttonGroups.length > 0) {
-                    var lastGroup = buttonGroups[buttonGroups.length - 1]
-                    var top = lastGroup.css('top').replace('px','')
-                    var height = lastGroup.css('height').replace('px','')
-                    var position = Number(top) + Number(height) + 5
-                    console.log(position)
-                    buttonGroup.css('top', position + 'px')
-                }
-                
-                buttonGroups.push(buttonGroup)
-                //if (i === 1) {
-                //    anchoringGroup = buttonGroup
-                //    console.log(anchoringGroup.html())
-                //} else {
-                //    var buttons = buttonGroup.children()
-                //    anchoringGroup.append(buttons)
-                //    buttonGroup.remove()
-                //}
-            } else isGroupFound = false
-            
-        }
-        */
-    }
-    
-    setTimeout(repaintHud, 550)
-    
-    
     // TODO: jQuery Cache
     var _ = $('.js-back-to-top')
     var showOrHideBackToTop = () => {
-        
-        setTimeout(repaintHud, 1000)
-        
         if (_.hasClass('fade-in')
         && window.scrollY < window.innerHeight) {
                 
@@ -122,13 +89,12 @@ Template.banner.onRendered(() => {
             showOrHideBackToTop()
         }, 500)
     }
-    
+
     $(window)
         .scroll(renderBackToTop)
         .resize(() => {
             reset()
             renderBackToTop()
-            repaintHud()
         })
-    
+
 })

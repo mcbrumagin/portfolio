@@ -18,3 +18,10 @@ peerlibrary:fs
 crud-collection
 mquandalle:harmony
 editable-sections
+benjaminrh:user-session
+accounts-ui
+accounts-facebook
+accounts-google
+accounts-twitter
+accounts-github
+pauli:accounts-linkedin
