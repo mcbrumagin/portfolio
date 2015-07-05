@@ -1,8 +1,10 @@
 <template name="blog">
     <div class="js-button-group-2 button-group inline">
-        {{{button "New" icon="plus"
-            class="js-new-create-post"
-        }}}
+        {{#if isSuperUser}}
+            {{{button "New" icon="plus"
+                class="js-new-create-post"
+            }}}
+        {{/if}}
         <i class="icon-input fa fa-search">
             <input id="post-search" type="text" placeholder="Search...">
         </i>
@@ -12,8 +14,10 @@
         {{#each post}}
             <li data-id="{{_id}}">
                 <div class="button-group inline corner">
-                    {{{buttonEdit class="open-post-update"}}}
-                    {{{buttonDelete class="post-delete"}}}
+                    {{#if isSuperUser}}
+                        {{{buttonEdit class="open-post-update"}}}
+                        {{{buttonDelete class="post-delete"}}}
+                    {{/if}}
                 </div>
                 <div class="item-header">
                     <span class="title">{{title}}</span>

@@ -388,6 +388,10 @@ header .button-group {
     margin: 0.5rem auto;
     width: 100%;
   }
+
+  input[type=checkbox] {
+    width: auto;
+  }
   
   .overlay-content {
     // TODO: REMOVE/TWEAK

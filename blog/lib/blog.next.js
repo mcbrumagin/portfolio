@@ -63,8 +63,10 @@ var util = {
     },
     escapeHtml: () => {}
 }
+Meteor.app = {util: util}
 
 var helpers = {
+    isSuperUser: Meteor.isSuperUser,
     date: function () {
         return this.dateModified.toLocaleString()
     },
@@ -79,7 +81,7 @@ var helpers = {
         }
 
         var _ = $(e.currentTarget)
-            .closest('form')
+            .find('form')
             .getChildHtml({
                 title: '[name=title]',
                 content: '[name=content]'
@@ -90,7 +92,6 @@ var helpers = {
         _.date = new Date().toLocaleString()
 
         $(e.currentTarget)
-            .closest('.overlay')
             .setChildHtml({
                 '.date': _.date,
                 '.title': _.title,
@@ -223,7 +224,8 @@ Meteor.CrudCollection('post', ['title', 'content'], {
             }).fetch()
         },
         date: helpers.date,
-        content: helpers.content
+        content: helpers.content,
+        isSuperUser: helpers.isSuperUser
     }
 }, {
     "input #post-search": function (e) {
@@ -313,7 +315,6 @@ Meteor.CrudCollection('post', ['title', 'content'], {
             var post = {}
             post.title = form.find(`[name=title]`).val()
             post.content = form.find(`[name=content]`).val()
-            console.log({post: post})
             Meteor.call('postCreate', post, function () {
                 window.isNotFirst = false
                 $(e.currentTarget).closest('.overlay')
@@ -335,8 +336,6 @@ Meteor.CrudCollection('post', ['title', 'content'], {
             var $form = $(e.currentTarget)
             this.title = $form.find(`[name=title]`).val()
             this.content = $form.find(`[name=content]`).val()
-
-            console.log({post: this})
 
             Meteor.call('postUpdate', this, () => {
                 $form.closest('.overlay').remove()
