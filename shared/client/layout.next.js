@@ -26,7 +26,6 @@ Template.navigation.events({
         })
     },
     "click #my-logout": e => {
-        console.log('Logging out...')
         Meteor.logout()
         $('#my-logout').fadeOut().after(500).hide().go()
         $('#my-login').after(500).show().fadeIn().go()

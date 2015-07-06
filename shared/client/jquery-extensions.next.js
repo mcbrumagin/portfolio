@@ -130,12 +130,12 @@ $.fn.draggable = function() {
             left: orig.clientX
         }
 
-        console.log({
+        /*console.log({
             dragstart: {
                 clientX: orig.clientX,
                 clientY: orig.clientY
             }
-        })
+        })*/
     })
 
     var frame

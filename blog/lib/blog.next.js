@@ -57,8 +57,20 @@ var util = {
     debounce: (time, fn) => {
         var timeout
         return (...$) => {
-            clearTimeout(timeout)
-            timeout = setTimeout(() => fn(...$), time)
+            Meteor.clearTimeout(timeout)
+            timeout = Meteor.setTimeout(() => fn(...$), time)
+        }
+    },
+    applyAllAfter: (time, fn) => {
+        var timeout
+        var args = []
+        return (...$) => {
+            args = args.concat($)
+            Meteor.clearTimeout(timeout)
+            timeout = Meteor.setTimeout(() => {
+                fn(...args)
+                args = []
+            }, time)
         }
     },
     escapeHtml: () => {}
