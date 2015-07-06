@@ -22,6 +22,8 @@ Logger = new function () {
         var args = Array.prototype.slice.call(arguments, 1)
         args = (args.length > 1) ? args : args[0]
 
+        // Call the regular old console
+        // TODO: Spoof console line numbers
         copy[type](args)
 
         if (args !== undefined) {
@@ -33,7 +35,6 @@ Logger = new function () {
         }
     }
 
-    // TODO: Add to util
     var eachWord = function (words, fn) {
         words.split(' ').forEach(fn)
     }
@@ -60,8 +61,15 @@ Logger = new function () {
             }
     }
 
+    // Switch between copy or custom for console and this
     _.enable = setMethods.curry(true)
     _.disable = setMethods
+
+    _.clear = function () {
+        var logs = Logs.find().fetch()
+        for (var i = 0; i < logs.length; i++)
+            Logs.remove(logs[i]._id)
+    }
 
     // Initialize logging methods on this Logger
     setMethods()
