@@ -75,6 +75,11 @@ Logger = new function () {
     }
 
     _.clear = function () {
+        if (window
+         && window.console
+         && window.console.clear)
+            window.console.clear()
+        
         var logs = Logs.find().fetch()
         for (var i = 0; i < logs.length; i++)
             Logs.remove(logs[i]._id)

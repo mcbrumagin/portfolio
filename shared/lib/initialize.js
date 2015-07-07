@@ -20,3 +20,17 @@ if (Meteor.isClient) {
         Meteor.isSuperUser()
     })
 }
+
+if (Meteor.isServer) {
+    Meteor.startup(function () {
+        if (Meteor.isDebug) {
+            Logger.enable()
+        } else {
+            Logger.disable()
+        }
+        
+        Logger.log(process.env)
+    })
+}
+
+Meteor.isDebug = true
