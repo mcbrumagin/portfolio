@@ -1,2 +1,4 @@
 # Ignore Jetbrains project files
 .idea/
+settings.json
+mup.json
