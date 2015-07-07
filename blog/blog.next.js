@@ -225,106 +225,107 @@ var helpers = {
     }
 }
 
-Meteor.CrudCollection('post', ['title', 'content'], {
-    template: 'blog'
-}, function (collection) {
-    return {
+var Posts = Meteor.CrudCollection('post', ['user', 'title', 'content'], {
+        template: 'blog'
+    }, {
         post: function () {
             var query = Session.get('post-search') || {}
-            return collection.find(query, {
+            return Posts.find(query, {
                 sort: {dateModified: -1}
             }).fetch()
         },
         date: helpers.date,
         content: helpers.content,
         isSuperUser: helpers.isSuperUser
-    }
-}, {
-    "input #post-search": function (e) {
-        clearTimeout(timeout)
-        timeout = setTimeout(() => {
-            var input = $(e.currentTarget).val()
-            if (input === '') var query = {}
-            else {
-                query = []
-                var filter = t => t !== ''
-                && t !== '-'
+    }, {
+        "input #post-search": function (e) {
+            clearTimeout(timeout)
+            timeout = setTimeout(() => {
+                var input = $(e.currentTarget).val()
+                if (input === '') var query = {}
+                else {
+                    query = []
+                    var filter = t => t !== ''
+                    && t !== '-'
 
-                input.split(' ').filter(filter).forEach(word => {
-                    var text = new ActiveText(word).find('\\-.+')
-                    if (!$.isEmptyObject(text)) {
-                        var isNot = true
-                        word = word.replace('-', '')
-                    }
+                    input.split(' ').filter(filter).forEach(word => {
+                        var text = new ActiveText(word).find('\\-.+')
+                        if (!$.isEmptyObject(text)) {
+                            var isNot = true
+                            word = word.replace('-', '')
+                        }
 
-                    var conditions = []
-                    var setConditions = word => {
-                        //TODO: Escape regex
-                        var search = {$regex: word, $options: 'i'}
-                        conditions = conditions.concat([
-                            {title: search},
-                            {content: search},
-                            {dateCreated: search},
-                            {dateModified: search}
-                        ])
-                    }
+                        var conditions = []
+                        var setConditions = word => {
+                            //TODO: Escape regex
+                            var search = {$regex: word, $options: 'i'}
+                            conditions = conditions.concat([
+                                {title: search},
+                                {content: search},
+                                {dateCreated: search},
+                                {dateModified: search}
+                            ])
+                        }
 
-                    var wordOptions = word.split('|')
-                    if (wordOptions.length > 1) {
-                        wordOptions.filter(filter)
-                            .forEach(setConditions)
-                    } else setConditions(word)
+                        var wordOptions = word.split('|')
+                        if (wordOptions.length > 1) {
+                            wordOptions.filter(filter)
+                                .forEach(setConditions)
+                        } else setConditions(word)
 
-                    var queryFrag
-                    if (isNot) queryFrag = {$nor: conditions}
-                    else queryFrag = {$or: conditions}
-                    query.push(queryFrag)
+                        var queryFrag
+                        if (isNot) queryFrag = {$nor: conditions}
+                        else queryFrag = {$or: conditions}
+                        query.push(queryFrag)
+                    })
+                    query = {$and: query}
+                }
+                Session.set('post-search', query)
+            }, 500)
+        },
+        "click .open-post-update": function (e) {
+            this.collection = 'post'
+            var _ = this
+            UI.renderWithData(
+                Template.editPost, this,
+                $(document.body)[0])
+
+            var uid = dataRenderId++
+
+            $('form.post-update:not([data-render-id])')
+                .attr('data-render-id', uid)
+                .closest('.overlay')
+                .setChildHtml({
+                    '.date': helpers.date.call(this),
+                    '.title': _.title,
+                    '.content': helpers.content.call(this)
                 })
-                query = {$and: query}
-            }
-            Session.set('post-search', query)
-        }, 500)
-    },
-    "click .open-post-update": function (e) {
-        this.collection = 'post'
-        var _ = this
-        UI.renderWithData(
-            Template.editPost, this,
-            $(document.body)[0])
+                .fadeIn()
+                .find('> *:first-child')
+                .after(10).draggable().go()
+                .find('.fade-out')
+                .after(100).fadeIn().go()
+        },
+        "click .js-new-create-post": function (e) {
+            UI.render(Template.createPost, $(document.body)[0])
 
-        var uid = dataRenderId++
+            var uid = dataRenderId++
 
-        $('form.post-update:not([data-render-id])')
-            .attr('data-render-id', uid)
-            .closest('.overlay')
-            .setChildHtml({
-                '.date': helpers.date.call(this),
-                '.title': _.title,
-                '.content': helpers.content.call(this)
-            })
-            .fadeIn()
-            .find('> *:first-child')
-            .after(10).draggable().go()
-            .find('.fade-out')
-            .after(100).fadeIn().go()
-    },
-    "click .js-new-create-post": function (e) {
-        UI.render(Template.createPost, $(document.body)[0])
-
-        var uid = dataRenderId++
-
-        $('form.post-create:not([data-render-id])')
-            .attr('data-render-id', uid)
-            .closest('.overlay')
-            .fadeIn()
-            .find('> *:first-child')
-            .after(10).draggable().go()
+            $('form.post-create:not([data-render-id])')
+                .attr('data-render-id', uid)
+                .closest('.overlay')
+                .fadeIn()
+        .find('> *:first-child')
+        .after(10).draggable().go()
     },
     createPost: {
         "submit .post-create": function (e) {
             e.preventDefault()
             var form = $(e.currentTarget)
             var post = {}
+            var user = Meteor.user()
+            if (!user._id) throw new Error('User not found when saving post.')
+            post.user = user._id
             post.title = form.find(`[name=title]`).val()
             post.content = form.find(`[name=content]`).val()
             Meteor.call('postCreate', post, function () {
@@ -346,6 +347,9 @@ Meteor.CrudCollection('post', ['title', 'content'], {
             e.preventDefault()
 
             var $form = $(e.currentTarget)
+            var user = Meteor.user()
+            if (!user._id) throw new Error('User not found when saving post.')
+            this.user = user._id
             this.title = $form.find(`[name=title]`).val()
             this.content = $form.find(`[name=content]`).val()
 
@@ -362,25 +366,27 @@ Meteor.CrudCollection('post', ['title', 'content'], {
     }
 })
 
-/*
-Meteor.CrudCollection('liveview', ['title', 'content'], {
-    template: 'liveView'
-}, function (collection) {
-    return {
-        liveview: function () {
-            return collection.find({}, {
-                sort: {dateModified: -1}
-            }).fetch()
+
+var Comments = new Meteor.CrudCollection('comment',
+    ['user', 'post', 'content'], {
+        template: 'comments'
+    }, {
+        // TODO: Fix Logger.wrap
+        comment: function () {
+            Logger.disable()
+            console.log(this)
+            var comments = Comments
+                .find({post:this})
+                .fetch()
+            console.log(comments)
+            return comments
         },
-        date: function () {
-            return this.dateModified.toLocaleString()
-        },
-        content: function () {
-            return NextMark.convertMarkdown(this.content)
-        }
-    }
-})
-*/
+        date: helpers.date,
+        content: helpers.content
+    }, {
+
+    })
+
 
 var LiveViews = new Meteor.Collection('liveViews')
 

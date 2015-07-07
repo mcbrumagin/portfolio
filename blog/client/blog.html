@@ -24,6 +24,21 @@
                     <span class="date">{{date}}</span>
                 </div>
                 <div class="preview content next-mark">{{{content}}}</div>
+                {{> comments _id}}
+                <!-- TODO: Create new comment button -->
+            </li>
+        {{/each}}
+    </ul>
+</template>
+
+<template name="comments">
+    <ul class="comments">
+        {{#each comment}}
+            <li>
+                <span class="name">{{name}}</span>
+                <span class="content">{{{content}}}</span>
+                <span class="date">{{date}}</span>
+                <!-- TODO: Create isOwned helper and edit/delete buttons -->
             </li>
         {{/each}}
     </ul>

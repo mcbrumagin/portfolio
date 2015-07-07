@@ -7,7 +7,7 @@ Package.describe({
 })
 
 Package.onUse(function(api) {
-    api.use(['templating'], 'client');
+    api.use(['templating'], 'client')
     api.add_files('client/editableSection.html')
     api.add_files('client/toggleEditableSections.html')
     api.add_files('client/editSection.html')

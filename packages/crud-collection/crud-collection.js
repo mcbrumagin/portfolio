@@ -5,11 +5,18 @@ function isFunction(fn) {
 Meteor.Collections = {}
 
 Meteor.CrudCollection = function (name, props, options, helpers, events) {
-    
+
+    var defaults = {
+        publish: function () {
+            return Meteor.Collections[name].find()
+        }
+    }
+
     if (isFunction(options))
         helpers = options
     else {
         var templateName = options.template || name
+        var publishFunction = options.publish || defaults.publish
     }
     
     if (Meteor.Collections[name])
@@ -97,15 +104,11 @@ Meteor.CrudCollection = function (name, props, options, helpers, events) {
         }
         
         bindFunctions('events', events, mainEvents)
-        bindFunctions('helpers', helpers(Meteor.Collections[name]), {})
+        bindFunctions('helpers', helpers, {})
     }
     
     if (Meteor.isServer) {
-        
-        // TODO: expose publish function
-        Meteor.publish(name, function () {
-            return Meteor.Collections[name].find()
-        })
+        Meteor.publish(name, publishFunction)
         
         var methods = {}
         methods[create] = function (obj) {
@@ -129,4 +132,6 @@ Meteor.CrudCollection = function (name, props, options, helpers, events) {
         }
         Meteor.methods(methods)
     }
+
+    return Meteor.Collections[name]
 }

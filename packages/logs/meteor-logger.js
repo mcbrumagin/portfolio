@@ -11,7 +11,7 @@ Function.prototype.curry = function () {
     }
 }
 
-Logs = new Meteor.Collection('logs')
+var Logs = new Meteor.Collection('logs')
 
 Logger = new function () {
     var _ = this
@@ -48,7 +48,7 @@ Logger = new function () {
 
     eachMethod(function (method) {
         custom[method] =
-            Meteor.app.util.applyAllAfter(1000,
+            Util.applyAllAfter(1000,
                 log.curry(method))
     })
 
@@ -65,12 +65,69 @@ Logger = new function () {
     _.enable = setMethods.curry(true)
     _.disable = setMethods
 
+    _.wrap = function (fn) {
+        return function () {
+            Logger.enable()
+            var result = fn.apply(fn, arguments)
+            Logger.disable()
+            return result
+        }
+    }
+
     _.clear = function () {
         var logs = Logs.find().fetch()
         for (var i = 0; i < logs.length; i++)
             Logs.remove(logs[i]._id)
     }
+}
 
-    // Initialize logging methods on this Logger
-    setMethods()
+if (Meteor.isClient) {
+    Meteor.startup(function () {
+        Meteor.subscribe('logs')
+    })
+
+    Template.logs.helpers({
+        log: function () {
+            var logs = Logs.find({}, {
+                sort: {date: -1}
+            }).fetch()
+
+            var normalizedLogs = []
+            for (var i = 0; i < logs.length; i++) {
+                if (logs[i].content instanceof Array) {
+                    var log = logs[i]
+                    var list = logs[i].content.slice()
+                    log._id = undefined
+                    //alert(JSON.stringify(log))
+                    for (var j = 0; j < list.length; j++) {
+                        log.content = list[j]
+                        normalizedLogs.push(log)
+                    }
+                } else normalizedLogs.push(logs[i])
+            }
+
+            return normalizedLogs
+        }
+    })
+
+    Template.logItem.helpers({
+        date: function () {
+            return this.date.toLocaleString()
+        },
+        content: function () {
+            return JSON.stringify(this.content, null, 2)
+        }
+    })
+}
+
+if (Meteor.isServer) {
+    Meteor.startup(function () {
+        var logs = Logs.find()
+        for (var i = 0; i < logs.length; i++)
+            Logs.remove(logs[i]._id)
+    })
+
+    Meteor.publish('logs', function () {
+        return Logs.find()
+    })
 }

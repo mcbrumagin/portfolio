@@ -13,6 +13,8 @@ if (Meteor.isClient) {
 
         if (Meteor.isDebug) {
             Logger.enable()
+        } else {
+            Logger.disable()
         }
 
         Meteor.isSuperUser()
