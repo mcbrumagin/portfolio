@@ -37,6 +37,9 @@ Meteor.EditableSection = function (name) {
         })
 
         Template.editableSection.helpers({
+            isSuperUser: function () {
+                return Meteor.isSuperUser()
+            },
             section: function () {
                 var name = this.toString()
                 var data = editableSections.find({name: name}).fetch()[0]
@@ -58,15 +61,14 @@ Meteor.EditableSection = function (name) {
         // TODO Permissions
         Template.editableSection.events({
             "click .edit": function (e) {
-                var data = $('#' + name).getChildHtml({
-                    title: '.title',
-                    content: '.content'
-                })
-                data.name = name
-
+                e.preventDefault()
+                var section = editableSections
+                    .find({name:name}).fetch()[0]
+                
                 UI.renderWithData(
-                    Template.editSection,
-                    data, $(e.currentTarget).parent()[0])
+                    Template.editSection, section,
+                    $(e.currentTarget).closest('.main')[0],
+                    $(e.currentTarget).closest('.main').children().first()[0])
             }
         })
 

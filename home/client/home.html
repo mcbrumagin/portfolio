@@ -1,24 +1,10 @@
 <template name="home">
-    {{> editableSection 'about'}}
-    {{> editableSection 'projects'}}
-</template>
-
-<template name="about">
-    
-    {{{buttonEdit class="edit"}}}
-    {{#with about}}
-        <section>
-            <h2>{{title}}</h2>
-            {{{content}}}
-        </section>
-    {{/with}}
-</template>
-
-<template name="projects">
-    {{#with projectList}}
-        <section>
-            <h2>{{title}}</h2>
-            {{{content}}}
-        </section>
-    {{/with}}
+    <ul>
+        <li>
+            {{> editableSection 'about'}}
+        </li>
+        <li>
+            {{> editableSection 'projects'}}
+        </li>
+    </ul>
 </template>

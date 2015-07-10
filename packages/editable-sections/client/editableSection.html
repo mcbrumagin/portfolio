@@ -1,9 +1,11 @@
 <template name="editableSection">
-    {{{editOrNewButton}}}
+    {{#if isSuperUser}}
+        {{{editOrNewButton}}}
+    {{/if}}
     {{#with section}}
         <section id="{{name}}">
             <h2 class="title">{{title}}</h2>
-            <div class="content">{{{content}}}</div>
+            <div class="content next-mark">{{{content}}}</div>
         </section>
     {{/with}}
 </template>

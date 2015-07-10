@@ -27,7 +27,7 @@
     box-shadow: inset -3px 0 50px rgba(160,220,255,0.9);
 }
     
-.log.warning {
+.log.warn {
     border-color: rgba(220,220,160,0.75);
     box-shadow: inset -3px 0 50px rgba(220,220,160,0.9);
 }
