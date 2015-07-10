@@ -4,8 +4,14 @@ Template.footer.helpers({
 })
 
 Template.navigation.helpers({
-    isSuperUser: Meteor.isSuperUser
+    isSuperUser: function () {
+        return Meteor.isSuperUser()
+    },
+    isLoggedIn: function () {
+        return Meteor.isLoggedIn()
+    }
 })
+
 Template.navigation.events({
     "click li a": e => {
         var addr = $(e.currentTarget)
@@ -19,7 +25,7 @@ Template.navigation.events({
     "click [class*=my-login]": e => {
         var type = $(e.currentTarget)[0].className.slice(9)
         type = type[0].toUpperCase() + type.slice(1)
-        Meteor[`loginWith${type}`](function () {
+        Meteor[`loginWith${type}`](() => {
             Meteor.isSuperUser()
             $('#my-login').fadeOut().after(500).hide().go()
             $('#my-logout').after(500).show().fadeIn().go()
@@ -47,31 +53,20 @@ Template.banner.onRendered(() => {
     // TODO: jQuery Cache
     var _ = $('.js-back-to-top')
     var showOrHideBackToTop = () => {
+        
         if (_.hasClass('fade-in')
-        && window.scrollY < window.innerHeight) {
+         && window.scrollY < window.innerHeight) {
                 
-            _.fadeOut()
-                .after(500)
-                .hide()
-                .go()
-                
-            _.parent()
-                .after(505)
+            _.fadeOut().after(500).hide().go()
+            _.parent().after(505)
                 .render('height', _.parent().height())
-                .render('width')
-                .go()
+                .render('width').go()
             
         } else if (!_.hasClass('fade-in')
-        && window.scrollY >= window.innerHeight) {
+         && window.scrollY >= window.innerHeight) {
             
-            _.show()
-                .after(500)
-                .fadeIn()
-                .go()
-            
-            _.parent()
-                .render('height')
-                .render('width')
+            _.show().after(500).fadeIn().go()
+            _.parent().render('height').render('width')
         }
     }
     
@@ -101,3 +96,18 @@ Template.banner.onRendered(() => {
         })
 
 })
+
+
+
+if (Meteor.isClient) {
+    Template.userHud.helpers({
+        isLoggedIn: function () {
+            return Meteor.isLoggedIn()
+        },
+        welcomeText: function () {
+            // TODO: Return random hello/welcome text
+            var displayName = Meteor.user().profile.name
+            return displayName ? "Signed in as " + displayName + "." : ""
+        }
+    })
+}

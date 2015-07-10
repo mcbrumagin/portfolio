@@ -15,3 +15,13 @@ span.title {
 .icon-input input {
   max-width: 18rem;
 }
+
+.user-hud {
+  display: inline-block;
+  font-style: italic;
+  margin-left: 1rem;
+  
+  * {
+    color: rgba(200,225,255,1);
+  }
+}

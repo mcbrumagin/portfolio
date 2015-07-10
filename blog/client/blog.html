@@ -9,16 +9,18 @@
             <input id="post-search" type="text" placeholder="Search...">
         </i>
     </div>
+    
+    {{> userHud }}
 
     <ul class="post-list">
         {{#each post}}
             <li data-id="{{_id}}">
-                <div class="button-group inline corner">
-                    {{#if isSuperUser}}
+                {{#if isSuperUser}}
+                    <div class="button-group inline corner">
                         {{{buttonEdit class="open-post-update"}}}
                         {{{buttonDelete class="post-delete"}}}
-                    {{/if}}
-                </div>
+                    </div>
+                {{/if}}
                 <div class="item-header">
                     <span class="title">{{title}}</span>
                     <span class="date">{{date}}</span>
@@ -29,6 +31,14 @@
             </li>
         {{/each}}
     </ul>
+</template>
+
+<template name="userHud">
+    {{#if isLoggedIn }}
+        <div class="user-hud">
+            <span class="welcome-text">{{welcomeText}}</span>
+        </div>
+    {{/if}}
 </template>
 
 <template name="comments">
