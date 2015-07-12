@@ -25,3 +25,20 @@ span.title {
     color: rgba(200,225,255,1);
   }
 }
+
+.comments {
+  > li {
+    border: 1px solid rgba(200,200,255,0.25);
+    box-shadow: none;
+    margin: 0.5rem;
+    background-color: #000812;
+
+    div {
+      background-color: #000812;
+    }
+  }
+
+  .comment-details span {
+      display: block;
+  }
+}

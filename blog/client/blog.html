@@ -27,7 +27,6 @@
                 </div>
                 <div class="preview content next-mark">{{{content}}}</div>
                 {{> comments _id}}
-                <!-- TODO: Create new comment button -->
             </li>
         {{/each}}
     </ul>
@@ -42,16 +41,50 @@
 </template>
 
 <template name="comments">
+    {{#if isLoggedIn}}
+        {{{button "Comment" icon="plus"
+            class="js-new-create-comment"
+        }}}
+    {{else}}
+        <div>
+            <em>Please sign in to comment.</em>
+        </div>
+    {{/if}}
     <ul class="comments">
-        {{#each comment}}
-            <li>
-                <span class="name">{{name}}</span>
-                <span class="content">{{{content}}}</span>
-                <span class="date">{{date}}</span>
-                <!-- TODO: Create isOwned helper and edit/delete buttons -->
-            </li>
+        {{#each comments}}
+            {{> comment }}
         {{/each}}
     </ul>
+</template>
+
+<template name="comment">
+    <li>
+        {{#if isOwned}}
+            <div class="button-group inline corner">
+                {{{buttonEdit class="open-comment-update"}}}
+                {{{buttonDelete class="comment-delete"}}}
+            </div>
+        {{/if}}
+        <div class="comment-details">
+            <span class="name">{{name}}</span>
+            <span class="date">{{date}}</span>
+        </div>
+        <div class="next-mark content">{{{content}}}</div>
+    </li>
+</template>
+
+<template name="createComment">
+    {{#crudCreate name="comment" post=id}}
+        {{{buttonClose}}}
+        {{{textarea "content"}}}
+        <div class="new-comment-preview next-mark fade fade-out">
+            <div class="item-header">
+                <span class="name"></span>
+                <span class="date"></span>
+            </div>
+            <div class="preview next-mark content"></div>
+        </div>
+    {{/crudCreate}}
 </template>
 
 <template name="createPost">

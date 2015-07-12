@@ -202,6 +202,8 @@ var Posts = Meteor.CrudCollection('post', ['user', 'title', 'content'], {
         date: helpers.date,
         content: helpers.content,
         isSuperUser: helpers.isSuperUser
+        // TODO: Allow easy extension of built-in methods
+        // TODO: Extend delete action to delete coupled comments
     }, {
         "input #post-search": function (e) {
             clearTimeout(timeout)
@@ -289,7 +291,7 @@ var Posts = Meteor.CrudCollection('post', ['user', 'title', 'content'], {
             var form = $(e.currentTarget)
             var post = {}
             var user = Meteor.user()
-            if (!user._id) throw new Error('User not found when saving post.')
+            if (!user || !user._id) throw new Error('User not found when saving post.')
             post.user = user._id
             post.title = form.find(`[name=title]`).val()
             post.content = form.find(`[name=content]`).val()
@@ -333,23 +335,87 @@ var Posts = Meteor.CrudCollection('post', ['user', 'title', 'content'], {
 
 
 var Comments = new Meteor.CrudCollection('comment',
-    ['user', 'post', 'content'], {
+    ['user', 'username', 'post', 'content'], {
         template: 'comments'
     }, {
-        // TODO: Fix Logger.wrap
-        comment: function () {
+        // TODO: Fix Logger.wrap this/context
+        comments: function () {
             Logger.disable()
             console.log(this)
             var comments = Comments
-                .find({post:this})
-                .fetch()
+                .find({post:this}, {
+                    sort: {dateModified: -1}
+                }).fetch()
             console.log(comments)
             return comments
         },
-        date: helpers.date,
-        content: helpers.content
+        isLoggedIn: Meteor.isLoggedIn,
+        comment: {
+            createdBy: function () {
+                return `${this.name} responded on ${helpers.date.apply(this)}`
+            },
+            date: helpers.date,
+            content: helpers.content,
+            isOwned: function () {
+                var user = Meteor.user()
+                return user && user._id && this.user === user._id
+            }
+        }
     }, {
+        "click .js-new-create-comment": function (e) {
+            Logger.log({currentTarget: e.currentTarget})
+            var _ = $(e.currentTarget)
+            var data = {id:this}
+            var user = Meteor.user()
+            if (user && user.profile)
+                data.name = user.profile.name
 
+            Logger.log({parent: _.parent().html()})
+            UI.renderWithData(
+                Template.createComment,
+                data, _.parent()[0], _[0])
+        },
+        createComment: {
+            "submit .comment-create": function (e) {
+                e.preventDefault()
+                var form = $(e.currentTarget)
+                var comment = {}
+                var user = Meteor.user()
+                comment.post = this.post || this
+                comment.user = user._id
+                comment.name = user.profile.name
+                comment.content = form.find(`[name=content]`).val()
+                Meteor.call('commentCreate', comment, function () {
+                    form.fadeOut()
+                        .after(500).remove().go()
+                })
+            },
+            "input [name=content]": util.debounce(10, e => {
+
+                var preview = $('.new-comment-preview')
+                if (preview.hasClass('fade-out')) preview.fadeIn()
+
+                Logger.log({currentTarget: e.currentTarget})
+                var _ = $(e.currentTarget)
+                    .closest('form')
+                    .getChildHtml({ content: '[name=content]' })
+
+                //_.content = _.content.replace(/\?/g, '&quest;')
+                _.content = NextMark.convertMarkdown(_.content)
+                _.date = new Date().toLocaleString()
+
+                preview.setChildHtml({
+                    '.date': _.date,
+                    '.content': _.content
+                })
+            }),
+            "click .close": function (e) {
+                $(e.currentTarget)
+                    .closest('form')
+                    .fadeOut()
+                    .after(500).remove().go()
+            }
+        }
     })
 
 
