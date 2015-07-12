@@ -105,8 +105,10 @@ if (Meteor.isClient) {
             return Meteor.isLoggedIn()
         },
         welcomeText: function () {
+            var profile = Meteor.user().profile
+            var displayName = profile.name
+                || `${profile.firstName} ${profile.lastName}`
             // TODO: Return random hello/welcome text
-            var displayName = Meteor.user().profile.name
             return displayName ? "Signed in as " + displayName + "." : ""
         }
     })

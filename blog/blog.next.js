@@ -381,9 +381,13 @@ var Comments = new Meteor.CrudCollection('comment',
                 var form = $(e.currentTarget)
                 var comment = {}
                 var user = Meteor.user()
+                // TODO: User/name helpers
+                var profile = user.profile
                 comment.post = this.post || this
                 comment.user = user._id
-                comment.name = user.profile.name
+                comment.name = profile.name // fallback for linkedin
+                    || `${profile.firstName} ${profile.lastName}`
+
                 comment.content = form.find(`[name=content]`).val()
                 Meteor.call('commentCreate', comment, function () {
                     form.fadeOut()
