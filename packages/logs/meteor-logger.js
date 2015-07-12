@@ -27,10 +27,15 @@ Logger = new function () {
         copy[type](args)
 
         if (args !== undefined) {
-            Logs.insert({
+            var log = {
                 type: type,
                 content: args,
                 date: new Date()
+            }
+
+            if (Meteor.isServer) Logs.insert(log)
+            else Meteor.call('createLog', log, function (err, res) {
+                if (err) throw new Error('Failed to save log.')
             })
         }
     }
@@ -68,7 +73,7 @@ Logger = new function () {
     _.wrap = function (fn) {
         return function () {
             Logger.enable()
-            var result = fn.apply(fn, arguments)
+            var result = fn.apply(this, arguments)
             Logger.disable()
             return result
         }
@@ -79,10 +84,8 @@ Logger = new function () {
          && window.console
          && window.console.clear)
             window.console.clear()
-        
-        var logs = Logs.find().fetch()
-        for (var i = 0; i < logs.length; i++)
-            Logs.remove(logs[i]._id)
+
+        Meteor.call('deleteAllLogs')
     }
 }
 
@@ -134,5 +137,16 @@ if (Meteor.isServer) {
 
     Meteor.publish('logs', function () {
         return Logs.find()
+    })
+
+    Meteor.methods({
+        createLog: function (log) {
+            return Logs.insert(log)
+        },
+        deleteAllLogs: function () {
+            var logs = Logs.find().fetch()
+            for (var i = 0; i < logs.length; i++)
+                Logs.remove(logs[i]._id)
+        }
     })
 }

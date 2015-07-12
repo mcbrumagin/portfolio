@@ -65,7 +65,9 @@ var helpers = {
             })
 
         //_.content = _.content.replace(/\?/g, '&quest;')
-        _.content = NextMark.convertMarkdown(_.content)
+        if (_.content.length > 0)
+            _.content = NextMark.convertMarkdown(_.content)
+
         _.date = new Date().toLocaleString()
 
         $(e.currentTarget)
@@ -76,21 +78,23 @@ var helpers = {
             })
 
         var liveViewId = $(e.currentTarget)
-            .closest('[data-live-view-id]')
+            .find('[data-live-view-id]')
             .data('live-view-id')
 
         if (liveViewId) {
-            Meteor.call('updateLiveView', {
+            var liveView = {
                 id: liveViewId,
                 title: _.title,
                 content: _.content
-            }, function (err, res) {
+            }
+
+            Meteor.call('updateLiveView', liveView, function (err, res) {
                 if (err) {
-                    Meteor.log.error({
+                    Logger.error({
                         message: 'An error occurred when updating the LiveView',
                         error: err
                     })
-                } else Meteor.log.trace(res)
+                } else Logger.log(res)
             })
         }
     }),
@@ -98,12 +102,12 @@ var helpers = {
         expand: function (e) {
 
             var $elem = $(e.currentTarget)
-            var $form = $elem.closest('[data-id]')
+            var $form = $elem.closest('form')//.closest('[data-id]')
             var postId = $form.data('id')
 
             Meteor.call('newLiveView', postId, function (err, res) {
                 if (err) {
-                    Meteor.log.error({
+                    Logger.error({
                         message: 'An error occurred when creating a new LiveView',
                         error: err
                     })
@@ -112,9 +116,10 @@ var helpers = {
                     // (so that the server can reset it on disconnect)
 
                     var liveViewIds = Session.get('liveViewIds')
-                    if (!liveViewIds) liveViewIds = [res]
-                    else liveViewIds.push(res)
-                    Session.set('liveViewIds')
+                    if (!liveViewIds) liveViewIds = {}
+
+                    liveViewIds[res] = res
+                    Session.set('liveViewIds', liveViewIds)
 
                     $form.attr('data-live-view-id', res)
                     $elem.parent().remove()
@@ -333,17 +338,12 @@ var Posts = Meteor.CrudCollection('post', ['user', 'title', 'content'], {
     }
 })
 
-helpers.comments = {
-
-}
-
 var Comments = new Meteor.CrudCollection('comment',
     ['user', 'username', 'post', 'content'], {
         template: 'comments'
     }, {
         // TODO: Fix Logger.wrap this/context
-        comments: function () {
-            Logger.disable()
+        comments: Logger.wrap(function () {
             console.log(this)
             var comments = Comments
                 .find({post:this}, {
@@ -351,7 +351,7 @@ var Comments = new Meteor.CrudCollection('comment',
                 }).fetch()
             console.log(comments)
             return comments
-        },
+        }),
         isLoggedIn: Meteor.isLoggedIn,
         comment: {
             createdBy: function () {
@@ -387,7 +387,6 @@ var Comments = new Meteor.CrudCollection('comment',
                 () => $('.update-comment-preview').fadeIn()
                 ,50)
 
-            Logger.log({"click .js-open-comment-update": data})
             UI.renderWithData(
                 Template.updateComment,
                 data, _[0], _.children().first()[0])
@@ -450,7 +449,7 @@ var Comments = new Meteor.CrudCollection('comment',
                     user: this.user
                 }
 
-                Logger.info({updateComment:data})
+                //Logger.info({updateComment:data})
                 Meteor.call('commentUpdate', data, function () {
                     form.fadeOut().after(500).remove().go()
                 })
@@ -500,12 +499,12 @@ if (Meteor.isClient) {
 Router.route('/liveView/:id/:version?', {
     name: 'liveView',
     subscriptions: function () {
-        Meteor.log.trace({message: 'Id from url', id: this.params.id})
+        //Logger.log({message: 'Id from url', id: this.params.id})
         return Meteor.subscribe('liveView', this.params.id)
     },
     data: function () {
         if (this.ready()) {
-            Meteor.log.trace({message: 'Id from url', id: this.params.id})
+            //Logger.log({message: 'Id from url', id: this.params.id})
             var liveView = LiveViews.findOne({_id: this.params.id})
             var length = liveView.versions.length
 

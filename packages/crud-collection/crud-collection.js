@@ -42,7 +42,7 @@ Meteor.CrudCollection = function (name, props, options, helpers, events) {
         })
 
         var callback = function (err, res) {
-            if (err) Meteor.log.error(err)
+            if (err) Logger.error(err)
         }
         
         var mainEvents = {}

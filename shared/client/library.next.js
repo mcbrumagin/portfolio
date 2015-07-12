@@ -1,7 +1,7 @@
 
 var error = {
     required: function (property) {
-        Meteor.log.error(`${property} is required for helper.`)
+        Logger.error(`${property} is required for helper.`)
     }
 }
 
