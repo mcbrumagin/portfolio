@@ -39,11 +39,11 @@ var fade = function (type, that) {
 }
 
 $.fn.fadeOut = function () {
-    return fade ('out', this)
+    return fade('out', this)
 }
 
 $.fn.fadeIn = function () {
-    return fade ('in', this)
+    return fade('in', this)
 }
 
 $.fn.after = function (ms) {
@@ -93,6 +93,28 @@ $.fn.render = function (name, original) {
     
     return _
 }
+
+/* // TODO: Animate neighbor positions upon showing/hiding page elements
+ var rem = $.fn.remove
+ $.fn.remove = function () {
+ var _ = $(this)
+ var next = _.next()
+ var isStatic = next.css('position') === 'static'
+ var top = next.css('top')
+ if (top === 'auto') var isAuto = true
+
+ if (isStatic) next.css('position', 'relative')
+ if (isAuto) next.css('top')
+
+ next.animate({top: _.css('height')},500)
+
+ if (isAuto) next.after(500).css('top', 'auto').go()
+ if (isStatic) next.after(500).css('position', 'static').go()
+
+ // TODO RESET
+ rem.apply(this)
+ }
+ */
 
 $.fn.draggable = function() {
     var _ = $(this)

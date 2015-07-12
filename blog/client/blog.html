@@ -61,7 +61,7 @@
     <li>
         {{#if isOwned}}
             <div class="button-group inline corner">
-                {{{buttonEdit class="open-comment-update"}}}
+                {{{buttonEdit class="js-open-comment-update"}}}
                 {{{buttonDelete class="comment-delete"}}}
             </div>
         {{/if}}
@@ -78,13 +78,27 @@
         {{{buttonClose}}}
         {{{textarea "content"}}}
         <div class="new-comment-preview next-mark fade fade-out">
-            <div class="item-header">
-                <span class="name"></span>
-                <span class="date"></span>
+            <div class="comment-details">
+                <span class="name">{{name}}</span>
+                <span class="date">{{date}}</span>
             </div>
             <div class="preview next-mark content"></div>
         </div>
     {{/crudCreate}}
+</template>
+
+<template name="updateComment">
+    {{#crudUpdate}}
+        {{{buttonClose}}}
+        {{{textarea "content" value=content }}}
+        <div class="update-comment-preview next-mark fade fade-out">
+            <div class="comment-details">
+                <span class="name">{{name}}</span>
+                <span class="date">{{date}}</span>
+            </div>
+            <div class="preview next-mark content">{{{content}}}</div>
+        </div>
+    {{/crudUpdate}}
 </template>
 
 <template name="createPost">

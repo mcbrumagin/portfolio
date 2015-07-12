@@ -29,9 +29,14 @@ span.title {
 .comments {
   > li {
     border: 1px solid rgba(200,200,255,0.25);
+    border-top: 0;
     box-shadow: none;
-    margin: 0.5rem;
+    margin: 0;
     background-color: #000812;
+
+    &:first-child {
+      border: 1px solid rgba(200,200,255,0.25);
+    }
 
     div {
       background-color: #000812;

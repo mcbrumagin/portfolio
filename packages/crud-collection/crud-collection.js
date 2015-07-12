@@ -125,7 +125,8 @@ Meteor.CrudCollection = function (name, props, options, helpers, events) {
         }
         methods[update] = function (obj) {
             obj.dateModified = new Date()
-            return Meteor.Collections[name].update({_id: obj._id}, obj)
+            Logger.log({update:arguments})
+            return Meteor.Collections[name].update({_id: obj._id}, {$set: obj})
         }
         methods[destroy] = function (id) {
             return Meteor.Collections[name].remove({_id: id})

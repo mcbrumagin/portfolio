@@ -333,6 +333,9 @@ var Posts = Meteor.CrudCollection('post', ['user', 'title', 'content'], {
     }
 })
 
+helpers.comments = {
+
+}
 
 var Comments = new Meteor.CrudCollection('comment',
     ['user', 'username', 'post', 'content'], {
@@ -363,17 +366,31 @@ var Comments = new Meteor.CrudCollection('comment',
         }
     }, {
         "click .js-new-create-comment": function (e) {
-            Logger.log({currentTarget: e.currentTarget})
+            //Logger.log({currentTarget: e.currentTarget})
             var _ = $(e.currentTarget)
             var data = {id:this}
             var user = Meteor.user()
             if (user && user.profile)
                 data.name = user.profile.name
 
-            Logger.log({parent: _.parent().html()})
             UI.renderWithData(
                 Template.createComment,
                 data, _.parent()[0], _[0])
+        },
+        "click .js-open-comment-update": function (e) {
+            //Logger.log({currentTarget: e.currentTarget})
+            var _ = $(e.currentTarget).closest('li')
+            var data = this
+            data.collection = 'comment'
+
+            Meteor.setTimeout(
+                () => $('.update-comment-preview').fadeIn()
+                ,50)
+
+            Logger.log({"click .js-open-comment-update": data})
+            UI.renderWithData(
+                Template.updateComment,
+                data, _[0], _.children().first()[0])
         },
         createComment: {
             "submit .comment-create": function (e) {
@@ -390,8 +407,7 @@ var Comments = new Meteor.CrudCollection('comment',
 
                 comment.content = form.find(`[name=content]`).val()
                 Meteor.call('commentCreate', comment, function () {
-                    form.fadeOut()
-                        .after(500).remove().go()
+                    form.fadeOut().after(500).remove().go()
                 })
             },
             "input [name=content]": util.debounce(10, e => {
@@ -399,7 +415,52 @@ var Comments = new Meteor.CrudCollection('comment',
                 var preview = $('.new-comment-preview')
                 if (preview.hasClass('fade-out')) preview.fadeIn()
 
-                Logger.log({currentTarget: e.currentTarget})
+                //Logger.log({currentTarget: e.currentTarget})
+                var _ = $(e.currentTarget)
+                    .closest('form')
+                    .getChildHtml({ content: '[name=content]' })
+
+                //_.content = _.content.replace(/\?/g, '&quest;')
+                _.content = NextMark.convertMarkdown(_.content)
+                _.date = new Date().toLocaleString()
+
+                preview.setChildHtml({
+                    '.date': _.date,
+                    '.content': _.content
+                })
+            }),
+            "click .close": function (e) {
+                $(e.currentTarget)
+                    .closest('form')
+                    .fadeOut()
+                    .after(500).remove().go()
+            }
+        },
+        updateComment: {
+            "submit .comment-update": function (e) {
+                e.preventDefault()
+                var form = $(e.currentTarget)
+                this.content = form.find(`[name=content]`).val()
+
+                var data = {
+                    _id: this._id,
+                    content: this.content,
+                    name: this.name,
+                    post: this.post,
+                    user: this.user
+                }
+
+                Logger.info({updateComment:data})
+                Meteor.call('commentUpdate', data, function () {
+                    form.fadeOut().after(500).remove().go()
+                })
+            },
+            "input [name=content]": util.debounce(10, e => {
+
+                var preview = $('.update-comment-preview')
+                if (preview.hasClass('fade-out')) preview.fadeIn()
+
+                //Logger.log({currentTarget: e.currentTarget})
                 var _ = $(e.currentTarget)
                     .closest('form')
                     .getChildHtml({ content: '[name=content]' })
