@@ -342,16 +342,13 @@ var Comments = new Meteor.CrudCollection('comment',
     ['user', 'username', 'post', 'content'], {
         template: 'comments'
     }, {
-        // TODO: Fix Logger.wrap this/context
-        comments: Logger.wrap(function () {
-            console.log(this)
+        comments: function () {
             var comments = Comments
                 .find({post:this}, {
                     sort: {dateModified: -1}
                 }).fetch()
-            console.log(comments)
             return comments
-        }),
+        },
         isLoggedIn: Meteor.isLoggedIn,
         comment: {
             createdBy: function () {
@@ -405,7 +402,13 @@ var Comments = new Meteor.CrudCollection('comment',
                     || `${profile.firstName} ${profile.lastName}`
 
                 comment.content = form.find(`[name=content]`).val()
-                Meteor.call('commentCreate', comment, function () {
+                
+                Meteor.call('commentCreate', comment, function (err,res) {
+                    if (err) throw new Error("Failed when saving comment.", err)
+                    else {
+                        comment.id = res
+                        Logger.log(comment)
+                    }
                     form.fadeOut().after(500).remove().go()
                 })
             },

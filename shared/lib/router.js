@@ -30,6 +30,11 @@ Router.route('/', {
 
 Router.route('/blog')
 
+Router.route('/notes', {
+  name: 'notes',
+  template: 'notes'
+})
+
 Router.route('/design', {
   name: 'designLibrary',
   template: 'designLibrary'

@@ -39,6 +39,13 @@
             </li>
             {{#if isSuperUser}}
                 <li>
+                    <a href="{{pathFor 'notes'}}">
+                        <i class="fa fa-pencil-square"></i>
+                        <!-- fa-file-text-o -->
+                        <span class="tx">Notes</span>
+                    </a>
+                </li>
+                <li>
                     <a href="{{pathFor 'designLibrary'}}">
                         <i class="fa fa-photo"></i>
                         <span class="tx">Design</span>

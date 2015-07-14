@@ -1,0 +1,92 @@
+<template name="notes">
+    <div class="js-button-group-2 button-group inline">
+        {{#if isSuperUser}}
+            {{{button "New" icon="plus"
+                class="js-new-create-note"
+            }}}
+        {{/if}}
+        <i class="icon-input fa fa-search">
+            <input id="note-search" type="text" placeholder="Search...">
+        </i>
+    </div>
+    
+    {{> userHud }}
+
+    <ul class="note-list">
+        {{#each note}}
+            <li data-id="{{_id}}">
+                {{#if isSuperUser}}
+                    <div class="button-group inline corner">
+                        {{{buttonEdit class="open-note-update"}}}
+                        {{{buttonDelete class="note-delete"}}}
+                    </div>
+                {{/if}}
+                <div class="item-header">
+                    <span class="title">{{title}}</span>
+                    <span class="date">{{date}}</span>
+                </div>
+                <div class="preview content next-mark">{{{content}}}</div>
+            </li>
+        {{/each}}
+    </ul>
+</template>
+
+<template name="createNote">
+    <div class="overlay fade fade-out">
+        <div class="overlay-inner">
+            <div class="button-group inline corner">
+                <span class="title"></span>
+                {{{button icon="close" title="Close" class="close right"}}}
+                {{{button icon="plus-square" title="Maximize" class="maximize right"}}}
+                {{{button icon="minus-square" title="Restore Down" class="restore-down right"}}}
+                {{{button icon="minus" title="Minimize" class="minimize right"}}}
+            </div>
+            <div class="overlay-content">
+                {{#crudCreate name="note"}}
+                    {{{input "title"}}}
+                    {{{textarea "content"}}}
+                    <div class="new-note-preview next-mark fade fade-out">
+                        <div class="item-header">
+                            <span class="title"></span>
+                            <span class="date"></span>
+                        </div>
+                        <div class="preview content"></div>
+                    </div>
+                {{/crudCreate}}
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="editNote">
+    <div class="overlay fade fade-out">
+        <div class="overlay-inner">
+            <div class="button-group inline corner">
+                <span class="title"></span>
+                {{{button icon="close" title="Close" class="close right"}}}
+                {{{button icon="plus-square" title="Maximize" class="maximize right"}}}
+                {{{button icon="minus-square" title="Restore Down" class="restore-down right"}}}
+                {{{button icon="minus" title="Minimize" class="minimize right"}}}
+            </div>
+            <div class="overlay-content">
+                {{#crudUpdate}}
+                    {{{input "title" label="Title" value=title}}}
+                    {{{textarea "content" label="Content" value=content }}}
+                    <div class="new-note-preview next-mark fade fade-out">
+                        {{{button "Expand"
+                        name="expand"
+                        icon="expand"
+                        class="md fade fade-out right"
+                        title="Expand in new window"
+                        }}}
+                        <div class="item-header">
+                            <span class="title"></span>
+                            <span class="date"></span>
+                        </div>
+                        <div class="preview content"></div>
+                    </div>
+                {{/crudUpdate}}
+            </div>
+        </div>
+    </div>
+</template>

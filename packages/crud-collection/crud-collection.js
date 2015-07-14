@@ -115,6 +115,7 @@ Meteor.CrudCollection = function (name, props, options, helpers, events) {
             var date = new Date()
             obj.dateCreated = date
             obj.dateModified = date
+            Logger.log('CrudCollection create method.', obj)
             return Meteor.Collections[name].insert(obj)
         }
         methods[read] = function (name, obj) {
