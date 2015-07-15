@@ -35,7 +35,7 @@ Logger = new function () {
 
             if (Meteor.isServer) Logs.insert(log)
             else Meteor.call('createLog', log, function (err, res) {
-                if (err) throw new Error('Failed to save log.')
+                if (err) Logger.error('Failed to save log.', err)
             })
         }
     }

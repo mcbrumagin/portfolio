@@ -146,99 +146,141 @@ var helpers = {
 }
 
 var Notes = Meteor.CrudCollection('note', ['user', 'title', 'content'], {
-        template: 'notes'
-    }, {
-        note: function () {
-            var query = Session.get('note-search') || {}
-            return Notes.find(query, {
-                sort: {dateModified: -1}
-            }).fetch()
-        },
-        date: helpers.date,
-        content: helpers.content,
-        isSuperUser: helpers.isSuperUser
-        // TODO: Allow easy extension of built-in methods
-        // TODO: Extend delete action to delete coupled comments
-    }, {
-        "input #note-search": function (e) {
-            clearTimeout(timeout)
-            timeout = setTimeout(() => {
-                var input = $(e.currentTarget).val()
-                if (input === '') var query = {}
-                else {
-                    query = []
-                    var filter = t => t !== ''
-                    && t !== '-'
+    template: 'notes'
+}, {
+    note: function () {
+        var query = Session.get('note-search') || {}
+        return Notes.find(query, {
+            sort: {dateModified: -1}
+        }).fetch()
+    },
+    date: helpers.date,
+    content: helpers.content,
+    isSuperUser: helpers.isSuperUser
+    // TODO: Allow easy extension of built-in methods
+    // TODO: Extend delete action to delete coupled comments
+}, {
+    "input #note-search": function (e) {
+        clearTimeout(timeout)
+        timeout = setTimeout(() => {
+            var input = $(e.currentTarget).val()
+            if (input === '') var query = {}
+            else {
+                query = []
+                var filter = t => t !== ''
+                && t !== '-'
 
-                    input.split(' ').filter(filter).forEach(word => {
-                        var text = new ActiveText(word).find('\\-.+')
-                        if (!$.isEmptyObject(text)) {
-                            var isNot = true
-                            word = word.replace('-', '')
-                        }
+                input.split(' ').filter(filter).forEach(word => {
+                    var text = new ActiveText(word).find('\\-.+')
+                    if (!$.isEmptyObject(text)) {
+                        var isNot = true
+                        word = word.replace('-', '')
+                    }
 
-                        var conditions = []
-                        var setConditions = word => {
-                            //TODO: Escape regex
-                            var search = {$regex: word, $options: 'i'}
-                            conditions = conditions.concat([
-                                {title: search},
-                                {content: search},
-                                {dateCreated: search},
-                                {dateModified: search}
-                            ])
-                        }
+                    var conditions = []
+                    var setConditions = word => {
+                        //TODO: Escape regex
+                        var search = {$regex: word, $options: 'i'}
+                        conditions = conditions.concat([
+                            {title: search},
+                            {content: search},
+                            {dateCreated: search},
+                            {dateModified: search}
+                        ])
+                    }
 
-                        var wordOptions = word.split('|')
-                        if (wordOptions.length > 1) {
-                            wordOptions.filter(filter)
-                                .forEach(setConditions)
-                        } else setConditions(word)
+                    var wordOptions = word.split('|')
+                    if (wordOptions.length > 1) {
+                        wordOptions.filter(filter)
+                            .forEach(setConditions)
+                    } else setConditions(word)
 
-                        var queryFrag
-                        if (isNot) queryFrag = {$nor: conditions}
-                        else queryFrag = {$or: conditions}
-                        query.push(queryFrag)
-                    })
-                    query = {$and: query}
-                }
-                Session.set('note-search', query)
-            }, 500)
-        },
-        "click .open-note-update": function (e) {
-            this.collection = 'note'
-            var _ = this
-            UI.renderWithData(
-                Template.editNote, this,
-                $(document.body)[0])
-
-            var uid = dataRenderId++
-
-            $('form.note-update:not([data-render-id])')
-                .attr('data-render-id', uid)
-                .closest('.overlay')
-                .setChildHtml({
-                    '.date': helpers.date.call(this),
-                    '.title': _.title,
-                    '.content': helpers.content.call(this)
+                    var queryFrag
+                    if (isNot) queryFrag = {$nor: conditions}
+                    else queryFrag = {$or: conditions}
+                    query.push(queryFrag)
                 })
-                .fadeIn()
-                .find('> *:first-child')
-                .after(10).draggable().go()
-                .find('.fade-out')
-                .after(100).fadeIn().go()
-        },
-        "click .js-new-create-note": function (e) {
-            UI.render(Template.createNote, $(document.body)[0])
+                query = {$and: query}
+            }
+            Session.set('note-search', query)
+        }, 500)
+    },
+    "click .open-note-update": function (e) {
+        this.collection = 'note'
+        var _ = this
+        UI.renderWithData(
+            Template.editNote, this,
+            $(document.body)[0])
 
-            var uid = dataRenderId++
+        var uid = dataRenderId++
 
-            $('form.note-create:not([data-render-id])')
-                .attr('data-render-id', uid)
-                .closest('.overlay')
-                .fadeIn()
-        .find('> *:first-child')
-        .after(10).draggable().go()
+        $('form.note-update:not([data-render-id])')
+            .attr('data-render-id', uid)
+            .closest('.overlay')
+            .setChildHtml({
+                '.date': helpers.date.call(this),
+                '.title': _.title,
+                '.content': helpers.content.call(this)
+            })
+            .fadeIn()
+            .find('> *:first-child')
+            .after(10).draggable().go()
+            .find('.fade-out')
+            .after(100).fadeIn().go()
+    },
+    "click .js-new-create-note": function (e) {
+        UI.render(Template.createNote, $(document.body)[0])
+
+        var uid = dataRenderId++
+
+        $('form.note-create:not([data-render-id])')
+            .attr('data-render-id', uid)
+            .closest('.overlay')
+            .fadeIn()
+            .find('> *:first-child')
+            .after(10).draggable().go()
+    },
+    "click .note-delete": function (e) {
+        
+        var $target = $(e.currentTarget)
+        e.preventDefault()
+        
+        if (!this._id) var id = Template.parentData()
+        else id = this._id
+        
+        var overlay = UI.components.overlay(
+            'Are you sure you want to delete this note? You can\'t get it back!',
+            {title: 'Are You Sure?', id: id})
+
+        $(document.body)
+            .append(overlay)
+            .on('click', '#' + id + ' .close, #' + id + ' .cancel', function (e) {
+                $('#' + id).closest('.overlay')
+                    .fadeOut()
+                    .after(500).remove().go()
+            })
+            .on('click', '#' + id + ' .okay', function (e) {
+                $('#' + id).closest('.overlay')
+                    .fadeOut()
+                    .after(500)
+                    .remove()
+                    .go(function () {
+                        $target.closest('[data-id]')
+                            .fadeOut()
+                            .css({ minHeight: 0, overflow: 'hidden' })
+                            .animate({ height: 0 }, 550, 'linear', function () {
+                                Meteor.call('noteDelete', id, function (err) {
+                                    if (err) Logger.error(err)
+                                    $target.closest('[data-id]').remove()
+                                })
+                            })
+                    })
+            })
+
+        $('.overlay')
+            .last()
+            .show()
+            .fadeIn()
     },
     createNote: {
         "submit .note-create": function (e) {
@@ -246,7 +288,7 @@ var Notes = Meteor.CrudCollection('note', ['user', 'title', 'content'], {
             var form = $(e.currentTarget)
             var note = {}
             var user = Meteor.user()
-            if (!user || !user._id) throw new Error('User not found when saving note.')
+            if (!user || !user._id) Logger.warn('User not found when saving note.')
             note.user = user._id
             note.title = form.find(`[name=title]`).val()
             note.content = form.find(`[name=content]`).val()
@@ -269,7 +311,7 @@ var Notes = Meteor.CrudCollection('note', ['user', 'title', 'content'], {
 
             var $form = $(e.currentTarget)
             var user = Meteor.user()
-            if (!user._id) throw new Error('User not found when saving note.')
+            if (!user._id) Logger.warn('User not found when saving note.')
             this.user = user._id
             this.title = $form.find(`[name=title]`).val()
             this.content = $form.find(`[name=content]`).val()

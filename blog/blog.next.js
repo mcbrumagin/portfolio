@@ -290,13 +290,55 @@ var Posts = Meteor.CrudCollection('post', ['user', 'title', 'content'], {
         .find('> *:first-child')
         .after(10).draggable().go()
     },
+    "click .post-delete": function (e) {
+        
+        var $target = $(e.currentTarget)
+        e.preventDefault()
+        
+        if (!this._id) var id = Template.parentData()
+        else id = this._id
+        
+        var overlay = UI.components.overlay(
+            'Are you sure you want to delete this post? You can\'t get it back!',
+            {title: 'Are You Sure?', id: id})
+
+        $(document.body)
+            .append(overlay)
+            .on('click', '#' + id + ' .close, #' + id + ' .cancel', function (e) {
+                $('#' + id).closest('.overlay')
+                    .fadeOut()
+                    .after(500).remove().go()
+            })
+            .on('click', '#' + id + ' .okay', function (e) {
+                $('#' + id).closest('.overlay')
+                    .fadeOut()
+                    .after(500)
+                    .remove()
+                    .go(function () {
+                        $target.closest('[data-id]')
+                            .fadeOut()
+                            .css({ minHeight: 0, overflow: 'hidden' })
+                            .animate({ height: 0 }, 550, 'linear', function () {
+                                Meteor.call('postDelete', id, function (err) {
+                                    if (err) Logger.error(err)
+                                    $target.closest('[data-id]').remove()
+                                })
+                            })
+                    })
+            })
+
+        $('.overlay')
+            .last()
+            .show()
+            .fadeIn()
+    },
     createPost: {
         "submit .post-create": function (e) {
             e.preventDefault()
             var form = $(e.currentTarget)
             var post = {}
             var user = Meteor.user()
-            if (!user || !user._id) throw new Error('User not found when saving post.')
+            if (!user || !user._id) Logger.warn('User not found when saving post.')
             post.user = user._id
             post.title = form.find(`[name=title]`).val()
             post.content = form.find(`[name=content]`).val()
@@ -320,7 +362,7 @@ var Posts = Meteor.CrudCollection('post', ['user', 'title', 'content'], {
 
             var $form = $(e.currentTarget)
             var user = Meteor.user()
-            if (!user._id) throw new Error('User not found when saving post.')
+            if (!user._id) Logger.warn('User not found when saving post.')
             this.user = user._id
             this.title = $form.find(`[name=title]`).val()
             this.content = $form.find(`[name=content]`).val()
@@ -404,7 +446,7 @@ var Comments = new Meteor.CrudCollection('comment',
                 comment.content = form.find(`[name=content]`).val()
                 
                 Meteor.call('commentCreate', comment, function (err,res) {
-                    if (err) throw new Error("Failed when saving comment.", err)
+                    if (err) Logger.error("Failed when saving comment.", err)
                     else {
                         comment.id = res
                         Logger.log(comment)

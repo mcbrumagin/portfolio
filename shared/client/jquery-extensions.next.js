@@ -68,11 +68,13 @@ $.fn.after = function (ms) {
     for (var p in $.fn)
         $$[p] = tracker(p)
     
-    $$.go = () => {
+    $$.go = (callback) => {
         if (__.operations && __.afterMs) {
             setTimeout(() => {
-                for (var o of __.operations)
+                for (var o of __.operations) {
                     _ = _[o.name](...o.args)
+                }
+                if (callback) callback.apply(this)
             }, __.afterMs)
         } else throw new Error('Use ".after()" before calling ".go()".')
         return _

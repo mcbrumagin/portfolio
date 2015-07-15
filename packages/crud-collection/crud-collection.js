@@ -20,7 +20,7 @@ Meteor.CrudCollection = function (name, props, options, helpers, events) {
     }
     
     if (Meteor.Collections[name])
-        throw new Error('Collection "' + name + '" already exists.')
+        Logger.warn('Collection "' + name + '" already exists.')
     
     Meteor.Collections[name] = new Meteor.Collection(name)
     

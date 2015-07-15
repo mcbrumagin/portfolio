@@ -17,10 +17,8 @@ Router.configure({
     $('.loading').fadeIn().fadeOut()
   },
   loadingTemplate: 'loading',
-  notFoundTemplate: 'notFound',
-  waitOn: function () {
-    return [Meteor.subscribe('resources')]
-  }
+  notFoundTemplate: 'notFound'
+  //waitOn: function () { return [Meteor.subscribe('resources')] }
 })
 
 Router.route('/', {
