@@ -113,6 +113,10 @@ main > ul {
     
     //margin: 0 0.2rem -1px;
     margin: auto;
+    
+    &:not(:last-child) {
+      border-bottom: none;
+    }
   }
 }
 

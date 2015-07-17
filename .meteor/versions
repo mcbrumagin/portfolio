@@ -39,7 +39,6 @@ iron:middleware-stack@1.0.9
 iron:router@1.0.9
 iron:url@1.0.9
 jquery@1.11.3_2
-jquery-requestanimationframe@0.1.2
 json@1.0.3
 launch-screen@1.0.2
 less@1.0.14
@@ -48,6 +47,7 @@ localstorage@1.0.3
 logger@1.0.0
 logging@1.0.7
 mcb-utility@1.0.0
+mcbrumagin:jquery-requestanimationframe@0.1.2
 meteor@1.1.6
 meteor-platform@1.2.2
 meteorhacks:async@1.0.0
