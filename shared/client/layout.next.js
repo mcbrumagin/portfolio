@@ -3,41 +3,6 @@ Template.footer.helpers({
     year: () => new Date().getFullYear()
 })
 
-Template.navigation.helpers({
-    isSuperUser: function () {
-        return Meteor.isSuperUser()
-    },
-    isLoggedIn: function () {
-        return Meteor.isLoggedIn()
-    }
-})
-
-Template.navigation.events({
-    "click li a": e => {
-        var addr = $(e.currentTarget)
-            .attr('href')
-        if (addr) Router.go(addr)
-    },
-    "click .js-close-nav": e => {
-        $('.main-nav').removeClass('open')
-        $('header .button-group').fadeIn()
-    },
-    "click [class*=my-login]": e => {
-        var type = $(e.currentTarget)[0].className.slice(9)
-        type = type[0].toUpperCase() + type.slice(1)
-        Meteor[`loginWith${type}`](() => {
-            Meteor.isSuperUser()
-            $('#my-login').fadeOut().after(500).hide().go()
-            $('#my-logout').after(500).show().fadeIn().go()
-        })
-    },
-    "click #my-logout": e => {
-        Meteor.logout()
-        $('#my-logout').fadeOut().after(500).hide().go()
-        $('#my-login').after(500).show().fadeIn().go()
-    }
-})
-
 Template.banner.events({
     "click .js-open-nav": e => {
         $('header .button-group').fadeOut()

@@ -47,7 +47,7 @@ $.fn.fadeIn = function () {
 }
 
 $.fn.after = function (ms) {
-    var __ = this
+    var __ = this || {}
     var _ = $(this)
     __.afterMs = ms
     __.operations = []

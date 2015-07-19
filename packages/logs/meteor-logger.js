@@ -18,14 +18,7 @@ Logger = new function () {
     var copy = {} // Stores a copy of bound console methods
     var custom = {} // Stores a custom logger
 
-    var log = function (type) {
-        var args = Array.prototype.slice.call(arguments, 1)
-        args = (args.length > 1) ? args : args[0]
-
-        // Call the regular old console
-        // TODO: Spoof console line numbers
-        copy[type](args)
-
+    var logDb = function (type, args) {
         if (args !== undefined) {
             var log = {
                 type: type,
@@ -40,6 +33,29 @@ Logger = new function () {
         }
     }
 
+    var createDbLoggers = function (names) {
+        names = names.split(' ')
+        var loggers = {}
+        for (var i = 0; i < names.length; i++) {
+            var n = names[i]
+            loggers[n] = Util.applyAllAfter(1000, logDb.curry(n))
+        }
+        return loggers
+    }
+
+    var db = createDbLoggers('log info warn error')
+
+    var log = function (type) {
+        var args = Array.prototype.slice.call(arguments, 1)
+        args = (args.length > 1) ? args : args[0]
+
+        // Call the regular old console
+        copy[type](args) // TODO: Spoof console line numbers
+
+        // Log to db
+        db[type](args)
+    }
+
     var eachWord = function (words, fn) {
         words.split(' ').forEach(fn)
     }
@@ -52,9 +68,7 @@ Logger = new function () {
     })
 
     eachMethod(function (method) {
-        custom[method] =
-            Util.applyAllAfter(1000,
-                log.curry(method))
+        custom[method] = log.curry(method)
     })
 
     var setMethods = function (useCustom) {

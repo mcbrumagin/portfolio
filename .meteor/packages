@@ -9,7 +9,6 @@ iron:router
 fourseven:scss
 natestrauser:font-awesome
 meteorhacks:npm
-
 npm-container
 peerlibrary:fs
 crud-collection
@@ -26,3 +25,4 @@ logger
 #ongoworks:spiderable
 #dfischer:phantomjs
 mcbrumagin:jquery-requestanimationframe
+coffeescript
