@@ -1,4 +1,2 @@
-# Ignore Jetbrains project files
-.idea/
-settings.json
-mup.json
+node_modules
+node_modules_backup_*
