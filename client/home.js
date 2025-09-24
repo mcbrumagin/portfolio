@@ -5,13 +5,11 @@ micro.exports = async function home() {
 
   return div({ class: 'content' },
     section({ class: 'hero' },
-      h1('Matthew C. Brumagin'),
+      h1('Matthew C Brumagin'),
       p({ class: 'hero-subtitle' }, 'Senior Software Engineer'),
-      p({ class: 'hero-description' }, 
-        `Experienced engineer with expertise in cloud 
-          infrastructure, DevOps, and full-stack development.
-        In the meantime, working on my framework, a minimal
-          SoundCloud clone, and learning VST audio programming.`
+      p({ class: 'hero-description' }, `Background in full-stack, cloud hosting, and polyglot microservices. 
+        Expertise in AWS, EKS, and GitLab CI, with a proven ability to lead projects that enhance scalability and developer productivity. 
+        Seeking a role within an organization looking to expand or modernize web/SaaS/DevOps capabilities.`
       )
     ),
 
@@ -32,22 +30,9 @@ micro.exports = async function home() {
         div({ class: 'skill-category' },
           h4('Experience'),
           div({ class: 'skill-tags' },
-            div({ class: 'skill-tag' }, '10+ Software Engineering Experience'),
+            div({ class: 'skill-tag' }, '10+ Years of Engineering Experience'),
             div({ class: 'skill-tag' }, 'Scrum Master & Mentoring'),
             div({ class: 'skill-tag' }, 'eCommerce & Portal Architecture')
-          )
-        )
-      )
-    ),
-
-    section({ class: 'mb-4' },
-      h2('Current Focus'),
-      div({ class: 'card' },
-        div({ class: 'card-content' },
-          p(`Seeking opportunities at any organization looking to expand
-              into SaaS/cloud solutions or roles focused on UI development.
-            Passionate about wearing multiple hats and contributing 
-              to dynamic, growth-oriented environments.`
           )
         )
       )

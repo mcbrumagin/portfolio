@@ -25,11 +25,9 @@ async function main() {
   router({
     '/portfolio': {
       '/': micro.modules.home,
-      '/about': micro.modules.about,
       '/experience': micro.modules.experience,
       '/projects': micro.modules.projects,
       '/skills': micro.modules.skills,
-      '/education': micro.modules.education,
       '/contact': micro.modules.contact
     }
   }, {

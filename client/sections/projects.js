@@ -5,26 +5,20 @@ micro.exports = async function projects() {
 
   return div({ class: 'content' },
     section({ class: 'hero' },
-      h1('Projects'),
+      h1('Personal Projects'),
       p(
         { class: 'hero-subtitle' },
-        'Featured Open Source Projects & Applications'
+        'Open Source Projects & Applications'
       )
     ),
 
     section({ class: 'mb-4' },
-      h2('Frameworks & Demos'),
-      p({ class: 'mb-4' },
-        `These projects showcase my functional, minimal, 
-        approach to web development.`
-      ),
-      
-      // micro-js project
+      h2('Microservice Framework'),
       div({ class: 'card' },
         div({ class: 'card-header' },
           div(
             h3({ class: 'card-title' }, 'micro-js'),
-            h4({ class: 'card-subtitle' }, 'Lightweight JavaScript Framework')
+            h4({ class: 'card-subtitle' }, 'Lightweight Microservice Framework')
           ),
           div({ class: 'card-meta' },
             p('Core Framework'),
@@ -41,11 +35,12 @@ micro.exports = async function projects() {
           
           h4('Key Features:'),
           ul(
-            li('Built-in service registry and microservices architecture'),
+            li('Registry server w/ built-in service discovery'),
             li('Lightweight routing system with support for nested routes'),
-            li('File system utilities and async/await support'),
+            li('Round-robin load balancing baked in'),
             li('Server-side rendering capabilities'),
-            li('Extensible plugin architecture')
+            li('Built to allow any function as a microservice'),
+            li('Registered services are injected into the context')
           ),
           
           h4('Technical Highlights:'),
@@ -86,24 +81,24 @@ micro.exports = async function projects() {
         ),
         div({ class: 'card-content' },
           p(`A companion library to micro-js that provides a clean, 
-            declarative way to generate HTML using JavaScript.
+              declarative way to generate HTML using JavaScript.
             Unlike react, it's actually just javascript.
-            The library makes no assumptions about when to render.
-            Performance and state management is in your hands.`
+            The library makes no assumptions about rendering,
+              but offers a simple helper.`
           ),
           
           h4('Key Features:'),
           ul(
-            li('Declarative HTML generation with JavaScript functions'),
+            li('Declarative HTML generation'),
             li('Event handling integration'),
             li('Server-side and client-side rendering support'),
             li('No virtual DOM overhead - direct DOM manipulation'),
-            li('Seamless integration with micro-js framework and routing')
+            li('Seamless integration with micro-js and its router')
           ),
           
-          h4('Developer Benefits:'),
+          h4('Technical Highlights:'),
           ul(
-            li('Write HTML structure using familiar JavaScript syntax'),
+            li('Write HTML structure using plain JavaScript syntax'),
             li('No build step required - works directly in browsers'),
             li('Eliminates context switching between HTML templates and JavaScript'),
             li('Powerful composition patterns for reusable components')
@@ -123,7 +118,7 @@ micro.exports = async function projects() {
     ),
 
     section({ class: 'mb-4' },
-      h2('Featured Applications'),
+      h2('Applications'),
       p({ class: 'mb-4' }, 'Real-world applications built using the micro-js ecosystem:'),
       
       // SoundClone project
@@ -175,77 +170,6 @@ micro.exports = async function projects() {
                 class: 'button-link' 
               }, 'View Source')
             )
-          )
-        )
-      )
-    ),
-
-    section({ class: 'mb-4' },
-      h2('Development Philosophy'),
-      div({ class: 'card' },
-        div({ class: 'card-content' },
-          h3('Why Microservices?'),
-          p(`These projects reflect my belief in building lightweight, 
-            efficient solutions that solve real problems 
-            without unnecessary complexity.
-            The micro-js ecosystem demonstrates:`
-          ),
-          
-          ul(
-            li(
-              strong('Simplicity'),
-              ': Clean APIs that are easy to understand and use'
-            ),
-            li(
-              strong('Performance'),
-              ': Minimal overhead and fast execution'
-            ),
-            li(
-              strong('Flexibility'),
-              ': Modular architecture that permits painless iterative scaling'
-            ),
-            li(
-              strong('Maintainability'),
-              ': Small codebases that are easy to debug and extend'
-            ),
-            li(
-              strong('Developer Experience'),
-              ': Tools that enhance rather than hinder development'
-            )
-          )
-        )
-      )
-    ),
-
-    section({ class: 'mb-4' },
-      h2('Technical Approach'),
-      div({ class: 'skills-grid' },
-        div({ class: 'skill-category' },
-          h4('Open Source'),
-          p(
-            `These projects were developed initially by me,
-            and published under permissive licensing.
-            I would love to have others fork or contribute to the projects.
-            The web world runs on open source at the heart.`
-          )
-        ),
-        div({ class: 'skill-category' },
-          h4('Performance Optimization'),
-          p(
-            `Achieved excellent performance metrics through 
-            careful engineering choices, proving that 
-            lightweight solutions can compete with larger frameworks.`
-          )
-        ),
-        div({ class: 'skill-category' },
-          h4('Developer Experience'),
-          p(
-            `Focused on creating tools that enhance productivity 
-            and reduce cognitive load.
-            The accessiblity of the code is showcased by 
-            the fact that most of this portfolio website's code 
-            was written by AI (Claude 4 Sonnet) 
-            using exclusively micro-js and micro-js-html.`
           )
         )
       )

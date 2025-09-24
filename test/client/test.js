@@ -218,10 +218,9 @@ test('Education information is complete', () => {
 test('Router configuration is valid', () => {
   const routes = [
     '/portfolio/',
-    '/portfolio/about',
     '/portfolio/experience', 
     '/portfolio/skills',
-    '/portfolio/education',
+    '/portfolio/projects',
     '/portfolio/contact'
   ]
   

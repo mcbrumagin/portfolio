@@ -10,7 +10,7 @@
   "author": "Matt Brumagin",
   "license": "ISC",
   "dependencies": {
-    "micro-js": "file:../../../micro-js",
-    "micro-js-html": "file:../../../micro-js-html"
+    "micro-js": "file:../../micro-js",
+    "micro-js-html": "file:../../micro-js-html"
   }
 }

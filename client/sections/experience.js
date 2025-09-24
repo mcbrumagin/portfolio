@@ -6,9 +6,7 @@ micro.exports = async function experience() {
   return div({ class: 'content' },
     section({ class: 'hero' },
       h1('Professional Experience'),
-      p({ class: 'hero-subtitle' }, 'Software Engineer since 2013'),
-      p({ class: 'hero-subtitle' }, '3 Years as Scrum Master'),
-      p({ class: 'hero-subtitle' }, '10 Years in SaaS/Cloud/Ecommerce')
+      p({ class: 'hero-subtitle' }, 'Software Engineer since 2013')
     ),
 
     section({ class: 'mb-4' },
@@ -22,20 +20,28 @@ micro.exports = async function experience() {
             h4({ class: 'card-subtitle' }, 'Accusoft | Tampa, FL')
           ),
           div({ class: 'card-meta' },
-            p('December 2015 - August 2025'),
+            p('Dec 2015 - Aug 2025'),
             p({ class: 'text-muted' }, '9 years, 8 months')
           )
         ),
         div({ class: 'card-content' },
-          p('Led modernization efforts and maintained critical cloud-hosted products while serving in multiple leadership roles.'),
           ul(
-            li('Migrated numerous legacy services from TeamCity and EC2 to GitLab CI and EKS, significantly improving CI/CD pipelines and infrastructure efficiency'),
-            li('Maintained a React UI portal for cloud-hosted products, ensuring seamless user experience across multiple client applications'),
-            li('Developed and maintained a comprehensive Braintree e-commerce backend, supporting multiple in-house products and revenue streams'),
-            li('Led the development of a Redis cache library, integrating with e-commerce and usage metrics systems for enhanced performance'),
-            li('Served as Scrum Master for several years (2017-2020), facilitating agile processes and improving team collaboration'),
-            li('Regularly onboarded interns and newer developers, fostering team growth and knowledge transfer across the organization'),
-            li('Maintained primary hosted product (PrizmDoc Viewer) and various SDK demos (OCR, barcode), ensuring product stability and functionality')
+            li('Deployed and maintained several in-house Docker images to EKS/EC2.'),
+            li('Hosted Prizmdoc Viewer/Application Services, OCR/Barcode demos, and more.'),
+            li('Migrated dozens of legacy services from Teamcity/EC2 to GitLab CI w/ EKS.'),
+            li('Cut deployment time in half; improving infrastructure cost/efficiency.'),
+            li('Pivotal in the creation of a Braintree e-commerce system (Node.js).'),
+            li('Supported multiple in-house product billing systems, w/ ~10k+ users/accounts.'),
+            li('Took ownership of the cloud portal & admin React projects, extending features.'),
+            li('Assisted with a company-wide CRM migration of ~40k+ accounts to Salesforce.'),
+            li('Our team was the first to implement Prometheus/alerting/PagerDuty rotation.'),
+            li('Led the design and implementation of our Redis cache module.'),
+            li('Reduced usage authorization and subscription update times by ~90%.'),
+            li('Optimized API test runtime from ~40min to ~4min with a custom runner.'),
+            li('Created a multi-error validator module to decrease app/test debugging time.'),
+            li('Created an SQS testing helper for message isolation during development.'),
+            li('Served as a cross-functional Engineer & Scrum Master for several years.'),
+            li('Met with other leaders to foster better processes and agile company culture.')
           )
         )
       ),
@@ -44,44 +50,42 @@ micro.exports = async function experience() {
       div({ class: 'card' },
         div({ class: 'card-header' },
           div(
-            h3({ class: 'card-title' }, 'Software Engineer'),
+            h3({ class: 'card-title' }, 'Software Engineer II'),
             h4({ class: 'card-subtitle' }, 'Greenway Health | Tampa, FL')
           ),
           div({ class: 'card-meta' },
-            p('August 2013 - November 2015'),
+            p('Aug 2013 - Nov 2015'),
             p({ class: 'text-muted' }, '2 years, 3 months')
           )
         ),
         div({ class: 'card-content' },
-          p('Contributed to healthcare software solutions with a focus on patient portal systems and regulatory compliance.'),
           ul(
-            li('Assisted with a massive patient portal migration, ensuring data integrity and system continuity throughout the transition'),
-            li('Developed and maintained new and existing patient portal systems, enhancing patient access and engagement capabilities'),
-            li('Helped deliver a meaningful-use compliant system and successfully passed 3rd party audits, ensuring regulatory compliance'),
-            li('Collaborated with offshore engineers to facilitate DAO and backend code for portal systems, optimizing development workflows'),
-            li('Designed and created an asynchronous API in C# that allowed non-blocking client requests and separate tracking of events, improving system responsiveness')
+            li('Worked on new (C#/.NET) and existing (Java/Spring/JSP) patient portal systems.'),
+            li('Instrumental in the KT for two legacy portal systems after Vitera was acquired.'),
+            li('Migrated over a million patient records for ~70k+ healthcare providers'),
+            li('Helped deliver a meaningful-use compliant system and passed 3rd party audits.'),
+            li('Collaborated with offshore engineers on backend portal system implementation.'),
+            li('Designed a C# async API for non-blocking client requests and events.')
           )
         )
       )
     ),
 
     section({ class: 'mb-4' },
-      h2('Key Achievements'),
-      div({ class: 'skills-grid' },
-        div({ class: 'skill-category' },
-          h4('Infrastructure Modernization'),
-          p('Successfully migrated multiple legacy services to modern cloud infrastructure, ' +
-            'reducing deployment times by 60% and improving system reliability.')
-        ),
-        div({ class: 'skill-category' },
-          h4('Team Leadership'),
-          p('Led cross-functional teams as Scrum Master, improving sprint velocity by 40% ' +
-            'and establishing best practices for agile development.')
-        ),
-        div({ class: 'skill-category' },
-          h4('Healthcare Compliance'),
-          p('Delivered HIPAA-compliant healthcare solutions, successfully passing rigorous ' +
-            '3rd party audits and ensuring regulatory adherence.')
+      h2('Education'),
+      div({ class: 'card' },
+        div({ class: 'card-header' },
+          div(
+            h3({ class: 'card-title' }, 
+              `Bachelor of Science in Electrical Engineering`
+            ),
+            h4({ class: 'card-subtitle' }, 
+              `Minors in Software & Mathematics`
+            )
+          ),
+          div({ class: 'card-meta' },
+            p('Clarkson University | Class of 2013')
+          )
         )
       )
     )

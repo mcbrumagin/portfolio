@@ -29,11 +29,9 @@ async function getClient() {
       script({ src: '/assets/home.js' }),
 
       // Portfolio sections
-      script({ src: '/assets/sections/about.js' }),
       script({ src: '/assets/sections/experience.js' }),
       script({ src: '/assets/sections/projects.js' }),
       script({ src: '/assets/sections/skills.js' }),
-      script({ src: '/assets/sections/education.js' }),
       script({ src: '/assets/sections/contact.js' }),
 
       script({ src: '/assets/nav.js' }),

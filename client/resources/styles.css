@@ -333,6 +333,73 @@ a:visited {
   transform: scale(1.05);
 }
 
+/* Proficiency color coding */
+.proficiency-legend {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.legend-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.legend-color.expert,
+.skill-tag.expert {
+  background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.legend-color.advanced,
+.skill-tag.advanced {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+}
+
+.legend-color.intermediate,
+.skill-tag.intermediate {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+.skill-tag.expert {
+  border: 1px solid #10b981;
+  color: #ecfdf5;
+}
+
+.skill-tag.advanced {
+  border: 1px solid #3b82f6;
+  color: #dbeafe;
+}
+
+.skill-tag.intermediate {
+  border: 1px solid #f59e0b;
+  color: #fef3c7;
+}
+
+.skill-tag.expert:hover {
+  background: #10b981;
+  transform: scale(1.05);
+}
+
+.skill-tag.advanced:hover {
+  background: #3b82f6;
+  transform: scale(1.05);
+}
+
+.skill-tag.intermediate:hover {
+  background: #f59e0b;
+  transform: scale(1.05);
+}
+
 /* Contact Section */
 .contact-info {
   display: grid;

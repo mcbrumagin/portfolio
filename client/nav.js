@@ -31,11 +31,9 @@ micro.exports = function createNav() {
     div({ class: 'nav-brand' }, 'Matt Brumagin'),
     ul({ class: 'nav-links' },
       createNavLink('/', 'Home'),
-      createNavLink('/about', 'About'),
       createNavLink('/experience', 'Experience'),
-      createNavLink('/projects', 'Projects'),
       createNavLink('/skills', 'Skills'),
-      createNavLink('/education', 'Education'),
+      createNavLink('/projects', 'Projects'),
       createNavLink('/contact', 'Contact')
     )
   )

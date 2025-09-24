@@ -43,48 +43,6 @@ micro.exports = async function contact() {
       )
     ),
 
-    section({ class: 'mb-4' },
-      h2('What I\'m Looking For'),
-      div({ class: 'card' },
-        div({ class: 'card-content' },
-          h3('Ideal Opportunities'),
-          p('I\'m particularly interested in roles that offer:'),
-          div({ class: 'indent' },
-            p(strong('Smaller Company Environment'), 
-            ': Where I can wear multiple hats and make a significant impact'),
-            p(strong('SaaS/Cloud Expansion'), 
-            ': Help companies modernize their infrastructure and expand cloud solutions'),
-            p(strong('DevOps Enhancement'), 
-            ': Improve development workflows, CI/CD pipelines, and deployment practices'),
-            p(strong('UI/Frontend Focus'), 
-            ': Opportunities to work on user-centric design and modern frontend technologies'),
-            p(strong('Team Leadership'), 
-            ': Mentor junior developers and contribute to technical decision-making')
-          )
-        )
-      )
-    ),
-
-    section({ class: 'mb-4' },
-      h2('Why Work With Me'),
-      div({ class: 'skills-grid' },
-        div({ class: 'skill-category' },
-          h4('Proven Track Record'),
-          p('10+ years of experience delivering complex software solutions, with a history of successful migrations, ' +
-            'system optimizations, and team leadership.')
-        ),
-        div({ class: 'skill-category' },
-          h4('Full-Stack Expertise'),
-          p('Comprehensive knowledge across the technology stack, from cloud infrastructure to frontend development, ' +
-            'enabling me to contribute effectively across all project phases.')
-        ),
-        div({ class: 'skill-category' },
-          h4('Growth Mindset'),
-          p('Continuously learning and adapting to new technologies, with a passion for solving challenging problems ' +
-            'and driving innovation.')
-        )
-      )
-    ),
 
     section({ class: 'text-center mt-4' },
       h2('Let\'s Connect'),
