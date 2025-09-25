@@ -36,7 +36,7 @@ async function getClient() {
         script({ src: '/assets/app.js', type: 'module' }),
 
         // Test harness
-        // script({ src: '/assets/test.js' })
+        script({ src: '/assets/test.js' })
       ),
       body({ id: 'app' })
     ).render()
