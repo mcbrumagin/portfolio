@@ -1,13 +1,21 @@
 /* Mobile-specific styles for portfolio */
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
+  html {
+    font-size: 200%;
+  }
+
   /* Navigation adjustments */
   .nav {
     padding: 0.75rem 1rem;
-    flex-direction: column;
     gap: 0.75rem;
     position: fixed;
+    /* flex-direction: column; /* NOTE: may be needed if more links are added */
     background: rgba(26, 27, 38, 0.98);
+  }
+
+  .nav a {
+    font-size: 1rem;
   }
   
   .nav-brand {
@@ -138,8 +146,17 @@
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 720px) {
+  html {
+    font-size: 250%;
+  }
+
   /* Extra small screens */
+
+  .nav {
+    flex-direction: column;
+  }
+
   .nav-links {
     gap: 0.5rem;
   }

@@ -1,7 +1,9 @@
-micro.exports = async function projects() {
+import { htmlTags } from '../modules/micro-js-html/src/index.js'
+
+export default async function projects() {
   await micro.modules.renderPageTemplate()
   
-  const { div, h1, h2, h3, h4, p, section, ul, li, a, button, strong, em } = micro.html
+  const { div, h1, h2, h3, h4, p, section, ul, li, a, button, strong, em } = htmlTags
 
   return div({ class: 'content' },
     section({ class: 'hero' },
@@ -130,27 +132,28 @@ micro.exports = async function projects() {
           ),
           div({ class: 'card-meta' },
             p('Web Application'),
-            p({ class: 'text-muted' }, 'micro-js/HTML/CSS')
+            p({ class: 'text-muted' }, 'JavaScript/Node.js')
           )
         ),
         div({ class: 'card-content' },
-          p('A streamlined audio sharing platform inspired by SoundCloud, built entirely with micro-js and micro-js-html. ' +
-            'Features real-time audio recording, playback, and sharing capabilities with a clean, modern interface.'),
+          p(`Simple single-user (so far) audio hosting platform 
+              inspired by SoundCloud and voice memos.
+            Features real-time audio recording, playback, 
+              and sharing capabilities with a clean, modern interface.`
+          ),
           
           h4('Core Features:'),
           ul(
             li('In-browser audio recording using Web Audio API'),
             li('Real-time audio playback and streaming'),
             li('User-friendly upload and sharing interface'),
-            li('Responsive design optimized for all devices'),
-            li('Minimal, fast-loading architecture'),
-            li('Clean, modern UI following best UX practices')
+            li('Responsive design optimized for all devices')
           ),
           
           h4('Technical Implementation:'),
           ul(
-            li('Built entirely with micro-js framework for optimal performance'),
             li('Utilizes micro-js-html for declarative UI components'),
+            li('Migrating to use micro-js for the backend functions'),
             li('Web Audio API integration for recording functionality'),
             li('Mobile-first responsive design')
           ),
@@ -171,26 +174,6 @@ micro.exports = async function projects() {
               }, 'View Source')
             )
           )
-        )
-      )
-    ),
-
-    section({ class: 'text-center mt-4' },
-      h2('Explore the Ecosystem'),
-      p({ class: 'mb-4' }, 'These projects showcase my approach to building efficient, maintainable software solutions.'),
-      div({ class: 'button-group' },
-        button(
-          a({ 
-            href: 'https://github.com/mcbrumagin', 
-            target: '_blank', 
-            class: 'button-link' 
-          }, 'View All Projects')
-        ),
-        button(
-          a({ 
-            href: '/portfolio/contact', 
-            class: 'button-link' 
-          }, 'Discuss Collaboration')
         )
       )
     )

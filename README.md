@@ -3,12 +3,12 @@
 A professional portfolio website showcasing my experience as a Senior Software Engineer, built using my zero-dependency micro-js/micro-js-html framework.
 
 # TODO before go-live
-- remove server-side? host directly on s3?
 - triple check wording and structure
 - update sections to more directly reflect current resume
 - downloadable pdf (other doc types?) of resume
 - possibly remove or condense redundant or TMI sections
 - add tooltips or color-codes explaining relative experience of skills?
+- zoom in on sections on hover (transform slightly larger)
 - touchup README
 - push up version 1 to git
 - host on s3

@@ -1,70 +1,88 @@
-const {
+import {
   registryServer,
   createRoute,
   createService,
   createServices,
   callService,
-  Logger,
-  fs
-} = require('micro-js')
+  overrideConsoleGlobally
+} from 'micro-js'
 
-new Logger({
-  overrideConsoleLog: true,
-  includeLogLineNumbers: true
+import fs from 'fs/promises'
+
+overrideConsoleGlobally({
+  includeLogLineNumbers: true // TODO doesn't work for some reason
 })
 
-const { loadClient, html: { html, head, link, script, body } } = require('micro-js-html')
+import { htmlTags } from 'micro-js-html'
+const { html, head, meta, link, script, body } = htmlTags
 
 async function getClient() {
-  return html(
-    head(
-      script(`console.time('pageLoad'); var initTime = new Date()`),
-      link({ rel: 'stylesheet', href: '/assets/resources/styles.css' }),
+  try {
+    return html(
+      head(
+        // <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        meta({ name: 'viewpoer', content: 'width=device-width, initial-scale=1.0' }),
+        script(`console.time('pageLoad'); window.initTime = new Date()`),
+        link({ rel: 'stylesheet', href: '/assets/resources/styles.css' }),
 
-      // prevent browser from requesting favicon
-      link({ rel: 'icon', type: 'image/png', href: 'data:image/png;base64,iVBORw0KGgo=' }),
+        // prevent browser from requesting favicon
+        link({ rel: 'icon', type: 'image/png', href: 'data:image/png;base64,iVBORw0KGgo=' }),
 
-      script({ src: '/assets/micro-js-html.js' }),
-      script({ src: '/assets/global.js' }),
-      script({ src: '/assets/home.js' }),
+        // global helpers
+        script({ src: '/assets/modules/micro-js-html/src/client-init.js' }),
+        script({ src: '/assets/modules/micro-js-html/src/client-utils.js' }),
 
-      // Portfolio sections
-      script({ src: '/assets/sections/experience.js' }),
-      script({ src: '/assets/sections/projects.js' }),
-      script({ src: '/assets/sections/skills.js' }),
-      script({ src: '/assets/sections/contact.js' }),
+        // main client entry point
+        script({ src: '/assets/app.js', type: 'module' }),
 
-      script({ src: '/assets/nav.js' }),
-      script({ src: '/assets/app.js' }),
-
-      script({ src: '/assets/test.js' }),
-    ),
-    body({ id: 'app' })
-  ).render()
+        // Test harness
+        // script({ src: '/assets/test.js' })
+      ),
+      body({ id: 'app' })
+    ).render()
+  } catch (err) {
+    console.error(err.stack)
+  }
 }
 
 async function getAsset(payload) {
-  let assetPath = '../client/' + payload.url
-    .split('/')
-    .slice(2 /* ignore "assets" */)
-    .join('/')
-
-  if (payload.url === '/assets/test.js') {
-    return { payload: await fs.read('../test/client/test.js'), dataType: 'text/javascript' }
-  }
-
   try {
-    let result = (assetPath === '../client/micro-js-html.js')
-      ? await loadClient()
-      : await fs.read(assetPath)
+    if (payload.url === '/assets/test.js') {
+      return { payload: await fs.readFile('../test/client/test.js'), dataType: 'text/javascript' }
+    } else if (payload.url.includes('module')) {
+      let modulePath = '../client/node_modules/' + payload.url
+        .split('/')
+        .slice(3 /* ignore "assets/modules/" */)
+        .join('/')
 
-    let dataType = assetPath.includes('.js') && 'text/javascript'
-      || assetPath.includes('.css') && 'text/css'
-      || assetPath.includes('.svg') && 'image/svg+xml'
-      || assetPath.includes('.png') && 'image/png'
-      || 'text/html'
+      let moduleScript = await fs.readFile(modulePath)
+      return { payload: moduleScript, dataType: 'text/javascript' }
+    } else {
+      // payload.url includes asset
+      let assetPath = '../client/' + payload.url
+        .split('/')
+        .slice(2 /* ignore "assets" */)
+        .join('/')
 
-    return { payload: result, dataType }
+      let result = await fs.readFile(assetPath)
+
+      if (payload.url.includes('.pdf')) {
+        let dataType = 'application/pdf'
+        let headers = {
+          'Content-Type': 'application/pdf',
+          'Content-Disposition': 'attachment; filename="mcbrumagin-resume.pdf"'
+        }
+        return { payload: result, dataType, headers }
+      } else {
+        let dataType = assetPath.includes('.js') && 'text/javascript; charset=UTF-8'
+          || assetPath.includes('.css') && 'text/css; charset=UTF-8'
+          || assetPath.includes('.svg') && 'image/svg+xml; charset=UTF-8'
+          || assetPath.includes('.png') && 'image/png'
+          || 'text/html; charset=UTF-8'
+
+        return { payload: result, dataType }
+      }
+    }
   } catch (err) {
     console.error(err.stack)
     return { status: 404 }

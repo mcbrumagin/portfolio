@@ -1,5 +1,5 @@
 {
   "dependencies": {
-    "micro-js-html": "file:../../micro-js-html"
+    "micro-js-html": "file:../../micro-framework/micro-js-html"
   }
 }

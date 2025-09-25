@@ -1,3 +1,12 @@
+// import * as microTemp from './modules/micro-js-html/src/index.js'
+
+// window.micro = microTemp
+// console.log({microTemp})
+
+// import * as localMicro from './modules/micro-js-html/src/client-init.js'
+// window.micro = localMicro
+// import './modules/micro-js-html/src/client-utils.js'
+
 const findOne = selector => document.querySelector(selector)
 const findAll = selector => document.querySelectorAll(selector)
 
@@ -22,7 +31,7 @@ const createPlaceholder = page => {
     ).onReady(() => fadeIn('.content'))
 }
 
-const getTotalLoadTime = () => totalAppLoadTime = new Date() - initTime
+const getTotalLoadTime = () => window.totalAppLoadTime = new Date() - window.initTime
 
 // Smooth scroll utility
 const smoothScrollTo = (element, duration = 800) => {
@@ -49,4 +58,16 @@ const smoothScrollTo = (element, duration = 800) => {
   requestAnimationFrame(animation)
 }
 
-
+// TODO?
+export default function initGlobals() {
+  window.findOne = findOne
+  window.findAll = findAll
+  window.addClass = addClass
+  window.removeClass = removeClass
+  window.toggleClass = toggleClass
+  window.fadeIn = fadeIn
+  window.fadeOut = fadeOut
+  window.createPlaceholder = createPlaceholder
+  window.smoothScrollTo = smoothScrollTo
+  window.getTotalLoadTime = getTotalLoadTime
+}

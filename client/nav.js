@@ -1,5 +1,7 @@
-micro.exports = function createNav() {
-  const { nav, a, div, ul, li } = micro.html
+import { htmlTags } from './modules/micro-js-html/src/index.js'
+
+export default function createNav() {
+  const { nav, a, div, ul, li } = htmlTags
 
   const baseUrl = '/portfolio'
   
@@ -8,33 +10,30 @@ micro.exports = function createNav() {
 
   const createNavLink = (href, text) => {
     const isActive = currentPath === href || currentPath.startsWith(href + '/')
-    return li(
-      a({ 
-        class: `link ${isActive ? 'active' : ''}`, 
-        href: baseUrl + href,
-        onclick: (e) => {
-          // Smooth scroll for same-page navigation
-          if (href.startsWith('#')) {
-            e.preventDefault()
-            const targetId = href.substring(1)
-            const targetElement = document.getElementById(targetId)
-            if (targetElement) {
-              smoothScrollTo(targetElement)
-            }
+    return a({ 
+      class: `link ${isActive ? 'active' : ''}`, 
+      href: baseUrl + href,
+      onclick: (e) => {
+        // Smooth scroll for same-page navigation
+        if (href.startsWith('#')) {
+          e.preventDefault()
+          const targetId = href.substring(1)
+          const targetElement = document.getElementById(targetId)
+          if (targetElement) {
+            smoothScrollTo(targetElement)
           }
         }
-      }, text)
-    )
+      }
+    }, text)
   }
 
   return nav({ id: 'nav', class: 'nav' },
-    div({ class: 'nav-brand' }, 'Matt Brumagin'),
+    div({ class: 'nav-brand' }, createNavLink('/', 'M. Brumagin')),
     ul({ class: 'nav-links' },
-      createNavLink('/', 'Home'),
-      createNavLink('/experience', 'Experience'),
-      createNavLink('/skills', 'Skills'),
-      createNavLink('/projects', 'Projects'),
-      createNavLink('/contact', 'Contact')
+      li(createNavLink('/', 'Home')),
+      li(createNavLink('/resume', 'Resume')),
+      li(createNavLink('/projects', 'Projects')),
+      // li(createNavLink('/contact', 'Contact'))
     )
   )
 }
