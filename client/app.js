@@ -8,7 +8,7 @@ import projects from './sections/projects.js'
 import createNav from './nav.js'
 
 import { htmlTags } from './modules/micro-js-html/src/index.js'
-
+import { createFooter } from './footer.js'
 
 micro.exports = async function renderPageTemplate(includeNav = true) {
   const { div } = htmlTags
@@ -18,7 +18,7 @@ micro.exports = async function renderPageTemplate(includeNav = true) {
   body.innerHTML = div({ id: 'main' },
     includeNav ? createNav() : '',
     div({ id: 'content' }),
-    div({ class: 'load-time', /* style: 'display: none' */ })
+    createFooter()
   ).render()
 }
 
@@ -32,6 +32,7 @@ async function main() {
 
   await micro.modules.renderPageTemplate(false)
 
+  let totalLoadTime = null
   router({
     '/portfolio': {
       '/': home,
@@ -41,13 +42,17 @@ async function main() {
   }, {
     renderLocation: '#content',
     before: () => {
-      if (!window.initTime) window.initTime = new Date()
+      // TODO client load time
+      // if (!window.initTime) window.initTime = new Date()
     },
     after: async () => {
       let loadTime = await micro.waitForElement('.load-time')
-      let totalLoadTime = getTotalLoadTime()
-      loadTime.innerHTML = htmlTags.p({ class: 'smaller-text' }, totalLoadTime + 'ms')
-      window.initTime = null
+      if (totalLoadTime == null) {
+        totalLoadTime = getTotalLoadTime()
+        console.log({ totalLoadTime })
+        // window.initTime = null
+      }
+      loadTime.innerHTML = htmlTags.p({ class: 'smaller-text' }, `Initial load: ${totalLoadTime}ms`)
     }
   })
 }

@@ -1,39 +1,23 @@
 # Matthew C. Brumagin - Portfolio
 
-A professional portfolio website showcasing my experience as a Senior Software Engineer, built using my zero-dependency micro-js/micro-js-html framework.
+My portfolio website showcasing my experience as a Senior Software Engineer, built using my zero-dependency micro-js/micro-js-html framework.
 
-# TODO before go-live
-- triple check wording and structure
-- update sections to more directly reflect current resume
-- downloadable pdf (other doc types?) of resume
-- possibly remove or condense redundant or TMI sections
-- add tooltips or color-codes explaining relative experience of skills?
-- zoom in on sections on hover (transform slightly larger)
-- touchup README
-- push up version 1 to git
-- host on s3
-- configure/test basic SEO
-- wire up mcbrumagin.com and go-live
-- configure google analytics to track landings, etc
-  - track resume downloads and portfolio/project clicks as the main goals
 
-## 🚀 What's under the hood?
+
+## 🚘 What's under the hood?
 
 - **Framework**: micro-js + micro-js-html
 - **Styling**: Custom CSS with CSS Grid and Flexbox
 - **Responsive Design**: Optimized for desktop, tablet, and mobile devices
 - **Fast Loading**: Lightweight for optimal performance
 
+
+
 ## 🚦 Getting Started
-
-### Prerequisites
-
-- Node.js (v14 or higher)
-- Access to micro-js and micro-js-html dependencies (npm)
 
 ### Setup & Run
 
-1. Make sure Node.js is installed (v14 or higher)
+1. Make sure Node.js is installed (v18+)
 2. Clone and navigate to the portfolio directory
 3. Install server/client dependencies:
    ```bash
@@ -51,14 +35,32 @@ A professional portfolio website showcasing my experience as a Senior Software E
 The server will run on port 3000 (configured via SERVICE_REGISTRY_ENDPOINT).
 
 
+
+## 🚀 Infrastructure and CI/CD
+
+This project uses **Terraform** for infrastructure-as-code and **GitHub Actions** for automated deployments.
+
+### Infrastructure Overview
+
+- **AWS**: All resources are provisioned in your AWS account.
+- **EC2 Instances**: ARM-based t4g.nano for cost efficiency.
+- **ECS Cluster**: Runs Docker containers for each environment.
+- **Application Load Balancer (ALB)**: Routes traffic by hostname.
+- **Route53**: Manages DNS records for your domain and subdomains.
+- **SSL Certificate**: Single certificate covers all subdomains.
+
+### Deployment Workflow
+
+For detailed infrastructure steps, see [`terraform/README.md`](terraform/README.md).
+
+
+
 ## 🧪 Testing
 
 Run the test suite to validate components:
 
-```bash
-# The test suite runs automatically when the page loads
-# Check browser console for test results
-```
+- Uncomment `script({ src: '/assets/test.js' })` in server/index.js
+- The test suite runs automatically in the console when the page loads
 
 Tests cover:
 - Utility function validation
@@ -66,13 +68,7 @@ Tests cover:
 - Data integrity checks
 - Route configuration validation
 
-## 📱 Responsive Design
 
-The portfolio is fully responsive with breakpoints for:
-- Desktop (1200px+)
-- Tablet (768px - 1199px)  
-- Mobile (< 768px)
-- Small Mobile (< 480px)
 
 ## 🔧 Customization
 
@@ -83,25 +79,3 @@ The portfolio is fully responsive with breakpoints for:
 3. Include the script tag in `server/index.js`
 4. Update navigation in `client/nav.js`
 
-### Modifying Styles
-
-- Main styles: `client/resources/styles.css`
-- Mobile styles: `client/resources/mobile.css`
-- CSS custom properties for easy theme customization
-
-## 📈 Performance
-
-- Lightweight framework with minimal dependencies
-- Optimized CSS with efficient selectors
-- Lazy loading of components
-- Mobile-first responsive design
-- Efficient DOM manipulation
-
-## 🤝 Professional Focus
-
-This portfolio demonstrates:
-- **Full-Stack Development**: Complete application architecture
-- **Modern Web Standards**: Semantic HTML, responsive CSS, progressive enhancement
-- **Code Quality**: Clean, maintainable, and well-documented code
-- **User Experience**: Professional design with accessibility considerations
-- **DevOps Practices**: Structured project organization and deployment readiness

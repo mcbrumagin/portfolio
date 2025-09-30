@@ -5,23 +5,11 @@ export default async function resume() {
   
   const { div, h1, h2, h3, h4, p, section, ul, li, span, em, a, button } = htmlTags
 
-  // Minimal contact info component
-  const createMinimalContact = () => {
-    return div({ class: 'minimal-contact mb-4' },
-      div({ class: 'contact-links' },
-        a({ href: 'mailto:mcbrumagin@gmail.com', class: 'contact-link' }, 'mcbrumagin@gmail.com'),
-        a({ href: 'https://www.linkedin.com/in/matthew-brumagin-3868ab68/', target: '_blank', class: 'contact-link' }, 'LinkedIn'),
-        a({ href: 'https://github.com/mcbrumagin', target: '_blank', class: 'contact-link' }, 'GitHub'),
-        div({ class: 'contact-info' }, 'Tampa, FL')
-      )
-    )
-  }
 
   return div({ class: 'content' },
     section({ class: 'hero' },
       h1('Resume'),
       p({ class: 'hero-subtitle' }, 'Matthew C Brumagin'),
-      createMinimalContact(),
       div({ class: 'button-group' },
         button({ 
           class: 'download-pdf-btn', 

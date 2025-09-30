@@ -116,20 +116,6 @@
     padding: 0.2rem 0.6rem;
   }
   
-  /* Contact info */
-  .contact-info {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-  
-  .contact-item {
-    padding: 0.75rem;
-  }
-  
-  .contact-icon {
-    font-size: 1.25rem;
-  }
-  
   /* Buttons */
   button {
     padding: 0.6rem 1.2rem;

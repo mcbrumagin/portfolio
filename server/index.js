@@ -14,13 +14,13 @@ overrideConsoleGlobally({
 })
 
 import { htmlTags } from 'micro-js-html'
-const { html, head, meta, link, script, body } = htmlTags
+const { html, head, meta, link, script, body, pre } = htmlTags
 
 async function getClient() {
+  let initTime = Date.now()
   try {
     return html(
       head(
-        // <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
         meta({ name: 'viewpoer', content: 'width=device-width, initial-scale=1.0' }),
         script(`console.time('pageLoad'); window.initTime = new Date()`),
         link({ rel: 'stylesheet', href: '/assets/resources/styles.css' }),
@@ -36,9 +36,9 @@ async function getClient() {
         script({ src: '/assets/app.js', type: 'module' }),
 
         // Test harness
-        script({ src: '/assets/test.js' })
+        // script({ src: '/assets/test.js' })
       ),
-      body({ id: 'app' })
+      body({ id: 'app', 'data-init-time': initTime })
     ).render()
   } catch (err) {
     console.error(err.stack)
@@ -89,13 +89,37 @@ async function getAsset(payload) {
   }
 }
 
+async function getMemoryUsage() {
+  let mem = process.memoryUsage()
+  return { payload: JSON.stringify(mem) }
+}
+
+async function getHealth() {
+  let response = await fetch(`${process.env.SERVICE_REGISTRY_ENDPOINT}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ lookup: 'all' })
+  })
+
+  let registryMap = await response.json()
+  
+  return pre(JSON.stringify({ health: 'OK', registryMap }, null, 2)).render()
+}
+
 async function main() {
   await Promise.all([
     registryServer(),
     createRoute('/assets/*', getAsset),
-    createRoute('/portfolio/*', getClient)
+    createRoute('/portfolio/*', getClient),
+    createRoute('/mem/*', getMemoryUsage),
+    createRoute('/health', getHealth)
   ])
 }
+
+//setInterval(() => {
+//  let mem = process.memoryUsage()
+//  console.info(`Memory usage ${mem.rss/1024/1024}MB`)
+//}, 10000)
 
 main()
 .then(() => console.log('Portfolio server ready!'))

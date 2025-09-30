@@ -12,6 +12,6 @@
   "license": "ISC",
   "dependencies": {
     "micro-js": "0.0.5",
-    "micro-js-html": "0.0.3"
+    "micro-js-html": "^0.0.4"
   }
 }

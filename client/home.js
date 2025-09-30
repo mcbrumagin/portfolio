@@ -3,25 +3,13 @@ import { htmlTags } from './modules/micro-js-html/src/index.js'
 export default async function home() {
   await micro.modules.renderPageTemplate(true)
   
-  const { div, h1, h2, h4, p, a, section, button, span } = htmlTags
+  const { div, h1, h2, h4, p, a, section, button, span, em } = htmlTags
 
-  // Minimal contact info component
-  const createMinimalContact = () => {
-    return div({ class: 'minimal-contact mb-3' },
-      div({ class: 'contact-links' },
-        a({ href: 'mailto:mcbrumagin@gmail.com', class: 'contact-link' }, 'mcbrumagin@gmail.com'),
-        a({ href: 'https://www.linkedin.com/in/matthew-brumagin-3868ab68/', target: '_blank', class: 'contact-link' }, 'LinkedIn'),
-        a({ href: 'https://github.com/mcbrumagin', target: '_blank', class: 'contact-link' }, 'GitHub'),
-        div({ class: 'contact-info' }, 'Tampa, FL')
-      )
-    )
-  }
 
   return div({ class: 'content' },
     section({ class: 'hero' },
       h1('Matthew C Brumagin'),
       p({ class: 'hero-subtitle' }, 'Senior Software Engineer'),
-      createMinimalContact(),
       p({ class: 'hero-description indent' }, `Background in full-stack, cloud hosting, and polyglot microservices. 
         Expertise in AWS, EKS, and GitLab CI, with a proven ability to lead projects that enhance scalability and developer productivity. 
         Seeking a role within an organization looking to expand or modernize cloud/SaaS/DevOps capabilities.`
@@ -75,17 +63,14 @@ export default async function home() {
             target: '_blank'
           }, 'Download Resume PDF')
         ),
-        button(a({ href: '/portfolio/resume', class: 'button-link' }, 'View Resume Online')),
-        button(a({ href: '/portfolio/projects', class: 'button-link' }, 'View Projects')),
+        button({ onclick: () => findOne('[href="/portfolio/resume"]').click() }, 
+          a({ href: '/portfolio/resume', class: 'button-link' }, 'View Resume Online')
+        ),
+        button({ onclick: () => findOne('[href="/portfolio/projects"]').click() },
+          a({ href: '/portfolio/projects', class: 'button-link' }, 'View Projects')
+        ),
         // button(a({ href: '/portfolio/contact', class: 'button-link' }, 'Contact Me'))
       )
     )
   ).onReady(() => fadeIn('.content'))
-}
-
-function downloadFile(filePath) {
-  var link=document.createElement('a')
-  link.href = filePath
-  link.download = filePath.substr(filePath.lastIndexOf('/') + 1)
-  link.click()
 }
