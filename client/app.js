@@ -26,14 +26,17 @@ async function main() {
   const { router, isMobileBrowser, loadResource } = micro // TODO refactor as modules
 
   micro.htmlTags = htmlTags
-  if (isMobileBrowser()) {
-    await loadResource('/assets/resources/mobile.css')
-  }
+  // for some reason, mobile.css looks worse all of a sudden? maybe need a refactor..
+  // also lowkey, doing desktop-only styles instead of mobile-only styles would be more sensible
+  // if (isMobileBrowser()) {
+  //   await loadResource('/assets/resources/mobile.css')
+  // }
 
   await micro.modules.renderPageTemplate(false)
 
   let totalLoadTime = null
   router({
+    '/': home,
     '/portfolio': {
       '/': home,
       '/resume': resume,

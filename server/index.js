@@ -114,8 +114,9 @@ async function getSimpleHealth() {
 async function main() {
   await Promise.all([
     registryServer(),
-    createRoute('/assets/*', getAsset),
+    createRoute('/', getClient),
     createRoute('/portfolio/*', getClient),
+    createRoute('/assets/*', getAsset),
     createRoute('/mem/*', getMemoryUsage),
     createRoute('/healthDetails', getHealth),
     createRoute('/health', getSimpleHealth)  // Simple health check for ALB
