@@ -14,6 +14,9 @@ export default function createNav() {
       class: `link ${isActive ? 'active' : ''}`, 
       href: baseUrl + href,
       onclick: (e) => {
+        let footer = findOne('footer')
+        addClass('hidden', footer)
+        setTimeout(() => removeClass('hidden', footer), 50)
         // Smooth scroll for same-page navigation
         if (href.startsWith('#')) {
           e.preventDefault()

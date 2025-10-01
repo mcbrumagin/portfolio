@@ -3,7 +3,7 @@ import { htmlTags } from './modules/micro-js-html/src/index.js'
 const { footer, div, a, em, h4 } = htmlTags
 
 export function createFooter() {
-  return footer({ class: 'site-footer' },
+  return footer({ class: 'site-footer hidden' },
     div({ class: 'footer-content' },
       h4({ class: 'footer-heading' }, 'Get in touch'),
       div({ class: 'footer-contact' },
@@ -16,7 +16,7 @@ export function createFooter() {
       ),
       div({ class: 'load-time', /* style: 'display: none' */ })
     )
-  )
+  ).onReady(() => removeClass('hidden', findOne('footer')))
 }
 
 export default createFooter
