@@ -45,6 +45,16 @@ async function getClient() {
   }
 }
 
+async function getRobots() {
+  let robots = await fs.readFile('../client/resources/robots.txt')
+  return { payload: robots, dataType: 'text/plain' }
+}
+
+async function getSiteMap() {
+  let sitemap = await fs.readFile('../client/resources/sitemap.xml')
+  return { payload: sitemap, dataType: 'application/xml' }
+}
+
 async function getAsset(payload) {
   try {
     if (payload.url === '/assets/test.js') {
@@ -94,7 +104,7 @@ async function getMemoryUsage() {
   return { payload: JSON.stringify(mem) }
 }
 
-async function getHealth() {
+async function getHealthDetails() {
   let response = await fetch(`${process.env.SERVICE_REGISTRY_ENDPOINT}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -103,11 +113,10 @@ async function getHealth() {
 
   let registryMap = await response.json()
   
-  return pre(JSON.stringify({ health: 'OK', registryMap }, null, 2)).render()
+  return JSON.stringify({ health: 'OK', registryMap })
 }
 
-// Add a simple health check endpoint for ALB
-async function getSimpleHealth() {
+async function getHealth() {
   return JSON.stringify({ status: 'healthy', timestamp: new Date().toISOString() })
 }
 
@@ -115,11 +124,13 @@ async function main() {
   await Promise.all([
     registryServer(),
     createRoute('/', getClient),
-    createRoute('/portfolio/*', getClient),
+    createRoute('/robots.txt', getRobots),
+    createRoute('/sitemap.xml', getSiteMap),
+    createRoute('/portfolio/*', 'getClient'), // TODO, prevent multiple service creations or throw error?
     createRoute('/assets/*', getAsset),
     createRoute('/mem/*', getMemoryUsage),
-    createRoute('/healthDetails', getHealth),
-    createRoute('/health', getSimpleHealth)  // Simple health check for ALB
+    createRoute('/healthDetails', getHealthDetails),
+    createRoute('/health', getHealth)
   ])
 }
 

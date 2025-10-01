@@ -45,17 +45,19 @@ async function main() {
   }, {
     renderLocation: '#content',
     before: () => {
-      // TODO client load time
+      // TODO client load time?
       // if (!window.initTime) window.initTime = new Date()
     },
     after: async () => {
       let loadTime = await micro.waitForElement('.load-time')
       if (totalLoadTime == null) {
         totalLoadTime = getTotalLoadTime()
-        console.log({ totalLoadTime })
-        // window.initTime = null
+        if (totalLoadTime > 5000) totalLoadTime = null // probably not an actual page load
+        // console.log({ totalLoadTime })
       }
-      loadTime.innerHTML = htmlTags.p({ class: 'smaller-text' }, `${totalLoadTime}ms`)
+      if (totalLoadTime) {
+        loadTime.innerHTML = htmlTags.p({ class: 'smaller-text' }, `${totalLoadTime}ms`)
+      }
     }
   })
 }
