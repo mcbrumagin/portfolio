@@ -3,7 +3,7 @@
 # SSL Certificate
 resource "aws_acm_certificate" "main" {
   domain_name               = var.domain_name
-  subject_alternative_names = var.environment == "prod" ? ["www.${var.domain_name}"] : ["${var.environment}.${var.domain_name}"]
+  subject_alternative_names = terraform.workspace == "prod" ? ["www.${var.domain_name}"] : ["${terraform.workspace == "default" ? "dev" : terraform.workspace}.${var.domain_name}"]
   validation_method         = "DNS"
 
   lifecycle {
@@ -11,7 +11,7 @@ resource "aws_acm_certificate" "main" {
   }
 
   tags = {
-    Name        = "${var.project_name}-cert"
+    Name        = "${var.project_name}-${terraform.workspace}-cert"
     Environment = var.environment
   }
 }

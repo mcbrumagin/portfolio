@@ -44,6 +44,15 @@ terraform/
       └── route53.tf         # DNS records and Route53 configuration
 ```
 
+## Workspaces (Environments)
+
+```
+Workspaces:
+├── default (unused)
+├── dev     → Creates portfolio-dev-* resources
+└── prod    → Creates portfolio-prod-* resources
+```
+
 ## Deployment Steps
 
 ### Step 1: Configure Infrastructure

@@ -12,7 +12,7 @@ resource "aws_vpc" "main" {
   enable_dns_support   = true
 
   tags = {
-    Name        = "${var.project_name}-vpc"
+    Name        = "${var.project_name}-${terraform.workspace}-vpc"
     Environment = var.environment
   }
 }
@@ -22,7 +22,7 @@ resource "aws_internet_gateway" "main" {
   vpc_id = aws_vpc.main.id
 
   tags = {
-    Name        = "${var.project_name}-igw"
+    Name        = "${var.project_name}-${terraform.workspace}-igw"
     Environment = var.environment
   }
 }
@@ -36,7 +36,7 @@ resource "aws_subnet" "public" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name        = "${var.project_name}-public-subnet-${count.index + 1}"
+    Name        = "${var.project_name}-${terraform.workspace}-public-subnet-${count.index + 1}"
     Environment = var.environment
   }
 }
@@ -51,7 +51,7 @@ resource "aws_route_table" "public" {
   }
 
   tags = {
-    Name        = "${var.project_name}-public-rt"
+    Name        = "${var.project_name}-${terraform.workspace}-public-rt"
     Environment = var.environment
   }
 }
@@ -65,7 +65,7 @@ resource "aws_route_table_association" "public" {
 
 # Security Group for ALB
 resource "aws_security_group" "alb" {
-  name        = "${var.project_name}-alb-sg"
+  name        = "${var.project_name}-${terraform.workspace}-alb-sg"
   description = "Security group for Application Load Balancer"
   vpc_id      = aws_vpc.main.id
 
@@ -93,14 +93,14 @@ resource "aws_security_group" "alb" {
   }
 
   tags = {
-    Name        = "${var.project_name}-alb-sg"
+    Name        = "${var.project_name}-${terraform.workspace}-alb-sg"
     Environment = var.environment
   }
 }
 
 # Security Group for ECS Tasks
 resource "aws_security_group" "ecs_tasks" {
-  name        = "${var.project_name}-ecs-tasks-sg"
+  name        = "${var.project_name}-${terraform.workspace}-ecs-tasks-sg"
   description = "Allow inbound traffic for ECS tasks"
   vpc_id      = aws_vpc.main.id
 
@@ -120,7 +120,7 @@ resource "aws_security_group" "ecs_tasks" {
   }
 
   tags = {
-    Name        = "${var.project_name}-ecs-tasks-sg"
+    Name        = "${var.project_name}-${terraform.workspace}-ecs-tasks-sg"
     Environment = var.environment
   }
 }
