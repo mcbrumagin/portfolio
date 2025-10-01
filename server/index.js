@@ -117,20 +117,20 @@ async function getHealthDetails() {
 }
 
 async function getHealth() {
-  return JSON.stringify({ status: 'healthy', timestamp: new Date().toISOString() })
+  return JSON.stringify({ health: 'OK', timestamp: new Date().toISOString() })
 }
 
 async function main() {
   await Promise.all([
     registryServer(),
     createRoute('/', getClient),
-    createRoute('/robots.txt', getRobots),
-    createRoute('/sitemap.xml', getSiteMap),
     createRoute('/portfolio/*', 'getClient'), // TODO, prevent multiple service creations or throw error?
     createRoute('/assets/*', getAsset),
-    createRoute('/mem/*', getMemoryUsage),
+    createRoute('/robots.txt', getRobots),
+    createRoute('/sitemap.xml', getSiteMap),
+    createRoute('/health', getHealth),
     createRoute('/healthDetails', getHealthDetails),
-    createRoute('/health', getHealth)
+    createRoute('/memory', getMemoryUsage)
   ])
 }
 
