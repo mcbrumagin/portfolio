@@ -26,14 +26,17 @@ async function main() {
   const { router, isMobileBrowser, loadResource } = micro // TODO refactor as modules
 
   micro.htmlTags = htmlTags
-  if (isMobileBrowser()) {
-    await loadResource('/assets/resources/mobile.css')
-  }
+  // for some reason, mobile.css looks worse all of a sudden? maybe need a refactor..
+  // also lowkey, doing desktop-only styles instead of mobile-only styles would be more sensible
+  // if (isMobileBrowser()) {
+  //   await loadResource('/assets/resources/mobile.css')
+  // }
 
   await micro.modules.renderPageTemplate(false)
 
   let totalLoadTime = null
   router({
+    '/': home,
     '/portfolio': {
       '/': home,
       '/resume': resume,
@@ -42,17 +45,19 @@ async function main() {
   }, {
     renderLocation: '#content',
     before: () => {
-      // TODO client load time
+      // TODO client load time?
       // if (!window.initTime) window.initTime = new Date()
     },
     after: async () => {
       let loadTime = await micro.waitForElement('.load-time')
       if (totalLoadTime == null) {
         totalLoadTime = getTotalLoadTime()
-        console.log({ totalLoadTime })
-        // window.initTime = null
+        if (totalLoadTime > 5000) totalLoadTime = null // probably not an actual page load
+        // console.log({ totalLoadTime })
       }
-      loadTime.innerHTML = htmlTags.p({ class: 'smaller-text' }, `Initial load: ${totalLoadTime}ms`)
+      if (totalLoadTime) {
+        loadTime.innerHTML = htmlTags.p({ class: 'smaller-text' }, `${totalLoadTime}ms`)
+      }
     }
   })
 }

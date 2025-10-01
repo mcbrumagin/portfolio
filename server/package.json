@@ -11,7 +11,7 @@
   "author": "Matt Brumagin",
   "license": "ISC",
   "dependencies": {
-    "micro-js": "0.0.5",
-    "micro-js-html": "^0.0.4"
+    "micro-js": "^0.0.9",
+    "micro-js-html": "^0.0.5"
   }
 }

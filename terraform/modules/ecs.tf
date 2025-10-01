@@ -72,7 +72,7 @@ resource "aws_ecs_task_definition" "app" {
       essential = true
       portMappings = [
         {
-          containerPort = 80
+          containerPort = 8000
           protocol      = "tcp"
         }
       ]
@@ -83,7 +83,7 @@ resource "aws_ecs_task_definition" "app" {
         },
         {
           name  = "SERVICE_REGISTRY_ENDPOINT"
-          value = "http://localhost:80"
+          value = "http://localhost:8000"
         }
       ]
       logConfiguration = {
@@ -121,7 +121,12 @@ resource "aws_ecs_service" "app" {
   load_balancer {
     target_group_arn = aws_lb_target_group.app.arn
     container_name   = "${var.project_name}-container"
-    container_port   = 80
+    container_port   = 8000
+  }
+
+  deployment_circuit_breaker {
+    enable  = true
+    rollback = true
   }
 
   depends_on = [aws_lb_listener.https]

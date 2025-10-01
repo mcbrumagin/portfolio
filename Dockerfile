@@ -19,8 +19,8 @@ COPY --from=build /app/client/ ./client/
 # COPY --from=build /app/test/ ./test/ # NOTE this is for client-side test harness
 
 # Service calls are all internal to the container, so localhost should suffice for now
-ENV SERVICE_REGISTRY_ENDPOINT="http://localhost:80"
-EXPOSE 80
+ENV SERVICE_REGISTRY_ENDPOINT="http://localhost:8000"
+EXPOSE 8000
 
 WORKDIR /app/server
 

@@ -205,6 +205,10 @@ a:visited {
   transition-delay: 50ms;
 }
 
+.hidden {
+  display: none;
+}
+
 /* Hero Section */
 .hero {
   padding: 4rem 0;

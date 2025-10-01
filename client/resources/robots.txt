@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /portfolio/
+Allow: /portfolio/resume/
+Allow: /portfolio/projects/
+Sitemap: https://mcbrumagin.com/sitemap.xml

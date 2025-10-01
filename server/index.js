@@ -4,7 +4,8 @@ import {
   createService,
   createServices,
   callService,
-  overrideConsoleGlobally
+  overrideConsoleGlobally,
+  HttpError
 } from 'micro-js'
 
 import fs from 'fs/promises'
@@ -43,6 +44,16 @@ async function getClient() {
   } catch (err) {
     console.error(err.stack)
   }
+}
+
+async function getRobots() {
+  let robots = await fs.readFile('../client/resources/robots.txt')
+  return { payload: robots, dataType: 'text/plain' }
+}
+
+async function getSiteMap() {
+  let sitemap = await fs.readFile('../client/resources/sitemap.xml')
+  return { payload: sitemap, dataType: 'application/xml' }
 }
 
 async function getAsset(payload) {
@@ -85,7 +96,13 @@ async function getAsset(payload) {
     }
   } catch (err) {
     console.error(err.stack)
-    return { status: 404 } // TODO getting "Cannot write headers after they are sent to the client"
+    // TODO should actually bind 404 through reverse-proxy
+    // return JSON.stringify({ status: 404 })
+    // currently sends a 200 with this payload and `content-type: dynamic` in micro-js@0.0.8
+    // for some reason { status: 404 } without stringifying crashes the server
+
+    // TODO throwing the error works, but returning itdoes not
+    throw new HttpError(404)
   }
 }
 
@@ -94,7 +111,7 @@ async function getMemoryUsage() {
   return { payload: JSON.stringify(mem) }
 }
 
-async function getHealth() {
+async function getHealthDetails() {
   let response = await fetch(`${process.env.SERVICE_REGISTRY_ENDPOINT}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -103,22 +120,24 @@ async function getHealth() {
 
   let registryMap = await response.json()
   
-  return pre(JSON.stringify({ health: 'OK', registryMap }, null, 2)).render()
+  return JSON.stringify({ health: 'OK', registryMap })
 }
 
-// Add a simple health check endpoint for ALB
-async function getSimpleHealth() {
-  return JSON.stringify({ status: 'healthy', timestamp: new Date().toISOString() })
+async function getHealth() {
+  return JSON.stringify({ health: 'OK', timestamp: new Date().toISOString() })
 }
 
 async function main() {
-  await Promise.all([
+  return await Promise.all([
     registryServer(),
+    createRoute('/', getClient),
+    createRoute('/portfolio/*', 'getClient'), // TODO, prevent multiple service creations or throw error?
     createRoute('/assets/*', getAsset),
-    createRoute('/portfolio/*', getClient),
-    createRoute('/mem/*', getMemoryUsage),
-    createRoute('/healthDetails', getHealth),
-    createRoute('/health', getSimpleHealth)  // Simple health check for ALB
+    createRoute('/robots.txt', getRobots),
+    createRoute('/sitemap.xml', getSiteMap),
+    createRoute('/health', getHealth),
+    createRoute('/healthDetails', getHealthDetails),
+    createRoute('/memory', getMemoryUsage)
   ])
 }
 
@@ -128,4 +147,22 @@ async function main() {
 //}, 10000)
 
 main()
-.then(() => console.log('Portfolio server ready!'))
+.then(servers => {
+  function shutdown() {
+    // TODO cleanup old `server && server` type idiom and replace with ? operator
+    servers.reverse().forEach(server => server?.terminate())
+    process.exit(0)
+  }
+
+  process.on('SIGINT', () => {
+    console.info('Received SIGINT. Initiating graceful shutdown.')
+    shutdown()
+  })
+  
+  process.on('SIGTERM', () => {
+    console.info('Received SIGTERM. Initiating graceful shutdown.')
+    shutdown()
+  })
+
+  console.log('Portfolio server ready!')
+})
