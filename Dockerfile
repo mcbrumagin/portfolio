@@ -13,9 +13,6 @@ RUN ./install.sh
 FROM node:lts-alpine
 WORKDIR /app
 
-# Install curl for health checks
-RUN apk add --no-cache curl
-
 COPY --from=build /app/server/ ./server/
 # NOTE for optimization, can use same micro-js-html for client and server
 COPY --from=build /app/client/ ./client/

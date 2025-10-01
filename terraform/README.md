@@ -21,6 +21,29 @@ Configure aws secrets for terraform: `aws configure`
 - Pushing to dev branch deploys dev
 - Pushing/merging to master deploys prod
 
+## Infrastructure Organization
+
+The Terraform configuration is organized using modules to keep things cleaner:
+
+```
+terraform/
+├── main.tf              # Root configuration using the portfolio module
+├── variables.tf         # Input variables
+├── outputs.tf           # Output values
+├── provider.tf          # AWS provider configuration
+└── modules/             # Reusable infrastructure
+      ├── main.tf            # Module documentation
+      ├── variables.tf       # Module input variables
+      ├── outputs.tf         # Module outputs
+      ├── networking.tf      # VPC, subnets, security groups
+      ├── ecr.tf             # ECR repository
+      ├── load-balancer.tf   # ALB, target groups, listeners
+      ├── ssl.tf             # SSL certificates
+      ├── ecs.tf             # ECS cluster, services, IAM
+      ├── cloudwatch.tf      # CloudWatch log groups
+      └── route53.tf         # DNS records and Route53 configuration
+```
+
 ## Deployment Steps
 
 ### Step 1: Configure Infrastructure

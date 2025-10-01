@@ -55,8 +55,9 @@ export default async function projects() {
           ),
           
           div({ class: 'button-actions' },
-            button(
-              a({ 
+            button({ onclick: () => findOne('[href*="micro-js"]').click() },
+              a({
+                // onclick: () => { throw 'test' },
                 href: 'https://github.com/mcbrumagin/micro-js', 
                 target: '_blank', 
                 class: 'button-link' 
@@ -107,7 +108,7 @@ export default async function projects() {
           ),
           
           div({ class: 'button-actions' },
-            button(
+            button({ onclick: () => findOne('[href*="micro-js-html"]').click() },
               a({ 
                 href: 'https://github.com/mcbrumagin/micro-js-html', 
                 target: '_blank', 
@@ -158,22 +159,23 @@ export default async function projects() {
             li('Mobile-first responsive design')
           ),
           
-          div({ class: 'button-actions-flex' },
-            button(
-              a({ 
-                href: 'https://soundclone.example.com', 
-                target: '_blank', 
-                class: 'button-link' 
-              }, 'Live Demo')
-            ),
-            button(
-              a({ 
-                href: 'https://github.com/mcbrumagin/soundclone', 
-                target: '_blank', 
-                class: 'button-link' 
-              }, 'View Source')
-            )
-          )
+          // Disabled until these are live
+          // div({ class: 'button-actions-flex' },
+          //   button(
+          //     a({ 
+          //       href: 'https://soundclone.example.com', 
+          //       target: '_blank', 
+          //       class: 'button-link' 
+          //     }, 'Live Demo')
+          //   ),
+          //   button(
+          //     a({ 
+          //       href: 'https://github.com/mcbrumagin/soundclone', 
+          //       target: '_blank', 
+          //       class: 'button-link' 
+          //     }, 'View Source')
+          //   )
+          // )
         )
       )
     )
