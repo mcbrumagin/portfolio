@@ -157,10 +157,11 @@ resource "aws_lb" "main" {
 
 # Target Group for ALB
 resource "aws_lb_target_group" "app" {
-  name     = "${var.project_name}-tg"
-  port     = 80
-  protocol = "HTTP"
-  vpc_id   = aws_vpc.main.id
+  name        = "${var.project_name}-tg"
+  port        = 80
+  protocol    = "HTTP"
+  vpc_id      = aws_vpc.main.id
+  target_type = "ip"
 
   health_check {
     enabled             = true
@@ -271,24 +272,56 @@ resource "aws_iam_role_policy_attachment" "ecs_task_execution_role_policy" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
+# Add CloudWatch Logs permissions for ECS task execution role
+resource "aws_iam_role_policy" "ecs_task_execution_cloudwatch_policy" {
+  name = "${var.project_name}-ecs-task-execution-cloudwatch-policy"
+  role = aws_iam_role.ecs_task_execution_role.id
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents",
+          "logs:DescribeLogStreams"
+        ]
+        Resource = "arn:aws:logs:${var.aws_region}:*:*"
+      }
+    ]
+  })
+}
+
 # ECS Task Definition
 resource "aws_ecs_task_definition" "app" {
   family                   = "${var.project_name}-task"
-  network_mode             = "bridge"
-  requires_compatibilities = ["EC2"]
-  cpu                     = 256
-  memory                  = 256
+  network_mode             = "awsvpc"
+  requires_compatibilities = ["FARGATE"]
+  cpu                     = "256"
+  memory                  = "512"
   execution_role_arn      = aws_iam_role.ecs_task_execution_role.arn
 
   container_definitions = jsonencode([
     {
       name  = "${var.project_name}-container"
       image = "${aws_ecr_repository.app.repository_url}:${var.environment == "prod" ? "latest" : "dev-latest"}"
+      essential = true
       portMappings = [
         {
           containerPort = 80
-          hostPort      = 0
           protocol      = "tcp"
+        }
+      ]
+      environment = [
+        {
+          name  = "NODE_ENV"
+          value = var.environment
+        },
+        {
+          name  = "SERVICE_REGISTRY_ENDPOINT"
+          value = "http://localhost:80"
         }
       ]
       logConfiguration = {
@@ -297,6 +330,7 @@ resource "aws_ecs_task_definition" "app" {
           "awslogs-group"         = "/ecs/${var.project_name}"
           "awslogs-region"        = var.aws_region
           "awslogs-stream-prefix" = "ecs"
+          "awslogs-create-group"  = "true"
         }
       }
     }
@@ -325,7 +359,13 @@ resource "aws_ecs_service" "app" {
   cluster         = aws_ecs_cluster.main.id
   task_definition = aws_ecs_task_definition.app.arn
   desired_count   = var.environment == "dev" ? 1 : 2
-  launch_type     = "EC2"
+  launch_type     = "FARGATE"
+
+  network_configuration {
+    subnets          = aws_subnet.public[*].id
+    security_groups  = [aws_security_group.ecs_tasks.id]
+    assign_public_ip = true
+  }
 
   load_balancer {
     target_group_arn = aws_lb_target_group.app.arn

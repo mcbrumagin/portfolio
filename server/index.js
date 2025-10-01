@@ -106,13 +106,19 @@ async function getHealth() {
   return pre(JSON.stringify({ health: 'OK', registryMap }, null, 2)).render()
 }
 
+// Add a simple health check endpoint for ALB
+async function getSimpleHealth() {
+  return JSON.stringify({ status: 'healthy', timestamp: new Date().toISOString() })
+}
+
 async function main() {
   await Promise.all([
     registryServer(),
     createRoute('/assets/*', getAsset),
     createRoute('/portfolio/*', getClient),
     createRoute('/mem/*', getMemoryUsage),
-    createRoute('/health', getHealth)
+    createRoute('/healthDetails', getHealth),
+    createRoute('/health', getSimpleHealth)  // Simple health check for ALB
   ])
 }
 
