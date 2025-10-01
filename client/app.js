@@ -55,7 +55,7 @@ async function main() {
         console.log({ totalLoadTime })
         // window.initTime = null
       }
-      loadTime.innerHTML = htmlTags.p({ class: 'smaller-text' }, `Initial load: ${totalLoadTime}ms`)
+      loadTime.innerHTML = htmlTags.p({ class: 'smaller-text' }, `${totalLoadTime}ms`)
     }
   })
 }
