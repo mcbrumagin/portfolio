@@ -10,9 +10,14 @@ export default async function home() {
     section({ class: 'hero' },
       h1('Matthew C Brumagin'),
       p({ class: 'hero-subtitle' }, 'Senior Software Engineer'),
-      p({ class: 'hero-description indent' }, `Background in full-stack, cloud hosting, and polyglot microservices. 
-        Expertise in AWS, EKS, and GitLab CI, with a proven ability to lead projects that enhance scalability and developer productivity. 
-        Seeking a role within an organization looking to expand or modernize cloud/SaaS/DevOps capabilities.`
+      p({ class: 'hero-description indent' }, 
+        `Senior Software Engineer with a background in Agile/Scrum, 
+          full-stack, cloud hosting, CI/CD, and polyglot microservices. 
+        Expertise in AWS, EKS, and GitLab CI, 
+          with a proven ability to lead projects, 
+          collaborate with stakeholders, and improve DevOps. 
+        Seeking a role within an organization looking to expand or 
+          modernize cloud applications and infrastructure.`
       )
     ),
 
@@ -57,8 +62,6 @@ export default async function home() {
             class: 'download-pdf-btn',
             onclick: () => downloadFile('/assets/resources/mcbrumagin-resume.pdf') },
           a({
-            // href: '/assets/resources/mcbrumagin-resume.pdf',
-            // class: 'button-link',
             download: 'mcbrumagin-resume.pdf',
             target: '_blank'
           }, 'Download Resume PDF')

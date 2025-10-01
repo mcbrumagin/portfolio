@@ -21,7 +21,7 @@ async function getClient() {
   try {
     return html(
       head(
-        meta({ name: 'viewpoer', content: 'width=device-width, initial-scale=1.0' }),
+        meta({ name: 'viewport', content: 'width=device-width, initial-scale=1.0' }),
         script(`console.time('pageLoad'); window.initTime = new Date()`),
         link({ rel: 'stylesheet', href: '/assets/resources/styles.css' }),
 
@@ -85,7 +85,7 @@ async function getAsset(payload) {
     }
   } catch (err) {
     console.error(err.stack)
-    return { status: 404 }
+    return { status: 404 } // TODO getting "Cannot write headers after they are sent to the client"
   }
 }
 

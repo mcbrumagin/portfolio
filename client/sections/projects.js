@@ -8,8 +8,7 @@ export default async function projects() {
   return div({ class: 'content' },
     section({ class: 'hero' },
       h1('Personal Projects'),
-      p(
-        { class: 'hero-subtitle' },
+      p({ class: 'hero-subtitle' },
         'Open Source Projects & Applications'
       )
     ),
@@ -20,7 +19,7 @@ export default async function projects() {
         div({ class: 'card-header' },
           div(
             h3({ class: 'card-title' }, 'micro-js'),
-            h4({ class: 'card-subtitle' }, 'Lightweight Microservice Framework')
+            h4({ class: 'card-subtitle' }, 'Functional Microservices & Registry')
           ),
           div({ class: 'card-meta' },
             p('Core Framework'),
@@ -28,21 +27,19 @@ export default async function projects() {
           )
         ),
         div({ class: 'card-content' },
-          p(`A minimal, powerful JavaScript framework 
-            designed for building fast, efficient web applications. 
-            micro-js provides essential utilities for routing, 
-            service management, and application architecture 
-            without the opinions or bloat of larger frameworks.`
+          p(`Zero-dependency server microservice module 
+            featuring a reverse-proxy, service registry, 
+            routing, layered stack traces, and dynamic discovery.`
           ),
           
           h4('Key Features:'),
           ul(
-            li('Registry server w/ built-in service discovery'),
+            li('Only one environment variable needed: your registry location'),
             li('Lightweight routing system with support for nested routes'),
-            li('Round-robin load balancing baked in'),
-            li('Server-side rendering capabilities'),
-            li('Built to allow any function as a microservice'),
-            li('Registered services are injected into the context')
+            li('Layered stack traces for better debugging'),
+            li('Simple round-robin load balancing baked in'),
+            li('Server-side rendering capabilities using micro-js-html'),
+            li('Built to allow any function as a microservice')
           ),
           
           h4('Technical Highlights:'),
@@ -96,7 +93,7 @@ export default async function projects() {
             li('Event handling integration'),
             li('Server-side and client-side rendering support'),
             li('No virtual DOM overhead - direct DOM manipulation'),
-            li('Seamless integration with micro-js and its router')
+            li('Use it with micro-js or standalone')
           ),
           
           h4('Technical Highlights:'),
@@ -124,6 +121,48 @@ export default async function projects() {
       h2('Applications'),
       p({ class: 'mb-4' }, 'Real-world applications built using the micro-js ecosystem:'),
       
+      // Portfolio Website project
+      div({ class: 'card' },
+        div({ class: 'card-header' },
+          div(
+            h3({ class: 'card-title' }, 'Portfolio Website'),
+            h4({ class: 'card-subtitle' }, 'Built from scratch with only micro-js & micro-js-html')
+          ),
+          div({ class: 'card-meta' },
+            p('Web Application'),
+            p({ class: 'text-muted' }, 'JavaScript/Node.js')
+          )
+        ),
+        div({ class: 'card-content' },          
+          h4('Core Features:'),
+          ul(
+            li('Built entirely with micro-js framework ecosystem'),
+            li('Server-side rendering with client-side hydration'),
+            li('Responsive design optimized for all devices'),
+            li('PDF resume download functionality')
+          ),
+          
+          h4('Technical Implementation:'),
+          ul(
+            li('Infrastructure as Code with Terraform'),
+            li('Containerized deployment with Docker'),
+            li('CI/CD pipeline with GitHub Actions'),
+            li('Hosted on AWS ECS with Application Load Balancer'),
+            li('SSL/TLS termination and custom domain routing')
+          ),
+          
+          div({ class: 'button-actions' },
+            button({ onclick: () => findOne('[href*="github.com/mcbrumagin"]').click() },
+              a({ 
+                href: 'https://github.com/portfolio', 
+                target: '_blank', 
+                class: 'button-link' 
+              }, 'View Source')
+            )
+          )
+        )
+      ),
+      
       // SoundClone project
       div({ class: 'card' },
         div({ class: 'card-header' },
@@ -137,10 +176,8 @@ export default async function projects() {
           )
         ),
         div({ class: 'card-content' },
-          p(`Simple single-user (so far) audio hosting platform 
-              inspired by SoundCloud and voice memos.
-            Features real-time audio recording, playback, 
-              and sharing capabilities with a clean, modern interface.`
+          p(`Developing a SoundCloud-inspired app with built-in recording. 
+            Building out with micro-js & micro-js-html to extend and test the framework.`
           ),
           
           h4('Core Features:'),
@@ -153,8 +190,8 @@ export default async function projects() {
           
           h4('Technical Implementation:'),
           ul(
-            li('Utilizes micro-js-html for declarative UI components'),
-            li('Migrating to use micro-js for the backend functions'),
+            li('Built with micro-js & micro-js-html framework'),
+            li('Serves as a testing ground for framework capabilities'),
             li('Web Audio API integration for recording functionality'),
             li('Mobile-first responsive design')
           ),

@@ -32,8 +32,7 @@ export default function createNav() {
     ul({ class: 'nav-links' },
       li(createNavLink('/', 'Home')),
       li(createNavLink('/resume', 'Resume')),
-      li(createNavLink('/projects', 'Projects')),
-      // li(createNavLink('/contact', 'Contact'))
+      li(createNavLink('/projects', 'Projects'))
     )
   )
 }
