@@ -31,7 +31,11 @@ const createPlaceholder = page => {
     ).onReady(() => fadeIn('.content'))
 }
 
-const getTotalLoadTime = () => window.totalAppLoadTime = new Date() - window.initTime
+const getTotalLoadTime = () => {
+  let initTime = Number(findOne('body').dataset.initTime)
+  console.log({ initTime })
+  return Date.now() - initTime
+}
 
 // Smooth scroll utility
 const smoothScrollTo = (element, duration = 800) => {
@@ -58,6 +62,13 @@ const smoothScrollTo = (element, duration = 800) => {
   requestAnimationFrame(animation)
 }
 
+function downloadFile(filePath) {
+  var link=document.createElement('a')
+  link.href = filePath
+  link.download = filePath.substr(filePath.lastIndexOf('/') + 1)
+  link.click()
+}
+
 // TODO?
 export default function initGlobals() {
   window.findOne = findOne
@@ -70,4 +81,5 @@ export default function initGlobals() {
   window.createPlaceholder = createPlaceholder
   window.smoothScrollTo = smoothScrollTo
   window.getTotalLoadTime = getTotalLoadTime
+  window.downloadFile = downloadFile
 }

@@ -457,35 +457,6 @@ a:visited {
   transform: scale(1.1);
 }
 
-/* Contact Section */
-.contact-info {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 2rem;
-  padding: 0.25rem .5rem;
-  /* margin-top: 2rem; */
-}
-
-.contact-item {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 1rem;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: 0.25rem;
-  transition: all 0.2s ease;
-}
-
-.contact-item:hover {
-  border-color: var(--accent-cyan);
-  background: var(--hover-bg);
-}
-
-.contact-icon {
-  font-size: 1.5rem;
-  color: var(--accent-cyan);
-}
 
 /* Buttons */
 button {
@@ -532,6 +503,19 @@ button:active {
   border: 1px solid var(--border-color);
 } */
 
+.footer-content {
+  position: relative;
+}
+
+.load-time {
+  position: absolute;
+  bottom: -.75rem;
+  right: 0;
+  opacity: 0.33;
+  margin: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+}
+
 /* Mobile Responsive */
 @media (max-width: 768px) {
   .nav {
@@ -574,10 +558,6 @@ button:active {
   }
   
   .skills-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .contact-info {
     grid-template-columns: 1fr;
   }
 }
@@ -640,8 +620,8 @@ a.button-link {
   margin-left: 1rem;
 }
 
-/* Minimal Contact Info Styles */
-.minimal-contact {
+/* Contact View Component Styles */
+.contact-view {
   margin: 1rem 0;
 }
 
@@ -667,10 +647,42 @@ a.button-link {
   background-color: var(--hover-bg);
 }
 
-.contact-info {
+.location-info {
   color: var(--text-secondary);
   font-size: 0.9rem;
   display: block;
+}
+
+/* Footer Styles */
+.site-footer {
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border-color);
+  margin-top: 4rem;
+  padding: 2rem 0 1rem 0;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 0 2rem;
+}
+
+.footer-heading {
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.footer-contact.compact .contact-links {
+  gap: 2rem;
+  justify-content: center;
+}
+
+.footer-contact .contact-link {
+  font-size: 0.95rem;
+  padding: 0.3rem 0.6rem;
 }
 
 /* PDF Download Button Styles */
@@ -706,6 +718,19 @@ a.button-link {
   .contact-link {
     font-size: 0.8rem;
     padding: 0.2rem 0.4rem;
+  }
+
+  .footer-contact.compact .contact-links {
+    gap: 1.2rem;
+  }
+  
+  .footer-content {
+    padding: 0 1rem;
+  }
+  
+  .site-footer {
+    margin-top: 3rem;
+    padding: 1.5rem 0 1rem 0;
   }
 }
 
