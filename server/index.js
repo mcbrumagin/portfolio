@@ -95,7 +95,7 @@ async function getAsset(payload) {
     }
   } catch (err) {
     console.error(err.stack)
-    return { status: 404 } // TODO getting "Cannot write headers after they are sent to the client"
+    return JSON.stringify({ status: 404 })
   }
 }
 
@@ -121,7 +121,7 @@ async function getHealth() {
 }
 
 async function main() {
-  await Promise.all([
+  return await Promise.all([
     registryServer(),
     createRoute('/', getClient),
     createRoute('/portfolio/*', 'getClient'), // TODO, prevent multiple service creations or throw error?
@@ -140,4 +140,22 @@ async function main() {
 //}, 10000)
 
 main()
-.then(() => console.log('Portfolio server ready!'))
+.then(servers => {
+  function shutdown() {
+    // TODO cleanup old `server && server` type idiom and replace with ? operator
+    servers.reverse().forEach(server => server?.terminate())
+    process.exit(0)
+  }
+
+  process.on('SIGINT', () => {
+    console.info('Received SIGINT. Initiating graceful shutdown.')
+    shutdown()
+  })
+  
+  process.on('SIGTERM', () => {
+    console.info('Received SIGTERM. Initiating graceful shutdown.')
+    shutdown()
+  })
+
+  console.log('Portfolio server ready!')
+})
