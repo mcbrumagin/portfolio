@@ -2,17 +2,17 @@
 
 # ECS Cluster
 resource "aws_ecs_cluster" "main" {
-  name = "${var.project_name}-cluster"
+  name = "${var.project_name}-${terraform.workspace}-cluster"
 
   tags = {
-    Name        = "${var.project_name}-ecs-cluster"
+    Name        = "${var.project_name}-${terraform.workspace}-ecs-cluster"
     Environment = var.environment
   }
 }
 
 # ECS Task Execution Role
 resource "aws_iam_role" "ecs_task_execution_role" {
-  name = "${var.project_name}-ecs-task-execution-role"
+  name = "${var.project_name}-${terraform.workspace}-ecs-task-execution-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -36,7 +36,7 @@ resource "aws_iam_role_policy_attachment" "ecs_task_execution_role_policy" {
 
 # Add CloudWatch Logs permissions for ECS task execution role
 resource "aws_iam_role_policy" "ecs_task_execution_cloudwatch_policy" {
-  name = "${var.project_name}-ecs-task-execution-cloudwatch-policy"
+  name = "${var.project_name}-${terraform.workspace}-ecs-task-execution-cloudwatch-policy"
   role = aws_iam_role.ecs_task_execution_role.id
 
   policy = jsonencode({
@@ -58,7 +58,7 @@ resource "aws_iam_role_policy" "ecs_task_execution_cloudwatch_policy" {
 
 # ECS Task Definition
 resource "aws_ecs_task_definition" "app" {
-  family                   = "${var.project_name}-task"
+  family                   = "${var.project_name}-${terraform.workspace}-task"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   cpu                     = "256"
@@ -67,8 +67,8 @@ resource "aws_ecs_task_definition" "app" {
 
   container_definitions = jsonencode([
     {
-      name  = "${var.project_name}-container"
-      image = "${aws_ecr_repository.app.repository_url}:${var.environment == "prod" ? "latest" : "dev-latest"}"
+      name  = "${var.project_name}-${terraform.workspace}-container"
+      image = "${local.ecr_repository_url}:${var.environment == "prod" ? "latest" : "dev-latest"}"
       essential = true
       portMappings = [
         {
@@ -89,7 +89,7 @@ resource "aws_ecs_task_definition" "app" {
       logConfiguration = {
         logDriver = "awslogs"
         options = {
-          "awslogs-group"         = "/ecs/${var.project_name}"
+          "awslogs-group"         = "/ecs/${var.project_name}-${terraform.workspace}"
           "awslogs-region"        = var.aws_region
           "awslogs-stream-prefix" = "ecs"
           "awslogs-create-group"  = "true"
@@ -99,14 +99,14 @@ resource "aws_ecs_task_definition" "app" {
   ])
 
   tags = {
-    Name        = "${var.project_name}-task-definition"
+    Name        = "${var.project_name}-${terraform.workspace}-task-definition"
     Environment = var.environment
   }
 }
 
 # ECS Service
 resource "aws_ecs_service" "app" {
-  name            = "${var.project_name}-service"
+  name            = "${var.project_name}-${terraform.workspace}-service"
   cluster         = aws_ecs_cluster.main.id
   task_definition = aws_ecs_task_definition.app.arn
   desired_count   = var.environment == "dev" ? 1 : 2
@@ -120,7 +120,7 @@ resource "aws_ecs_service" "app" {
 
   load_balancer {
     target_group_arn = aws_lb_target_group.app.arn
-    container_name   = "${var.project_name}-container"
+    container_name   = "${var.project_name}-${terraform.workspace}-container"
     container_port   = 8000
   }
 
@@ -132,7 +132,7 @@ resource "aws_ecs_service" "app" {
   depends_on = [aws_lb_listener.https]
 
   tags = {
-    Name        = "${var.project_name}-ecs-service"
+    Name        = "${var.project_name}-${terraform.workspace}-ecs-service"
     Environment = var.environment
   }
 }

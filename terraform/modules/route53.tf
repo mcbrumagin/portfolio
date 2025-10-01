@@ -9,7 +9,7 @@ data "aws_route53_zone" "main" {
 # A record for the main domain
 resource "aws_route53_record" "main" {
   zone_id = data.aws_route53_zone.main.zone_id
-  name    = var.environment == "prod" ? var.domain_name : "${var.environment}.${var.domain_name}"
+  name    = terraform.workspace == "prod" ? var.domain_name : "${terraform.workspace == "default" ? "dev" : terraform.workspace}.${var.domain_name}"
   type    = "A"
 
   alias {
@@ -21,7 +21,7 @@ resource "aws_route53_record" "main" {
 
 # WWW subdomain for production
 resource "aws_route53_record" "www" {
-  count   = var.environment == "prod" ? 1 : 0
+  count   = terraform.workspace == "prod" ? 1 : 0
   zone_id = data.aws_route53_zone.main.zone_id
   name    = "www.${var.domain_name}"
   type    = "A"

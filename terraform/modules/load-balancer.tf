@@ -2,7 +2,7 @@
 
 # Application Load Balancer
 resource "aws_lb" "main" {
-  name               = "${var.project_name}-alb"
+  name               = "${var.project_name}-${terraform.workspace}-alb"
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.alb.id]
@@ -11,14 +11,14 @@ resource "aws_lb" "main" {
   enable_deletion_protection = false
 
   tags = {
-    Name        = "${var.project_name}-alb"
+    Name        = "${var.project_name}-${terraform.workspace}-alb"
     Environment = var.environment
   }
 }
 
 # Target Group for ALB
 resource "aws_lb_target_group" "app" {
-  name        = "${var.project_name}-tg"
+  name        = "${var.project_name}-${terraform.workspace}-tg"
   port        = 8000
   protocol    = "HTTP"
   vpc_id      = aws_vpc.main.id
@@ -37,7 +37,7 @@ resource "aws_lb_target_group" "app" {
   }
 
   tags = {
-    Name        = "${var.project_name}-tg"
+    Name        = "${var.project_name}-${terraform.workspace}-tg"
     Environment = var.environment
   }
 }
