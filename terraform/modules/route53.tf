@@ -9,7 +9,12 @@ data "aws_route53_zone" "main" {
 # A record for the main domain
 resource "aws_route53_record" "main" {
   zone_id = data.aws_route53_zone.main.zone_id
-  name    = terraform.workspace == "prod" ? var.domain_name : "${terraform.workspace == "default" ? "dev" : terraform.workspace}.${var.domain_name}"
+  name    = (
+    terraform.workspace == "prod" ?
+      var.domain_name : "${terraform.workspace == "default" ?
+        "dev" : terraform.workspace}.${var.domain_name}"
+  )
+  
   type    = "A"
 
   alias {

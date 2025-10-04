@@ -61,6 +61,7 @@ async function getAsset(payload) {
     if (payload.url === '/assets/test.js') {
       return { payload: await fs.readFile('../test/client/test.js'), dataType: 'text/javascript' }
     } else if (payload.url.includes('module')) {
+      // use path.join instead of string concatenation
       let modulePath = '../client/node_modules/' + payload.url
         .split('/')
         .slice(3 /* ignore "assets/modules/" */)
@@ -70,6 +71,7 @@ async function getAsset(payload) {
       return { payload: moduleScript, dataType: 'text/javascript' }
     } else {
       // payload.url includes asset
+      // use path.join instead of string concatenation
       let assetPath = '../client/' + payload.url
         .split('/')
         .slice(2 /* ignore "assets" */)
@@ -126,6 +128,8 @@ async function getHealthDetails() {
 async function getHealth() {
   return JSON.stringify({ health: 'OK', timestamp: new Date().toISOString() })
 }
+
+// TODO metrics tracking service (finally get to test the callService function)
 
 async function main() {
   return await Promise.all([

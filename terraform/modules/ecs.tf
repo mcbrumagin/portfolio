@@ -76,6 +76,15 @@ resource "aws_ecs_task_definition" "app" {
           protocol      = "tcp"
         }
       ]
+
+      healthCheck = {
+        command     = ["CMD-SHELL", "wget --quiet --tries=1 --spider http://localhost:8000/health || exit 1"]
+        interval    = 30
+        timeout     = 5
+        retries     = 3
+        startPeriod = 10
+      }
+
       environment = [
         {
           name  = "NODE_ENV"
@@ -86,6 +95,7 @@ resource "aws_ecs_task_definition" "app" {
           value = "http://localhost:8000"
         }
       ]
+      
       logConfiguration = {
         logDriver = "awslogs"
         options = {
