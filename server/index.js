@@ -26,9 +26,6 @@ async function getClient() {
         script(`console.time('pageLoad'); window.initTime = new Date()`),
         link({ rel: 'stylesheet', href: '/assets/resources/styles.css' }),
 
-        // prevent browser from requesting favicon
-        link({ rel: 'icon', type: 'image/png', href: 'data:image/png;base64,iVBORw0KGgo=' }),
-
         // global helpers
         script({ src: '/assets/modules/micro-js-html/src/client-init.js' }),
         script({ src: '/assets/modules/micro-js-html/src/client-utils.js' }),
@@ -54,6 +51,11 @@ async function getRobots() {
 async function getSiteMap() {
   let sitemap = await fs.readFile('../client/resources/sitemap.xml')
   return { payload: sitemap, dataType: 'application/xml' }
+}
+
+async function getFavicon() {
+  let favicon = await fs.readFile('../client/resources/favicon.svg')
+  return { payload: favicon, dataType: 'image/svg+xml' }
 }
 
 async function getAsset(payload) {
@@ -139,6 +141,7 @@ async function main() {
     createRoute('/assets/*', getAsset),
     createRoute('/robots.txt', getRobots),
     createRoute('/sitemap.xml', getSiteMap),
+    createRoute('/favicon.ico', getFavicon),
     createRoute('/health', getHealth),
     createRoute('/healthDetails', getHealthDetails),
     createRoute('/memory', getMemoryUsage)
