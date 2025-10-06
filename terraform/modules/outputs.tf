@@ -17,7 +17,7 @@ output "alb_zone_id" {
 
 output "ecr_repository_url" {
   description = "URL of the ECR repository"
-  value       = local.ecr_repository_url
+  value       = data.aws_ecr_repository.app[0].repository_url
 }
 
 output "ecs_cluster_name" {
