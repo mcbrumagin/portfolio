@@ -91,7 +91,7 @@ resource "aws_ecs_task_definition" "app" {
           value = var.environment
         },
         {
-          name  = "SERVICE_REGISTRY_ENDPOINT"
+          name  = "MICRO_REGISTRY_URL"
           value = "http://localhost:8000"
         }
       ]

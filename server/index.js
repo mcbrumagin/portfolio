@@ -10,20 +10,37 @@ import {
 
 import fs from 'fs/promises'
 
+// TODO override modules using their own Logger
 overrideConsoleGlobally({
-  includeLogLineNumbers: true // TODO doesn't work for some reason
+  includeLogLineNumbers: true
 })
 
 import { htmlTags } from 'micro-js-html'
-const { html, head, meta, link, script, body, pre } = htmlTags
+const { html, head, title, meta, link, script, body, pre } = htmlTags
 
 async function getClient() {
   let initTime = Date.now()
   try {
-    return html(
+    return html({ lang: 'en' },
       head(
+        meta({ charset: 'utf-8' }),
         meta({ name: 'viewport', content: 'width=device-width, initial-scale=1.0' }),
-        script(`console.time('pageLoad'); window.initTime = new Date()`),
+
+        title('M. Brumagin | Portfolio'),
+        meta({ name: 'author', content: 'Matt Brumagin' }),
+        meta({ name: 'description', content: `Browse Matt Brumagin's resume and personal projects.` }),
+        meta({
+          name: 'keywords',
+          content: `portfolio, resume, projects, 
+            developer, software, engineer, 
+            agile, scrum, react, javascript, html, css, 
+            microservices, aws, eks, gitlab, devops`
+        }),
+
+        // TODO helper to bind server-side variables to client fns?
+        script(`window.isDev = ${process.env.ENVIRONMENT === 'dev'}`),
+
+        // script(`console.time('pageLoad'); window.initTime = new Date()`),
         link({ rel: 'stylesheet', href: '/assets/resources/styles.css' }),
 
         // global helpers
@@ -63,7 +80,6 @@ async function getAsset(payload) {
     if (payload.url === '/assets/test.js') {
       return { payload: await fs.readFile('../test/client/test.js'), dataType: 'text/javascript' }
     } else if (payload.url.includes('module')) {
-      // use path.join instead of string concatenation
       let modulePath = '../client/node_modules/' + payload.url
         .split('/')
         .slice(3 /* ignore "assets/modules/" */)
@@ -72,8 +88,6 @@ async function getAsset(payload) {
       let moduleScript = await fs.readFile(modulePath)
       return { payload: moduleScript, dataType: 'text/javascript' }
     } else {
-      // payload.url includes asset
-      // use path.join instead of string concatenation
       let assetPath = '../client/' + payload.url
         .split('/')
         .slice(2 /* ignore "assets" */)
@@ -105,18 +119,18 @@ async function getAsset(payload) {
     // currently sends a 200 with this payload and `content-type: dynamic` in micro-js@0.0.8
     // for some reason { status: 404 } without stringifying crashes the server
 
-    // TODO throwing the error works, but returning itdoes not
+    // TODO throwing the error works, but returning it does not
     throw new HttpError(404)
   }
 }
 
 async function getMemoryUsage() {
   let mem = process.memoryUsage()
-  return { payload: JSON.stringify(mem) }
+  return JSON.stringify(mem)
 }
 
 async function getHealthDetails() {
-  let response = await fetch(`${process.env.SERVICE_REGISTRY_ENDPOINT}`, {
+  let response = await fetch(`${process.env.MICRO_REGISTRY_URL}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ lookup: 'all' })
@@ -136,6 +150,7 @@ async function getHealth() {
 async function main() {
   return await Promise.all([
     registryServer(),
+    // TODO use createRoutes
     createRoute('/', getClient),
     createRoute('/portfolio/*', 'getClient'), // TODO, prevent multiple service creations or throw error?
     createRoute('/assets/*', getAsset),
@@ -155,18 +170,25 @@ async function main() {
 
 main()
 .then(servers => {
-  function shutdown() {
+  async function shutdown() {
     // TODO cleanup old `server && server` type idiom and replace with ? operator
-    servers.reverse().forEach(server => server?.terminate())
-    process.exit(0)
+    let terminatePromises = servers.reverse().map(server => server?.terminate())
+    try {
+      await Promise.all(terminatePromises)
+    } catch (err) {
+      console.error(err.stack)
+      process.exit(1)
+    } finally {
+      process.exit(0)
+    }
   }
 
-  process.on('SIGINT', () => {
+  process.once('SIGINT', () => {
     console.info('Received SIGINT. Initiating graceful shutdown.')
     shutdown()
   })
   
-  process.on('SIGTERM', () => {
+  process.once('SIGTERM', () => {
     console.info('Received SIGTERM. Initiating graceful shutdown.')
     shutdown()
   })

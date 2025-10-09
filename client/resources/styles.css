@@ -590,9 +590,13 @@ a.button-link {
 
 .button-group {
   display: flex;
-  gap: 1rem;
+  gap: 3rem;
   justify-content: center;
   flex-wrap: wrap;
+}
+
+.button-group button {
+  font-size: 1.5rem;
 }
 
 .button-group-left {
