@@ -152,9 +152,9 @@ export default async function projects() {
           ),
           
           div({ class: 'button-actions' },
-            button({ onclick: () => findOne('[href*="github.com/mcbrumagin"]').click() },
+            button({ onclick: () => findOne('[href*="mcbrumagin/portfolio"]').click() },
               a({ 
-                href: 'https://github.com/portfolio', 
+                href: 'https://github.com/mcbrumagin/portfolio', 
                 target: '_blank', 
                 class: 'button-link' 
               }, 'View Source')
