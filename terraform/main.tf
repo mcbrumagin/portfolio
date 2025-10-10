@@ -4,6 +4,16 @@
 #
 # This configuration uses a local module to organize all infrastructure components.
 # The module approach provides better organization, reusability, and separation of concerns.
+# The application is configured to use S3 for remote state storage.
+
+terraform {
+  backend "s3" {
+    bucket  = "terraform-state-bucket-mcbrumagin.com"
+    key     = "portfolio/terraform.tfstate"
+    region  = "us-east-1"
+    encrypt = true
+  }
+}
 
 module "portfolio" {
   count = terraform.workspace != "default" ? 1 : 0 # prevent default
