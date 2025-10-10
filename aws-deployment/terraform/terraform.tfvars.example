@@ -1,0 +1,12 @@
+# Example terraform variables
+# Copy this file to terraform.tfvars and fill in your values
+
+aws_region      = "us-east-1"
+project_name    = "portfolio-ec2"
+environment     = "dev"
+domain_name     = "mcbrumagin.com"
+instance_type   = "t4g.micro"
+key_name        = "your-ssh-key-name"
+allowed_ssh_cidr = ["YOUR_IP/32"]  # Replace with your IP for better security
+root_volume_size = 8
+

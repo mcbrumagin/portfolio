@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  portfolio-app:
+    build:
+      context: ../
+      dockerfile: aws-deployment/portfolio/Dockerfile
+      platforms:
+        - linux/arm64
+    container_name: portfolio-app
+    restart: unless-stopped
+    networks:
+      - portfolio-net
+    environment:
+      - NODE_ENV=production
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  nginx:
+    build:
+      context: ./nginx
+      platforms:
+        - linux/arm64
+    container_name: portfolio-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/letsencrypt:/etc/letsencrypt
+      - ./nginx/certbot:/var/www/certbot
+      - ./nginx/logs:/var/log/nginx
+    environment:
+      - DOMAIN=${DOMAIN:-localhost}
+    depends_on:
+      - portfolio-app
+    networks:
+      - portfolio-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+networks:
+  portfolio-net:
+    driver: bridge
+
