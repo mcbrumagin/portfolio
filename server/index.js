@@ -114,13 +114,7 @@ async function getAsset(payload) {
     }
   } catch (err) {
     console.error(err.stack)
-    // TODO should actually bind 404 through reverse-proxy
-    // return JSON.stringify({ status: 404 })
-    // currently sends a 200 with this payload and `content-type: dynamic` in micro-js@0.0.8
-    // for some reason { status: 404 } without stringifying crashes the server
-
-    // TODO throwing the error works, but returning it does not
-    throw new HttpError(404)
+    return new HttpError(404) // return hides error stack from client
   }
 }
 
