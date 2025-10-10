@@ -159,7 +159,8 @@ async function main() {
     createRoute('/favicon.ico', getFavicon),
     createRoute('/health', getHealth),
     createRoute('/healthDetails', getHealthDetails),
-    createRoute('/memory', getMemoryUsage)
+    createRoute('/memory', getMemoryUsage),
+    createRoute('/*', () => new HttpError(404))
   ])
 }
 
@@ -171,10 +172,9 @@ async function main() {
 main()
 .then(servers => {
   async function shutdown() {
-    // TODO cleanup old `server && server` type idiom and replace with ? operator
-    let terminatePromises = servers.reverse().map(server => server?.terminate())
     try {
-      await Promise.all(terminatePromises)
+      for (let server of servers.reverse())
+        await server?.terminate()
     } catch (err) {
       console.error(err.stack)
       process.exit(1)
