@@ -61,14 +61,14 @@ resource "aws_ecs_task_definition" "app" {
   family                   = "${var.project_name}-${terraform.workspace}-task"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
-  cpu                     = "256"
-  memory                  = "512"
+  cpu                     = "256"  # 256 is the minimum for Fargate
+  memory                  = "512"  # 512 is the minimum for 256 CPU
   execution_role_arn      = aws_iam_role.ecs_task_execution_role.arn
 
   container_definitions = jsonencode([
     {
       name  = "${var.project_name}-${terraform.workspace}-container"
-      image = "${local.ecr_repository_url}:${var.environment == "prod" ? "latest" : "dev-latest"}"
+      image = "${data.aws_ecr_repository.app[0].repository_url}:${var.environment == "prod" ? "latest" : "dev-latest"}"
       essential = true
       portMappings = [
         {
@@ -76,16 +76,26 @@ resource "aws_ecs_task_definition" "app" {
           protocol      = "tcp"
         }
       ]
+
+      healthCheck = {
+        command     = ["CMD-SHELL", "wget --quiet --tries=1 --spider http://localhost:8000/health || exit 1"]
+        interval    = 30
+        timeout     = 5
+        retries     = 3
+        startPeriod = 10
+      }
+
       environment = [
         {
           name  = "NODE_ENV"
           value = var.environment
         },
         {
-          name  = "SERVICE_REGISTRY_ENDPOINT"
+          name  = "MICRO_REGISTRY_URL"
           value = "http://localhost:8000"
         }
       ]
+      
       logConfiguration = {
         logDriver = "awslogs"
         options = {
@@ -109,7 +119,7 @@ resource "aws_ecs_service" "app" {
   name            = "${var.project_name}-${terraform.workspace}-service"
   cluster         = aws_ecs_cluster.main.id
   task_definition = aws_ecs_task_definition.app.arn
-  desired_count   = var.environment == "dev" ? 1 : 2
+  desired_count   = var.environment == "dev" ? 1 : 1  # Single instance for both dev and prod to save costs
   launch_type     = "FARGATE"
 
   network_configuration {

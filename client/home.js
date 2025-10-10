@@ -3,7 +3,7 @@ import { htmlTags } from './modules/micro-js-html/src/index.js'
 export default async function home() {
   await micro.modules.renderPageTemplate(true)
   
-  const { div, h1, h2, h4, p, a, section, button, span, em } = htmlTags
+  const { div, h1, h2, h3, p, a, section, button, span, em } = htmlTags
 
 
   return div({ class: 'content' },
@@ -25,7 +25,7 @@ export default async function home() {
       h2('Quick Overview'),
       div({ class: 'skills-grid' },
         div({ class: 'skill-category' },
-          h4('Specialties'),
+          h3('Specialties'),
           div({ class: 'skill-tags' },
             div({ class: 'skill-tag' }, 'AWS & Cloud Architecture'),
             // div({
@@ -44,7 +44,7 @@ export default async function home() {
           )
         ),
         div({ class: 'skill-category' },
-          h4('Experience'),
+          h3('Experience'),
           div({ class: 'skill-tags' },
             div({ class: 'skill-tag' }, '10+ Years of Engineering Experience'),
             div({ class: 'skill-tag' }, 'Senior Engineer & Scrum Master'),
@@ -63,6 +63,7 @@ export default async function home() {
             onclick: () => downloadFile('/assets/resources/mcbrumagin-resume.pdf') },
           a({
             download: 'mcbrumagin-resume.pdf',
+            href: '/assets/resources/mcbrumagin-resume.pdf',
             target: '_blank'
           }, 'Download Resume PDF')
         ),

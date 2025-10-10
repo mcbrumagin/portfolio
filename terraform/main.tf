@@ -6,6 +6,7 @@
 # The module approach provides better organization, reusability, and separation of concerns.
 
 module "portfolio" {
+  count = terraform.workspace != "default" ? 1 : 0 # prevent default
   source = "./modules"
 
   # Pass variables to the module

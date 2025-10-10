@@ -32,7 +32,7 @@ My portfolio website showcasing my experience as a Senior Software Engineer, bui
    http://localhost:3000/portfolio/
    ```
 
-The server will run on port 3000 (configured via SERVICE_REGISTRY_ENDPOINT).
+The server will run on port 3000 (configured via MICRO_REGISTRY_URL).
 
 
 

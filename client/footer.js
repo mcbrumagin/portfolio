@@ -1,11 +1,11 @@
 import { htmlTags } from './modules/micro-js-html/src/index.js'
 
-const { footer, div, a, em, h4 } = htmlTags
+const { footer, div, a, em, h3 } = htmlTags
 
 export function createFooter() {
   return footer({ class: 'site-footer hidden' },
     div({ class: 'footer-content' },
-      h4({ class: 'footer-heading' }, 'Get in touch'),
+      h3({ class: 'footer-heading' }, 'Get in touch'),
       div({ class: 'footer-contact' },
         div({ class: 'contact-links' },
           a({ href: 'mailto:mcbrumagin@gmail.com', class: 'contact-link' }, 'mcbrumagin@gmail.com'),

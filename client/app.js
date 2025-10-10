@@ -49,14 +49,14 @@ async function main() {
       // if (!window.initTime) window.initTime = new Date()
     },
     after: async () => {
-      let loadTime = await micro.waitForElement('.load-time')
-      if (totalLoadTime == null) {
-        totalLoadTime = getTotalLoadTime()
-        if (totalLoadTime > 5000) totalLoadTime = null // probably not an actual page load
-        // console.log({ totalLoadTime })
-      }
-      if (totalLoadTime) {
-        loadTime.innerHTML = htmlTags.p({ class: 'smaller-text' }, `${totalLoadTime}ms`)
+      if (window.isDev) {
+        let loadTime = await micro.waitForElement('.load-time')
+        if (totalLoadTime == null) {
+          totalLoadTime = getTotalLoadTime()
+        }
+        if (totalLoadTime) {
+          loadTime.innerHTML = htmlTags.p({ class: 'smaller-text' }, `${totalLoadTime}ms`)
+        }
       }
     }
   })
