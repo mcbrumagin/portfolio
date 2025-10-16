@@ -1,4 +1,5 @@
 User-agent: *
+Allow: /
 Allow: /portfolio/
 Allow: /portfolio/resume/
 Allow: /portfolio/projects/
@@ -6,5 +7,4 @@ Allow: /assets/
 Allow: /sitemap.xml
 Allow: /robots.txt
 Allow: /favicon.ico
-Disallow: /
 Sitemap: https://mcbrumagin.com/sitemap.xml
