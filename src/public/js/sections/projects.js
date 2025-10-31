@@ -1,4 +1,4 @@
-import { htmlTags } from '../modules/micro-js-html/src/index.js'
+import { htmlTags } from '../../modules/index.js'
 
 export default async function projects() {
   await micro.modules.renderPageTemplate()

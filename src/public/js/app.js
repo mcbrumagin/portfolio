@@ -7,7 +7,7 @@ import resume from './sections/resume.js'
 import projects from './sections/projects.js'
 import createNav from './nav.js'
 
-import { htmlTags } from './modules/micro-js-html/src/index.js'
+import { htmlTags } from '../modules/index.js'
 import { createFooter } from './footer.js'
 
 micro.exports = async function renderPageTemplate(includeNav = true) {
@@ -67,5 +67,3 @@ main()
   console.timeEnd('pageLoad')
   console.log('Portfolio ready!')
 })
-
-

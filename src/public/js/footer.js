@@ -1,4 +1,4 @@
-import { htmlTags } from './modules/micro-js-html/src/index.js'
+import { htmlTags } from '../modules/index.js'
 
 const { footer, div, a, em, h3 } = htmlTags
 

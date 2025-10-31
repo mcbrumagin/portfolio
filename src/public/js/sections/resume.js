@@ -1,4 +1,4 @@
-import { htmlTags } from '../modules/micro-js-html/src/index.js'
+import { htmlTags } from '../../modules/index.js'
 
 export default async function resume() {
   await micro.modules.renderPageTemplate()
@@ -13,7 +13,7 @@ export default async function resume() {
       div({ class: 'button-group' },
         button({ 
           class: 'download-pdf-btn', 
-          onclick: () => downloadFile('/assets/resources/mcbrumagin-resume.pdf')
+          onclick: () => downloadFile('/resources/mcbrumagin-resume.pdf')
         }, 'Download PDF')
       )
     ),

@@ -1,12 +1,3 @@
-// import * as microTemp from './modules/micro-js-html/src/index.js'
-
-// window.micro = microTemp
-// console.log({microTemp})
-
-// import * as localMicro from './modules/micro-js-html/src/client-init.js'
-// window.micro = localMicro
-// import './modules/micro-js-html/src/client-utils.js'
-
 const findOne = selector => document.querySelector(selector)
 const findAll = selector => document.querySelectorAll(selector)
 
@@ -25,15 +16,14 @@ const fadeOut = async selector => {
 }
 
 const createPlaceholder = page => {
-  const { div, p } = micro.html
+  const { div, p } = micro.htmlTags
   return div({ class: 'content' },
-      p(`This is a placeholder for ${page}`)
+      p(`Loading ${page}...`)
     ).onReady(() => fadeIn('.content'))
 }
 
 const getTotalLoadTime = () => {
   let initTime = Number(findOne('body').dataset.initTime)
-  console.log({ initTime })
   return Date.now() - initTime
 }
 
