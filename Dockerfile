@@ -2,26 +2,22 @@
 FROM node:lts-alpine AS build
 WORKDIR /app
 
-COPY server/package*.json ./server/
-COPY client/package*.json ./client/
+COPY package*.json ./
 
-COPY . .
+COPY src/ ./src/
 
-RUN ./install.sh
+RUN npm install
 
 # Deploy
 FROM node:lts-alpine
 WORKDIR /app
 
-COPY --from=build /app/server/ ./server/
-# NOTE for optimization, can use same micro-js-html for client and server
-COPY --from=build /app/client/ ./client/
-# COPY --from=build /app/test/ ./test/ # NOTE this is for client-side test harness
+COPY --from=build /app/src/ ./src/
+COPY --from=build /app/node_modules/ ./node_modules/
 
-# Service calls are all internal to the container, so localhost should suffice for now
 ENV MICRO_REGISTRY_URL="http://localhost:8000"
 EXPOSE 8000
 
-WORKDIR /app/server
+WORKDIR /app
 
-CMD ["node", "index.js"]
+CMD ["node", "src/server.js"]

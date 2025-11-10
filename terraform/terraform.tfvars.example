@@ -5,12 +5,12 @@
 aws_region = "us-east-1"
 
 # Project configuration
-project_name = "portfolio"
 environment  = "dev"  # or "prod"
 
 # Domain configuration
 # Make sure this domain is already registered and has a Route53 hosted zone
-domain_name = "mcbrumagin.com"
+portfolio_domain_name = "mcbrumagin.com"
+soundclone_domain_name = "soundcl.one"
 
 # SSL configuration
 enable_ssl = true
