@@ -52,14 +52,11 @@ export default async function projects() {
           ),
           
           div({ class: 'button-actions' },
-            button({ onclick: () => findOne('[href*="micro-js"]').click() },
-              a({
-                // onclick: () => { throw 'test' },
-                href: 'https://github.com/mcbrumagin/micro-js', 
-                target: '_blank', 
-                class: 'button-link' 
-              }, 'View on GitHub')
-            )
+            a({
+              href: 'https://github.com/mcbrumagin/micro-js', 
+              target: '_blank', 
+              class: 'button-link' 
+            }, 'View on GitHub')
           )
         )
       ),
@@ -105,13 +102,11 @@ export default async function projects() {
           ),
           
           div({ class: 'button-actions' },
-            button({ onclick: () => findOne('[href*="micro-js-html"]').click() },
-              a({ 
-                href: 'https://github.com/mcbrumagin/micro-js-html', 
-                target: '_blank', 
-                class: 'button-link' 
-              }, 'View on GitHub')
-            )
+            a({ 
+              href: 'https://github.com/mcbrumagin/micro-js-html', 
+              target: '_blank', 
+              class: 'button-link' 
+            }, 'View on GitHub')
           )
         )
       )
@@ -152,13 +147,11 @@ export default async function projects() {
           ),
           
           div({ class: 'button-actions' },
-            button({ onclick: () => findOne('[href*="mcbrumagin/portfolio"]').click() },
-              a({ 
-                href: 'https://github.com/mcbrumagin/portfolio', 
-                target: '_blank', 
-                class: 'button-link' 
-              }, 'View Source')
-            )
+            a({ 
+              href: 'https://github.com/mcbrumagin/portfolio', 
+              target: '_blank', 
+              class: 'button-link' 
+            }, 'View Source')
           )
         )
       ),
@@ -195,24 +188,30 @@ export default async function projects() {
             li('Web Audio API integration for recording functionality'),
             li('Mobile-first responsive design')
           ),
+
+          h4('Progress:'),
+          ul(
+            li('Real-time audio playback and streaming'),
+            li('Only supports an admin user for uploads so far'),
+            li('Uses ffmpeg in a separate container for audio processing and waveforms'),
+            li('In-browser audio recording using Web Audio API'),
+            li('Uploads are streamed from the filesystem for performance'),
+            li('Data is initialized and backed up using S3'),
+            li('Metadata is replicated to a local cache for faster access')
+          ),
           
-          // Disabled until these are live
-          // div({ class: 'button-actions-flex' },
-          //   button(
-          //     a({ 
-          //       href: 'https://soundclone.example.com', 
-          //       target: '_blank', 
-          //       class: 'button-link' 
-          //     }, 'Live Demo')
-          //   ),
-          //   button(
-          //     a({ 
-          //       href: 'https://github.com/mcbrumagin/soundclone', 
-          //       target: '_blank', 
-          //       class: 'button-link' 
-          //     }, 'View Source')
-          //   )
-          // )
+          div({ class: 'button-actions-flex' },
+            a({ 
+              href: 'https://soundcl.one', 
+              target: '_blank', 
+              class: 'button-link' 
+            }, 'Live App'),
+            a({
+              href: 'https://github.com/mcbrumagin/soundclone', 
+              target: '_blank', 
+              class: 'button-link' 
+            }, 'View Source')
+          )
         )
       )
     )
