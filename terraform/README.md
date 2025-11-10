@@ -1,182 +1,197 @@
-# Deployment Guide | Terraform & Github Actions
+# Portfolio Infrastructure - Modular Architecture
 
-## Architecture
-- **2 t4g.nano EC2 instances** running multiple containers
-- **Single ALB** routing by hostname to different environments
-- **Branch-based deployments** with environment-specific Docker tags
-- **Shared SSL certificate** covering all subdomains
+Cost-optimized Terraform infrastructure with shared ALB across dev/prod environments.
 
-## Prerequisites
-
-### 1. Domain Setup
-- Acquire your desired url with your domain registrar (if not already done)
-- Create Route53 hosted zone in AWS
-- Update nameservers in registrar to point to Route53
-
-### 2. AWS Secrets
-Configure aws secrets for terraform: `aws configure`
-
-### 3. Fork this repository
-- The deploy.yaml will handle docker build/push & ECS updates
-- Pushing to dev branch deploys dev
-- Pushing/merging to master deploys prod
-
-## Infrastructure Organization
-
-The Terraform configuration is organized using modules to keep things cleaner:
+## 📁 Structure
 
 ```
 terraform/
-├── main.tf              # Root configuration using the portfolio module
-├── variables.tf         # Input variables
-├── outputs.tf           # Output values
-├── provider.tf          # AWS provider configuration
-└── modules/             # Reusable infrastructure
-      ├── main.tf            # Module documentation
-      ├── variables.tf       # Module input variables
-      ├── outputs.tf         # Module outputs
-      ├── networking.tf      # VPC, subnets, security groups
-      ├── ecr.tf             # ECR repository
-      ├── load-balancer.tf   # ALB, target groups, listeners
-      ├── ssl.tf             # SSL certificates
-      ├── ecs.tf             # ECS cluster, services, IAM
-      ├── cloudwatch.tf      # CloudWatch log groups
-      └── route53.tf         # DNS records and Route53 configuration
+├── main.tf             # Root config - deploys static resources
+├── static-shared/      # Module: ECR, S3
+├── static-env/         # Module: IAM roles/users
+├── runtime-shared/     # Shared ALB, VPC - workspace: shared
+└── runtime-env/        # ECS per environment - workspaces: dev, prod
 ```
 
-## Workspaces (Environments)
+## 🚀 Quick Start
 
-```
-Workspaces:
-├── default (unused)
-├── dev     → Creates portfolio-dev-* resources
-└── prod    → Creates portfolio-prod-* resources
-```
-
-## Deployment Steps
-
-### Step 1: Configure Infrastructure
-
-Copy `terraform.tfvars.example` as `terraform.tfvars` and update for your environment:
-```bash
-aws_region = "us-east-1"
-project_name = "portfolio"
-environment  = "dev" # or "prod"
-domain_name = "<YOUR DOMAIN>"
-enable_ssl = true
-```
-
-### Step 2: Deploy Infrastructure
+### Initial Setup (Run Once)
 
 ```bash
-cd terraform
+# 1. Static resources (from root)
 terraform init
-terraform plan --out dev.tfplan # or whatever env
+terraform workspace select default
+terraform apply
+
+# Get deployment credentials
+terraform output -raw deployment_user_access_key_id
+terraform output -raw deployment_user_secret_access_key
+# → Add these to GitHub Secrets
+
+# 2. Shared runtime
+cd runtime-shared
+terraform init
+terraform workspace new shared
 terraform apply
 ```
 
-This creates:
-- VPC, subnets, security groups
-- ECS cluster with EC2 capacity provider
-- Application Load Balancer with SSL
-- Route53 records and certificate validation
-- ECR repository
-
-### Step 3: Github Container Deployment
-After infrastructure is ready, push to github dev branch (or master) to deploy containers:
+### Deploy Dev Environment
 
 ```bash
-# Deploy dev environment
-git checkout dev
-git push origin dev
-
-# Deploy production environment
-git checkout master
-git push origin master
+cd ../runtime-env
+terraform init
+terraform workspace new dev
+terraform apply -var-file=terraform-dev.tfvars
 ```
 
-### Step 3: DNS Verification
-After deployment, verify the domains work:
-- `https://dev.mcbrumagin.com` - Dev environment
-- `https://mcbrumagin.com` - Production environment
-- `https://www.mcbrumagin.com` - Production (www)
+### Deploy Prod Environment
 
-## Environment Details
-
-### Resource Allocation
-- **Dev**: 1 containers, 256 CPU, 256 MB RAM each
-- **Prod**: 2 containers, 256 CPU, 256 MB RAM each
-- **Total**: 3 containers across 3 t4g.nano instances
-
-### Health Checks
-All environments use the `/health` endpoint which returns:
-```json
-{
-  "health": "OK",
-  "registryMap": { ... }
-}
-```
-
-### Container Environment Variables
-- **Dev containers**: `NODE_ENV=development`, `ENVIRONMENT=dev`
-- **Prod containers**: `NODE_ENV=production`, `ENVIRONMENT=prod`
-
-## Cost Optimization Features
-
-1. **Shared Infrastructure**: All environments share the same EC2 instances
-2. **ARM-based instances**: t4g.nano uses AWS Graviton2 processors (cheaper)
-3. **Dynamic port allocation**: No port conflicts, efficient resource usage
-4. **Single SSL certificate**: One cert covers all subdomains
-5. **Minimal instance count**: Only 2 instances for all environments
-
-## Troubleshooting
-
-### Check ECS Service Status
 ```bash
-aws ecs describe-services --cluster portfolio-cluster --services portfolio-dev-service portfolio-prod-service
+terraform workspace new prod
+terraform apply -var-file=terraform-prod.tfvars
 ```
 
-### Check Container Logs
+## 📝 Module Details
+
+### Root (default workspace)
+- **Resources**: Combines static-shared and static-env modules
+- **Cost**: $0 (S3 storage billed separately)
+- **Deploy**: Once from terraform root
+- **Files**: `main.tf` calls `static-shared/` and `static-env/` modules
+
+#### static-shared (module)
+- ECR repos, S3 bucket
+- **Files**: `ecr.tf`, `s3-bucket.tf`
+
+#### static-env (module)
+- IAM users/roles for dev+prod
+- **Files**: `iam-runtime.tf`, `iam-deployment.tf`
+
+### runtime-shared (shared workspace)
+- **Resources**: ALB, VPC, subnets, security groups, certificates
+- **Cost**: ~$16/month
+- **Deploy**: Once
+- **Files**: `load-balancer.tf`, `networking.tf`, `ssl.tf`, `route53.tf`
+
+### runtime-env (dev/prod workspaces)
+- **Resources**: ECS cluster, service, target groups, secrets
+- **Cost**: ~$10/month per environment
+- **Deploy**: Once per environment
+- **Files**: `ecs.tf`, `target-groups.tf`, `secrets.tf`
+
+## 🔗 How Resources Connect
+
+```
+runtime-env (dev/prod)
+    ↓ references via remote state
+runtime-shared (ALB, VPC)
+    ↓ references via remote state  
+root main.tf (static resources)
+    ├── static-shared module (ECR, S3)
+    └── static-env module (IAM)
+```
+
+## 💰 Cost Breakdown
+
+| Resource | Cost/Month | Notes |
+|----------|------------|-------|
+| Shared ALB | ~$16 | One ALB for both environments |
+| ECS Dev | ~$10 | Fargate tasks |
+| ECS Prod | ~$10 | Fargate tasks |
+| Data Transfer | ~$2-5 | Variable |
+| **Total** | **~$38/month** | **Was $54/month with separate ALBs** |
+
+**Annual Savings: ~$192**
+
+## 🌐 Domains
+
+All domains point to the same shared ALB:
+- **Dev Portfolio**: https://dev.mcbrumagin.com
+- **Prod Portfolio**: https://mcbrumagin.com, https://www.mcbrumagin.com
+- **Dev SoundClone**: https://dev.soundcl.one
+- **Prod SoundClone**: https://soundcl.one, https://www.soundcl.one
+
+## 📦 Workspaces
+
+| Workspace | Location | Purpose |
+|-----------|----------|---------|
+| `default` | terraform/ (root) | Static resources via modules |
+| `shared` | runtime-shared/ | Shared ALB/networking |
+| `dev` | runtime-env/ | Dev ECS cluster |
+| `prod` | runtime-env/ | Prod ECS cluster |
+
+## 🔐 Secrets Management
+
+Secrets are stored in AWS Secrets Manager:
+- `portfolio/dev/soundclone/admin` - Dev admin credentials
+- `portfolio/prod/soundclone/admin` - Prod admin credentials
+
+Update via:
 ```bash
-aws logs describe-log-groups --log-group-name-prefix "/ecs/portfolio"
-aws logs tail /ecs/portfolio-dev --follow
+aws secretsmanager update-secret \
+  --secret-id "portfolio/dev/soundclone/admin" \
+  --secret-string '{"admin_user":"user","admin_secret":"pass"}'
 ```
 
-### Check ALB Target Health
+## 🛠️ Common Operations
+
+### Update a Specific Environment
+
 ```bash
-aws elbv2 describe-target-health --target-group-arn <target-group-arn>
+cd runtime-env
+terraform workspace select dev  # or prod
+terraform plan
+terraform apply
 ```
 
-### Force New Deployment
+### Add/Update Listener Rules
+
+Edit `runtime-env/target-groups.tf`, then:
 ```bash
-aws ecs update-service --cluster portfolio-cluster --service portfolio-dev-service --force-new-deployment
+terraform workspace select dev
+terraform apply
 ```
 
-## Scaling
+### View Remote State
 
-### Horizontal Scaling (More Containers)
-Update desired count in `shared.tf`:
-```hcl
-desired_count = 3  # Increase from 2
+```bash
+# From runtime-env
+terraform console
+> data.terraform_remote_state.runtime_shared.outputs.alb_arn
 ```
 
-### Vertical Scaling (More Resources)
-Update instance type in `ec2.tf`:
-```hcl
-instance_type = "t4g.small"  # Upgrade from nano
+### Destroy an Environment
+
+```bash
+# Destroy in reverse order
+cd runtime-env && terraform workspace select dev && terraform destroy
+cd ../runtime-shared && terraform workspace select shared && terraform destroy  
+cd .. && terraform workspace select default && terraform destroy
 ```
 
-### Add More Instances
-Update Auto Scaling Group in `ec2.tf`:
-```hcl
-min_size         = 3  # Increase from 2
-max_size         = 6  # Increase from 4
-desired_capacity = 3  # Increase from 2
-```
+## 📚 Documentation
 
-## Monitoring
+- **[DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md)**: Step-by-step deployment
+- **Each module**: See individual `main.tf` for details
 
-- **CloudWatch Logs**: `/ecs/portfolio-{env}` log groups
-- **ALB Metrics**: Request count, latency, error rates
-- **ECS Metrics**: CPU/memory utilization per service
-- **Target Group Health**: Health check status per environment
+## 🐛 Troubleshooting
+
+### "No state file" error
+You need to run `terraform init` in each module directory.
+
+### Certificate validation stuck
+Wait 5-10 minutes for DNS propagation. Check Route53 records exist.
+
+### ECS tasks unhealthy
+1. Check security groups allow ALB → ECS traffic
+2. Verify `/health` endpoints return 200
+3. Check CloudWatch logs: `/ecs/portfolio-{workspace}`
+
+### 404 from ALB
+1. Verify listener rules exist in runtime-env
+2. Check target group health
+3. Verify domain matches host header in listener rule
+
+## 📞 Support
+
+See `DEPLOYMENT_GUIDE.md` for detailed troubleshooting and migration steps.

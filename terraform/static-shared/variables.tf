@@ -1,4 +1,4 @@
-# terraform/variables.tf
+# terraform/static-shared/variables.tf
 
 variable "aws_region" {
   description = "AWS region"
@@ -11,3 +11,4 @@ variable "s3_bucket_name" {
   type        = string
   default     = "soundclone-data"
 }
+

@@ -1,4 +1,5 @@
-# terraform/networking.tf
+# terraform/runtime-shared/networking.tf
+# Shared networking resources - VPC, subnets, security groups
 
 # Get available AZs
 data "aws_availability_zones" "available" {
@@ -12,8 +13,8 @@ resource "aws_vpc" "main" {
   enable_dns_support   = true
 
   tags = {
-    Name        = "${var.project_name}-${terraform.workspace}-vpc"
-    Environment = var.environment
+    Name        = "portfolio-shared-vpc"
+    Environment = "shared"
   }
 }
 
@@ -22,22 +23,22 @@ resource "aws_internet_gateway" "main" {
   vpc_id = aws_vpc.main.id
 
   tags = {
-    Name        = "${var.project_name}-${terraform.workspace}-igw"
-    Environment = var.environment
+    Name        = "portfolio-shared-igw"
+    Environment = "shared"
   }
 }
 
 # Public Subnets
 resource "aws_subnet" "public" {
   count                   = 2
-  vpc_id                 = aws_vpc.main.id
-  cidr_block             = "10.0.${count.index + 1}.0/24"
-  availability_zone      = data.aws_availability_zones.available.names[count.index]
+  vpc_id                  = aws_vpc.main.id
+  cidr_block              = "10.0.${count.index + 1}.0/24"
+  availability_zone       = data.aws_availability_zones.available.names[count.index]
   map_public_ip_on_launch = true
 
   tags = {
-    Name        = "${var.project_name}-${terraform.workspace}-public-subnet-${count.index + 1}"
-    Environment = var.environment
+    Name        = "portfolio-shared-public-subnet-${count.index + 1}"
+    Environment = "shared"
   }
 }
 
@@ -51,8 +52,8 @@ resource "aws_route_table" "public" {
   }
 
   tags = {
-    Name        = "${var.project_name}-${terraform.workspace}-public-rt"
-    Environment = var.environment
+    Name        = "portfolio-shared-public-rt"
+    Environment = "shared"
   }
 }
 
@@ -65,8 +66,8 @@ resource "aws_route_table_association" "public" {
 
 # Security Group for ALB
 resource "aws_security_group" "alb" {
-  name        = "${var.project_name}-${terraform.workspace}-alb-sg"
-  description = "Security group for Application Load Balancer"
+  name        = "portfolio-shared-alb-sg"
+  description = "Security group for shared Application Load Balancer"
   vpc_id      = aws_vpc.main.id
 
   ingress {
@@ -93,21 +94,29 @@ resource "aws_security_group" "alb" {
   }
 
   tags = {
-    Name        = "${var.project_name}-${terraform.workspace}-alb-sg"
-    Environment = var.environment
+    Name        = "portfolio-shared-alb-sg"
+    Environment = "shared"
   }
 }
 
-# Security Group for ECS Tasks
+# Security Group for ECS Tasks (allows traffic from ALB)
 resource "aws_security_group" "ecs_tasks" {
-  name        = "${var.project_name}-${terraform.workspace}-ecs-tasks-sg"
-  description = "Allow inbound traffic for ECS tasks"
+  name        = "portfolio-shared-ecs-tasks-sg"
+  description = "Allow inbound traffic for ECS tasks from ALB"
   vpc_id      = aws_vpc.main.id
 
   ingress {
-    description     = "Allow HTTP from ALB"
+    description     = "Allow HTTP from ALB to Portfolio"
     from_port       = 8000
     to_port         = 8000
+    protocol        = "tcp"
+    security_groups = [aws_security_group.alb.id]
+  }
+
+  ingress {
+    description     = "Allow HTTP from ALB to SoundClone"
+    from_port       = 10000
+    to_port         = 10000
     protocol        = "tcp"
     security_groups = [aws_security_group.alb.id]
   }
@@ -120,7 +129,8 @@ resource "aws_security_group" "ecs_tasks" {
   }
 
   tags = {
-    Name        = "${var.project_name}-${terraform.workspace}-ecs-tasks-sg"
-    Environment = var.environment
+    Name        = "portfolio-shared-ecs-tasks-sg"
+    Environment = "shared"
   }
 }
+
