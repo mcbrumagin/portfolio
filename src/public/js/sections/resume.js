@@ -11,10 +11,12 @@ export default async function resume() {
       h1('Resume'),
       p({ class: 'hero-subtitle' }, 'Matthew C Brumagin'),
       div({ class: 'button-group' },
-        button({ 
-          class: 'download-pdf-btn', 
-          onclick: () => downloadFile('/resources/mcbrumagin-resume.pdf')
-        }, 'Download PDF')
+        a({
+          download: 'mcbrumagin-resume.pdf',
+          href: '/resources/mcbrumagin-resume.pdf',
+          target: '_blank',
+          class: 'button-link download-pdf-btn'
+        }, 'Download Resume PDF')
       )
     ),
 

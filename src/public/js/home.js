@@ -58,22 +58,15 @@ export default async function home() {
       h2('Resume & Portfolio'),
       p({ class: 'mb-2' }, 'Ready to discuss how I can contribute to your team\'s success.'),
       div({ class: 'button-group' },
-        button({
-            class: 'download-pdf-btn',
-            onclick: () => downloadFile('/resources/mcbrumagin-resume.pdf') },
-          a({
-            download: 'mcbrumagin-resume.pdf',
-            href: '/resources/mcbrumagin-resume.pdf',
-            target: '_blank'
-          }, 'Download Resume PDF')
-        ),
-        button({ onclick: () => findOne('[href="/portfolio/resume"]').click() }, 
-          a({ href: '/portfolio/resume', class: 'button-link' }, 'View Resume Online')
-        ),
-        button({ onclick: () => findOne('[href="/portfolio/projects"]').click() },
-          a({ href: '/portfolio/projects', class: 'button-link' }, 'View Projects')
-        ),
-        // button(a({ href: '/portfolio/contact', class: 'button-link' }, 'Contact Me'))
+        a({
+          download: 'mcbrumagin-resume.pdf',
+          href: '/resources/mcbrumagin-resume.pdf',
+          target: '_blank',
+          class: 'button-link download-pdf-btn'
+        }, 'Download Resume PDF'),
+        a({ href: '/portfolio/resume', class: 'button-link' }, 'View Resume Online'),
+        a({ href: '/portfolio/projects', class: 'button-link' }, 'View Projects'),
+        // a({ href: '/portfolio/contact', class: 'button-link' }, 'Contact Me')
       )
     )
   ).onReady(() => fadeIn('.content'))

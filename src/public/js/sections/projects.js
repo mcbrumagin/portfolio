@@ -52,14 +52,11 @@ export default async function projects() {
           ),
           
           div({ class: 'button-actions' },
-            button({ onclick: () => findOne('[href*="micro-js"]').click() },
-              a({
-                // onclick: () => { throw 'test' },
-                href: 'https://github.com/mcbrumagin/micro-js', 
-                target: '_blank', 
-                class: 'button-link' 
-              }, 'View on GitHub')
-            )
+            a({
+              href: 'https://github.com/mcbrumagin/micro-js', 
+              target: '_blank', 
+              class: 'button-link' 
+            }, 'View on GitHub')
           )
         )
       ),
@@ -105,13 +102,11 @@ export default async function projects() {
           ),
           
           div({ class: 'button-actions' },
-            button({ onclick: () => findOne('[href*="micro-js-html"]').click() },
-              a({ 
-                href: 'https://github.com/mcbrumagin/micro-js-html', 
-                target: '_blank', 
-                class: 'button-link' 
-              }, 'View on GitHub')
-            )
+            a({ 
+              href: 'https://github.com/mcbrumagin/micro-js-html', 
+              target: '_blank', 
+              class: 'button-link' 
+            }, 'View on GitHub')
           )
         )
       )
@@ -152,13 +147,11 @@ export default async function projects() {
           ),
           
           div({ class: 'button-actions' },
-            button({ onclick: () => findOne('[href*="mcbrumagin/portfolio"]').click() },
-              a({ 
-                href: 'https://github.com/mcbrumagin/portfolio', 
-                target: '_blank', 
-                class: 'button-link' 
-              }, 'View Source')
-            )
+            a({ 
+              href: 'https://github.com/mcbrumagin/portfolio', 
+              target: '_blank', 
+              class: 'button-link' 
+            }, 'View Source')
           )
         )
       ),
@@ -208,20 +201,16 @@ export default async function projects() {
           ),
           
           div({ class: 'button-actions-flex' },
-            button({ onclick: () => findOne('[href*="soundcl.one"]').click() },
-              a({ 
-                href: 'https://soundcl.one', 
-                target: '_blank', 
-                class: 'button-link' 
-              }, 'Live App')
-            ),
-            button({ onclick: () => findOne('[href*="mcbrumagin/soundclone"]').click() },
-              a({
-                href: 'https://github.com/mcbrumagin/soundclone', 
-                target: '_blank', 
-                class: 'button-link' 
-              }, 'View Source')
-            )
+            a({ 
+              href: 'https://soundcl.one', 
+              target: '_blank', 
+              class: 'button-link' 
+            }, 'Live App'),
+            a({
+              href: 'https://github.com/mcbrumagin/soundclone', 
+              target: '_blank', 
+              class: 'button-link' 
+            }, 'View Source')
           )
         )
       )
