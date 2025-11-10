@@ -195,24 +195,34 @@ export default async function projects() {
             li('Web Audio API integration for recording functionality'),
             li('Mobile-first responsive design')
           ),
+
+          h4('Progress:'),
+          ul(
+            li('Real-time audio playback and streaming'),
+            li('Only supports an admin user for uploads so far'),
+            li('Uses ffmpeg in a separate container for audio processing and waveforms'),
+            li('In-browser audio recording using Web Audio API'),
+            li('Uploads are streamed from the filesystem for performance'),
+            li('Data is initialized and backed up using S3'),
+            li('Metadata is replicated to a local cache for faster access')
+          ),
           
-          // Disabled until these are live
-          // div({ class: 'button-actions-flex' },
-          //   button(
-          //     a({ 
-          //       href: 'https://soundclone.example.com', 
-          //       target: '_blank', 
-          //       class: 'button-link' 
-          //     }, 'Live Demo')
-          //   ),
-          //   button(
-          //     a({ 
-          //       href: 'https://github.com/mcbrumagin/soundclone', 
-          //       target: '_blank', 
-          //       class: 'button-link' 
-          //     }, 'View Source')
-          //   )
-          // )
+          div({ class: 'button-actions-flex' },
+            button({ onclick: () => findOne('[href*="soundcl.one"]').click() },
+              a({ 
+                href: 'https://soundcl.one', 
+                target: '_blank', 
+                class: 'button-link' 
+              }, 'Live App')
+            ),
+            button({ onclick: () => findOne('[href*="mcbrumagin/soundclone"]').click() },
+              a({
+                href: 'https://github.com/mcbrumagin/soundclone', 
+                target: '_blank', 
+                class: 'button-link' 
+              }, 'View Source')
+            )
+          )
         )
       )
     )
