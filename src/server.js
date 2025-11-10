@@ -84,6 +84,7 @@ async function main() {
         fileMap: {
           '/modules/*': 'node_modules/micro-js-html/src',
           '/favicon.ico': 'src/public/resources/favicon.svg',
+          '/favicon.svg': 'src/public/resources/favicon.svg',
           '/*': 'src/public'
         }
       })
