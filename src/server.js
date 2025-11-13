@@ -69,33 +69,34 @@ async function getHealth() {
   return JSON.stringify({ health: 'OK', timestamp: new Date().toISOString() })
 }
 
-// TODO metrics tracking service (finally get to test the callService function)
+// TODO simple metrics tracking service
 
 async function main() {
-  return await Promise.all([
-    registryServer(),
-    createRoutes({
-      '/': getClient,
-      '/portfolio/*': getClient,
-      '/health': getHealth,
-      '/healthDetails': getHealthDetails,
-      '/memory': getMemoryUsage,
-      '/*': await createStaticFileService({
-        fileMap: {
-          '/modules/*': 'node_modules/micro-js-html/src',
-          '/favicon.ico': 'src/public/resources/favicon.svg',
-          '/favicon.svg': 'src/public/resources/favicon.svg',
-          '/*': 'src/public'
-        }
-      })
-    })
-  ])
-}
 
-//setInterval(() => {
-//  let mem = process.memoryUsage()
-//  console.info(`Memory usage ${mem.rss/1024/1024}MB`)
-//}, 10000)
+  let registry = await registryServer()
+  let routeMap = {
+    '/': getClient,
+    '/health': getHealth,
+    '/portfolio/*': getClient,
+    '/*': await createStaticFileService({
+      fileMap: {
+        '/robots.txt': 'src/public/resources/robots.txt',
+        '/sitemap.xml': 'src/public/resources/sitemap.xml',
+        '/favicon.ico': 'src/public/resources/favicon.svg',
+        '/favicon.svg': 'src/public/resources/favicon.svg',
+        '/modules/*': 'node_modules/micro-js-html/src',
+        '/*': 'src/public'
+      }
+    })
+  }
+
+  if (isDev) {
+    routeMap['/memory'] = getMemoryUsage
+    routeMap['/healthDetails'] = getHealthDetails
+  }
+
+  return [registry, await createRoutes(routeMap)]
+}
 
 main()
 .then(([registry, services]) => {
