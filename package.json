@@ -5,13 +5,13 @@
   "main": "src/server.js",
   "type": "module",
   "scripts": {
-    "start": "export MICRO_REGISTRY_URL=http://localhost:3000 && export ENVIRONMENT=dev && node server.js",
+    "start": "./run.sh",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Matt Brumagin",
   "license": "ISC",
   "dependencies": {
-    "micro-js": "^0.2.11",
-    "micro-js-html": "^0.0.6"
+    "micro-js": "^0.2.13",
+    "micro-js-html": "^0.0.8"
   }
 }
