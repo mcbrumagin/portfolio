@@ -1,7 +1,7 @@
 import { htmlTags } from '../modules/index.js'
 
 export default async function home() {
-  await micro.modules.renderPageTemplate(true)
+  await yamf.modules.renderPageTemplate(true)
   
   const { div, h1, h2, h3, p, a, section, button, span, em } = htmlTags
 
@@ -11,13 +11,12 @@ export default async function home() {
       h1('Matthew C Brumagin'),
       p({ class: 'hero-subtitle' }, 'Senior Software Engineer'),
       p({ class: 'hero-description indent' }, 
-        `Senior Software Engineer with a background in Agile/Scrum, 
-          full-stack, cloud hosting, CI/CD, and polyglot microservices. 
-        Expertise in AWS, EKS, and GitLab CI, 
-          with a proven ability to lead projects, 
-          collaborate with stakeholders, and improve DevOps. 
-        Seeking a role within an organization looking to expand or 
-          modernize cloud applications and infrastructure.`
+        `Senior Software Engineer with over 10 years of professional experience in the full Software 
+        Development Lifecycle (SDLC) using Agile methodologies (Scrum/Kanban). Experienced engineer 
+        capable of leading the design and development of high-availability distributed systems, RESTful APIs, 
+        cloud-native CI/CD pipelines, and full-stack applications using modern frameworks. Proven ability to 
+        collaborate with stakeholders, architect scalable systems, mentor junior engineers, and drive technical 
+        excellence across the organization.`
       )
     ),
 

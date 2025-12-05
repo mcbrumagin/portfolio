@@ -16,7 +16,7 @@ const fadeOut = async selector => {
 }
 
 const createPlaceholder = page => {
-  const { div, p } = micro.htmlTags
+  const { div, p } = yamf.htmlTags
   return div({ class: 'content' },
       p(`Loading ${page}...`)
     ).onReady(() => fadeIn('.content'))

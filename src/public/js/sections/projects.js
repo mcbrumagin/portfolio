@@ -1,7 +1,7 @@
 import { htmlTags } from '../../modules/index.js'
 
 export default async function projects() {
-  await micro.modules.renderPageTemplate()
+  await yamf.modules.renderPageTemplate()
   
   const { div, h1, h2, h3, h4, p, section, ul, li, a, button, strong, em } = htmlTags
 
@@ -14,12 +14,12 @@ export default async function projects() {
     ),
 
     section({ class: 'mb-4' },
-      h2('Microservice Framework'),
+      h2('Yet Another Microservice Framework (YAMF)'),
       div({ class: 'card' },
         div({ class: 'card-header' },
           div(
-            h3({ class: 'card-title' }, 'micro-js'),
-            h4({ class: 'card-subtitle' }, 'Functional Microservices & Registry')
+            h3({ class: 'card-title' }, 'YAMF Core'),
+            h4({ class: 'card-subtitle' }, 'Zero-Dependency Microservices Framework')
           ),
           div({ class: 'card-meta' },
             p('Core Framework'),
@@ -27,33 +27,33 @@ export default async function projects() {
           )
         ),
         div({ class: 'card-content' },
-          p(`Zero-dependency server microservice module 
-            featuring a reverse-proxy, service registry, 
-            routing, layered stack traces, and dynamic discovery.`
+          p(`A monorepo of smaller modules for building distributed systems with zero runtime dependencies. 
+            Features service registry, API gateway, routing, RPC, pub/sub events, caching, and authentication.`
           ),
           
           h4('Key Features:'),
           ul(
-            li('Only one environment variable needed: your registry location'),
-            li('Lightweight routing system with support for nested routes'),
-            li('Layered stack traces for better debugging'),
-            li('Simple round-robin load balancing baked in'),
-            li('Server-side rendering capabilities using micro-js-html'),
-            li('Built to allow any function as a microservice')
+            li('Zero external dependencies - virtually immune to supply-chain attacks'),
+            li('Service registry with dynamic service discovery'),
+            li('Built-in API gateway with reverse-proxy capabilities'),
+            li('RPC calls and pub/sub event system for inter-service communication'),
+            li('Round-robin load balancing and health checks'),
+            li('Comprehensive test coverage (90%+) with custom logging and multi-assertion')
           ),
           
           h4('Technical Highlights:'),
           ul(
-            li('Zero external dependencies for core functionality'),
-            li('Everything async/await ready'),
-            li('Modular design allowing selective feature usage'),
-            li('Works in tandem with micro-js-html for declarative UI'),
-            li('Built-in logging and debugging utilities')
+            li('Monorepo architecture with independently versioned packages'),
+            li('Supports both Node.js and Python clients'),
+            li('Dockerized multi-container examples demonstrating distributed communication'),
+            li('JWT-lite authentication and in-memory caching services'),
+            li('Modular design - use only what you need'),
+            li('Production-ready with detailed logging and debugging utilities')
           ),
           
           div({ class: 'button-actions' },
             a({
-              href: 'https://github.com/mcbrumagin/micro-js', 
+              href: 'https://github.com/mcbrumagin/yamf', 
               target: '_blank', 
               class: 'button-link' 
             }, 'View on GitHub')
@@ -61,49 +61,48 @@ export default async function projects() {
         )
       ),
 
-      // micro-js-html project
+      // YAMF Client project
       div({ class: 'card' },
         div({ class: 'card-header' },
           div(
-            h3({ class: 'card-title' }, 'micro-js-html'),
+            h3({ class: 'card-title' }, 'YAMF Client'),
             h4(
               { class: 'card-subtitle' },
-              'Declarative HTML Generation Library'
+              'Isomorphic HTML-as-JavaScript Library'
             )
           ),
           div({ class: 'card-meta' },
-            p('Companion Library'),
+            p('Client Library'),
             p({ class: 'text-muted' }, 'JavaScript')
           )
         ),
         div({ class: 'card-content' },
-          p(`A companion library to micro-js that provides a clean, 
-              declarative way to generate HTML using JavaScript.
-            Unlike react, it's actually just javascript.
-            The library makes no assumptions about rendering,
-              but offers a simple helper.`
+          p(`An isomorphic library for building UIs with JavaScript functions that generate HTML. 
+            Unlike React, it's pure JavaScript with no virtual DOM overhead.
+            Write your HTML structure using plain JS - works server-side and client-side.`
           ),
           
           h4('Key Features:'),
           ul(
-            li('Declarative HTML generation'),
-            li('Event handling integration'),
-            li('Server-side and client-side rendering support'),
-            li('No virtual DOM overhead - direct DOM manipulation'),
-            li('Use it with micro-js or standalone')
+            li('Declarative HTML generation using JavaScript functions'),
+            li('Server-side rendering with client-side hydration'),
+            li('Reactive state management with automatic re-rendering'),
+            li('Direct DOM manipulation - no virtual DOM overhead'),
+            li('Zero dependencies, zero build step required')
           ),
           
           h4('Technical Highlights:'),
           ul(
             li('Write HTML structure using plain JavaScript syntax'),
-            li('No build step required - works directly in browsers'),
-            li('Eliminates context switching between HTML templates and JavaScript'),
-            li('Powerful composition patterns for reusable components')
+            li('Conditional exports for browser and server environments'),
+            li('Event handling integration with proper cleanup'),
+            li('Powerful composition patterns for reusable components'),
+            li('Works standalone or as part of the YAMF ecosystem')
           ),
           
           div({ class: 'button-actions' },
             a({ 
-              href: 'https://github.com/mcbrumagin/micro-js-html', 
+              href: 'https://github.com/mcbrumagin/yamf/tree/main/packages/client', 
               target: '_blank', 
               class: 'button-link' 
             }, 'View on GitHub')
@@ -114,54 +113,15 @@ export default async function projects() {
 
     section({ class: 'mb-4' },
       h2('Applications'),
-      p({ class: 'mb-4' }, 'Real-world applications built using the micro-js ecosystem:'),
+      p({ class: 'mb-4' }, 'Real-world applications built using the YAMF ecosystem:'),
       
-      // Portfolio Website project
+
+      // SoundClone project (now TheScene.FM)
       div({ class: 'card' },
         div({ class: 'card-header' },
           div(
-            h3({ class: 'card-title' }, 'Portfolio Website'),
-            h4({ class: 'card-subtitle' }, 'Built from scratch with only micro-js & micro-js-html')
-          ),
-          div({ class: 'card-meta' },
-            p('Web Application'),
-            p({ class: 'text-muted' }, 'JavaScript/Node.js')
-          )
-        ),
-        div({ class: 'card-content' },          
-          h4('Core Features:'),
-          ul(
-            li('Built entirely with micro-js framework ecosystem'),
-            li('Server-side rendering with client-side hydration'),
-            li('Responsive design optimized for all devices'),
-            li('PDF resume download functionality')
-          ),
-          
-          h4('Technical Implementation:'),
-          ul(
-            li('Infrastructure as Code with Terraform'),
-            li('Containerized deployment with Docker'),
-            li('CI/CD pipeline with GitHub Actions'),
-            li('Hosted on AWS ECS with Application Load Balancer'),
-            li('SSL/TLS termination and custom domain routing')
-          ),
-          
-          div({ class: 'button-actions' },
-            a({ 
-              href: 'https://github.com/mcbrumagin/portfolio', 
-              target: '_blank', 
-              class: 'button-link' 
-            }, 'View Source')
-          )
-        )
-      ),
-      
-      // SoundClone project
-      div({ class: 'card' },
-        div({ class: 'card-header' },
-          div(
-            h3({ class: 'card-title' }, 'SoundClone', em({ style: 'opacity: 0.5' }, ' [work in progress]')),
-            h4({ class: 'card-subtitle' }, 'Minimal SoundCloud Clone with Recording')
+            h3({ class: 'card-title' }, 'TheScene.FM', em({ style: 'opacity: 0.5' }, ' [active development]')),
+            h4({ class: 'card-subtitle' }, 'Audio Streaming Platform with In-App Recording')
           ),
           div({ class: 'card-meta' },
             p('Web Application'),
@@ -169,35 +129,39 @@ export default async function projects() {
           )
         ),
         div({ class: 'card-content' },
-          p(`Developing a SoundCloud-inspired app with built-in recording. 
-            Building out with micro-js & micro-js-html to extend and test the framework.`
+          p(`A SoundCloud-inspired platform built to showcase and extend YAMF's real-world functionality. 
+            Features authenticated uploads, in-app recording, and roadmap includes playlists, feeds, 
+            artist/venue profiles, and an event calendar.`
           ),
           
           h4('Core Features:'),
           ul(
             li('In-browser audio recording using Web Audio API'),
-            li('Real-time audio playback and streaming'),
-            li('User-friendly upload and sharing interface'),
-            li('Responsive design optimized for all devices')
+            li('Real-time audio playback with waveform visualization'),
+            li('Authenticated uploads with JWT-lite auth service'),
+            li('Audio streaming with S3 backup and Redis-like caching'),
+            li('Responsive design optimized for mobile and desktop')
           ),
           
           h4('Technical Implementation:'),
           ul(
-            li('Built with micro-js & micro-js-html framework'),
-            li('Serves as a testing ground for framework capabilities'),
-            li('Web Audio API integration for recording functionality'),
-            li('Mobile-first responsive design')
+            li('Built with YAMF Core, Client, and service modules (auth, cache, file-upload)'),
+            li('Multi-container architecture: main app + dedicated ffmpeg service'),
+            li('Handles audio transcoding and waveform generation in separate container'),
+            li('S3 integration for persistent storage with local caching layer'),
+            li('Deployed alongside portfolio in shared ECS task'),
+            li('Demonstrates distributed communication and service discovery')
           ),
 
-          h4('Progress:'),
+          h4('Current Status:'),
           ul(
-            li('Real-time audio playback and streaming'),
-            li('Only supports an admin user for uploads so far'),
-            li('Uses ffmpeg in a separate container for audio processing and waveforms'),
-            li('In-browser audio recording using Web Audio API'),
-            li('Uploads are streamed from the filesystem for performance'),
-            li('Data is initialized and backed up using S3'),
-            li('Metadata is replicated to a local cache for faster access')
+            li('Real-time audio playback and streaming functional'),
+            li('Admin-only uploads with authentication'),
+            li('FFmpeg container handles audio processing and waveform generation'),
+            li('In-browser recording using Web Audio API'),
+            li('Efficient streaming from filesystem with S3 backup'),
+            li('Metadata cached locally for fast access'),
+            li('Roadmap: playlists, social feeds, artist profiles, event calendar')
           ),
           
           div({ class: 'button-actions-flex' },
@@ -208,6 +172,48 @@ export default async function projects() {
             }, 'Live App'),
             a({
               href: 'https://github.com/mcbrumagin/soundclone', 
+              target: '_blank', 
+              class: 'button-link' 
+            }, 'View Source')
+          )
+        )
+      ),
+
+      // Portfolio Website project
+      div({ class: 'card' },
+        div({ class: 'card-header' },
+          div(
+            h3({ class: 'card-title' }, 'Portfolio Website'),
+            h4({ class: 'card-subtitle' }, 'Built from scratch with YAMF')
+          ),
+          div({ class: 'card-meta' },
+            p('Web Application'),
+            p({ class: 'text-muted' }, 'JavaScript/Node.js')
+          )
+        ),
+        div({ class: 'card-content' },          
+          h4('Core Features:'),
+          ul(
+            li('Built entirely with YAMF Core and YAMF Client'),
+            li('Server-side rendering with client-side hydration'),
+            li('Responsive design optimized for all devices'),
+            li('PDF resume download functionality'),
+            li('Static file serving with YAMF file-server service')
+          ),
+          
+          h4('Technical Implementation:'),
+          ul(
+            li('Infrastructure as Code with Terraform'),
+            li('Containerized deployment with Docker'),
+            li('CI/CD pipeline with GitHub Actions'),
+            li('Hosted on AWS ECS Fargate with Application Load Balancer'),
+            li('SSL/TLS termination and custom domain routing'),
+            li('Multi-container task definition with SoundClone')
+          ),
+          
+          div({ class: 'button-actions' },
+            a({ 
+              href: 'https://github.com/mcbrumagin/portfolio', 
               target: '_blank', 
               class: 'button-link' 
             }, 'View Source')

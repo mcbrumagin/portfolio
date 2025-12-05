@@ -3,15 +3,15 @@ import {
   createRoutes,
   overrideConsoleGlobally,
   HttpError
-} from 'micro-js'
+} from '@yamf/core'
 
-import createStaticFileService from 'micro-js/static-file-service'
+import createStaticFileService from '@yamf/services-file-server'
 
 overrideConsoleGlobally({
   includeLogLineNumbers: true
 })
 
-import { htmlTags } from 'micro-js-html'
+import { htmlTags } from '@yamf/client'
 const { html, head, title, meta, link, script, body, pre } = htmlTags
 
 const isDev = !process.env.ENVIRONMENT?.toLowerCase().includes('prod')
@@ -54,7 +54,7 @@ async function getMemoryUsage() {
 }
 
 async function getHealthDetails() {
-  let registryMap = await fetch(`${process.env.MICRO_REGISTRY_URL}`, {
+  let registryMap = await fetch(`${process.env.YAMF_REGISTRY_URL}`, {
     headers: {
       'Content-Type': 'application/json',
       'micro-command': 'service-lookup',
@@ -84,7 +84,7 @@ async function main() {
         '/sitemap.xml': 'src/public/resources/sitemap.xml',
         '/favicon.ico': 'src/public/resources/favicon.svg',
         '/favicon.svg': 'src/public/resources/favicon.svg',
-        '/modules/*': 'node_modules/micro-js-html/src',
+        '/modules/*': 'node_modules/@yamf/client/src',
         '/*': 'src/public'
       }
     })

@@ -10,9 +10,9 @@ import createNav from './nav.js'
 import { htmlTags } from '../modules/index.js'
 import { createFooter } from './footer.js'
 
-micro.exports = async function renderPageTemplate(includeNav = true) {
+yamf.exports = async function renderPageTemplate(includeNav = true) {
   const { div } = htmlTags
-  const { waitForElement } = micro // TODO refactor as module
+  const { waitForElement } = yamf // TODO refactor as module
 
   let body = await waitForElement('body')
   body.innerHTML = div({ id: 'main' },
@@ -23,16 +23,16 @@ micro.exports = async function renderPageTemplate(includeNav = true) {
 }
 
 async function main() {
-  const { router, isMobileBrowser, loadResource } = micro // TODO refactor as modules
+  const { router, isMobileBrowser, loadResource } = yamf // TODO refactor as modules
 
-  micro.htmlTags = htmlTags
+  yamf.htmlTags = htmlTags
   // for some reason, mobile.css looks worse all of a sudden? maybe need a refactor..
   // also lowkey, doing desktop-only styles instead of mobile-only styles would be more sensible
   // if (isMobileBrowser()) {
   //   await loadResource('/assets/resources/mobile.css')
   // }
 
-  await micro.modules.renderPageTemplate(false)
+  await yamf.modules.renderPageTemplate(false)
 
   let totalLoadTime = null
   router({
@@ -50,7 +50,7 @@ async function main() {
     },
     after: async () => {
       if (window.isDev) {
-        let loadTime = await micro.waitForElement('.load-time')
+        let loadTime = await yamf.waitForElement('.load-time')
         if (totalLoadTime == null) {
           totalLoadTime = getTotalLoadTime()
         }
