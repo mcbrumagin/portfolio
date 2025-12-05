@@ -1,0 +1,52 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    dependencies:
+      '@yamf/client':
+        specifier: 0.1.0
+        version: 0.1.0
+      '@yamf/core':
+        specifier: 0.3.0
+        version: 0.3.0(@yamf/client@0.1.0)
+      '@yamf/services-file-server':
+        specifier: 0.1.0
+        version: 0.1.0(@yamf/core@0.3.0(@yamf/client@0.1.0))
+
+packages:
+
+  '@yamf/client@0.1.0':
+    resolution: {integrity: sha512-z4Ose/HOKGjIWiNp7gPY3nND1ml4TABS42Y780vPK51W2/pc97NLuftN/viopJdOr1uwJbQ9kehNvAYL0G8zGA==}
+    engines: {node: '>=20.0.0'}
+
+  '@yamf/core@0.3.0':
+    resolution: {integrity: sha512-Z7FLCYvsNO/gnW3qSWJeM/BkswA7bcneBYhSACP3IweSUdTBQvylto731X0kdG54ttichD/bPD7/tsWURmAc3A==}
+    engines: {node: '>=20.0.0'}
+    peerDependencies:
+      '@yamf/client': ^0.1.0
+    peerDependenciesMeta:
+      '@yamf/client':
+        optional: true
+
+  '@yamf/services-file-server@0.1.0':
+    resolution: {integrity: sha512-0Zu9CXCOIVjfzANvcl66Ra+fx2hX+FPex7rh4qyBj+j3LtLL9L8O6KaldBTreINpuEo2Crxk4NApfVnQlZPduQ==}
+    engines: {node: '>=20.0.0'}
+    peerDependencies:
+      '@yamf/core': ^0.3.0
+
+snapshots:
+
+  '@yamf/client@0.1.0': {}
+
+  '@yamf/core@0.3.0(@yamf/client@0.1.0)':
+    optionalDependencies:
+      '@yamf/client': 0.1.0
+
+  '@yamf/services-file-server@0.1.0(@yamf/core@0.3.0(@yamf/client@0.1.0))':
+    dependencies:
+      '@yamf/core': 0.3.0(@yamf/client@0.1.0)

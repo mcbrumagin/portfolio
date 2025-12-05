@@ -1,15 +1,15 @@
 # Matthew C. Brumagin - Portfolio
 
-My portfolio website showcasing my experience as a Senior Software Engineer, built using my zero-dependency micro-js/micro-js-html framework.
+My portfolio website showcasing my experience as a Senior Software Engineer, built using my zero-dependency YAMF (Yet Another Microservice Framework) ecosystem.
 
 
 
 ## 🚘 What's under the hood?
 
-- **Framework**: micro-js + micro-js-html
+- **Framework**: YAMF Core + YAMF Client (formerly micro-js)
 - **Styling**: Custom CSS with CSS Grid and Flexbox
 - **Responsive Design**: Optimized for desktop, tablet, and mobile devices
-- **Fast Loading**: Lightweight for optimal performance
+- **Fast Loading**: Zero dependencies for optimal performance
 
 
 
@@ -32,7 +32,7 @@ My portfolio website showcasing my experience as a Senior Software Engineer, bui
    http://localhost:3000/portfolio/
    ```
 
-The server will run on port 3000 (configured via MICRO_REGISTRY_URL).
+The server will run on port 3000 (configured via YAMF_REGISTRY_URL).
 
 
 

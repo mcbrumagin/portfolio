@@ -114,7 +114,7 @@ resource "aws_ecs_task_definition" "app" {
           value = terraform.workspace
         },
         {
-          name  = "MICRO_REGISTRY_URL"
+          name  = "YAMF_REGISTRY_URL"
           value = "http://localhost:8000"
         },
         {
@@ -137,7 +137,7 @@ resource "aws_ecs_task_definition" "app" {
 
       secrets = [
         {
-          name      = "MICRO_REGISTRY_TOKEN"
+          name      = "YAMF_REGISTRY_TOKEN"
           valueFrom = "${aws_secretsmanager_secret.soundclone_admin_credentials.arn}:portfolio_registry_token::"
         }
       ]
@@ -181,7 +181,7 @@ resource "aws_ecs_task_definition" "app" {
           value = terraform.workspace
         },
         {
-          name  = "MICRO_REGISTRY_URL"
+          name  = "YAMF_REGISTRY_URL"
           value = "http://localhost:10000"
         },
         {
@@ -216,7 +216,7 @@ resource "aws_ecs_task_definition" "app" {
 
       secrets = [
         {
-          name      = "MICRO_REGISTRY_TOKEN"
+          name      = "YAMF_REGISTRY_TOKEN"
           valueFrom = "${aws_secretsmanager_secret.soundclone_admin_credentials.arn}:soundclone_registry_token::"
         },
         {
@@ -262,11 +262,11 @@ resource "aws_ecs_task_definition" "app" {
           value = terraform.workspace
         },
         {
-          name  = "MICRO_REGISTRY_URL"
+          name  = "YAMF_REGISTRY_URL"
           value = "http://localhost:10000"
         },
         {
-          name  = "MICRO_SERVICE_URL"
+          name  = "YAMF_SERVICE_URL"
           value = "http://localhost:11000"
         },
         {
@@ -297,7 +297,7 @@ resource "aws_ecs_task_definition" "app" {
 
       secrets = [
         {
-          name      = "MICRO_REGISTRY_TOKEN"
+          name      = "YAMF_REGISTRY_TOKEN"
           valueFrom = "${aws_secretsmanager_secret.soundclone_admin_credentials.arn}:soundclone_registry_token::"
         }
       ]

@@ -15,7 +15,7 @@ WORKDIR /app
 COPY --from=build /app/src/ ./src/
 COPY --from=build /app/node_modules/ ./node_modules/
 
-ENV MICRO_REGISTRY_URL="http://localhost:8000"
+ENV YAMF_REGISTRY_URL="http://localhost:8000"
 EXPOSE 8000
 
 WORKDIR /app
